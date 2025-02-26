@@ -49,6 +49,7 @@ const messages = [
 
 function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -57,57 +58,87 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
     return () => clearInterval(timer)
   }, [])
 
+  useEffect(() => {
+    if (animationTriggered) {
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(true)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [animationTriggered])
+
   return (
-    <motion.div
-      className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden"
-      animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "auto", opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{
-            duration: 0.5,
-            ease: [0.32, 0.72, 0, 1],
-          }}
-          className="p-3"
-        >
+    <>
+      <motion.div
+        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden"
+        animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "auto", opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <AnimatePresence mode="wait">
           <motion.div
-            className="flex gap-3"
-            animate={
-              animationTriggered
-                ? {
-                    x: "100%",
-                    rotate: 10,
-                    scale: 0.8,
-                  }
-                : {}
-            }
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            key={currentIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.32, 0.72, 0, 1],
+            }}
+            className="p-3"
           >
-            <motion.div className="w-8 h-8 rounded-lg bg-scailer-green/20 flex items-center justify-center">
-              {messages[currentIndex].icon}
-            </motion.div>
-            <motion.div className="flex-1">
-              <p className="text-white text-xs mb-2 leading-relaxed">{messages[currentIndex].text}</p>
-              <div className="flex gap-2">
-                {messages[currentIndex].metrics.map((metric) => (
-                  <span
-                    key={metric}
-                    className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-scailer-green/20 text-scailer-green font-medium"
-                  >
-                    {metric}
-                  </span>
-                ))}
-              </div>
+            <motion.div
+              className="flex gap-3"
+              animate={
+                animationTriggered
+                  ? {
+                      x: "100%",
+                      rotate: 10,
+                      scale: 0.8,
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              <motion.div className="w-8 h-8 rounded-lg bg-scailer-green/20 flex items-center justify-center">
+                {messages[currentIndex].icon}
+              </motion.div>
+              <motion.div className="flex-1">
+                <p className="text-white text-xs mb-2 leading-relaxed">{messages[currentIndex].text}</p>
+                <div className="flex gap-2">
+                  {messages[currentIndex].metrics.map((metric) => (
+                    <span
+                      key={metric}
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-scailer-green/20 text-scailer-green font-medium"
+                    >
+                      {metric}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
           </motion.div>
-        </motion.div>
+        </AnimatePresence>
+      </motion.div>
+
+      <AnimatePresence>
+        {showSuccessMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="mt-4 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-scailer-green/20 rounded-full"
+            >
+              <span className="text-scailer-green font-medium">On its way!</span>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
-    </motion.div>
+    </>
   )
 }
 
@@ -126,6 +157,10 @@ export default function HAL900AuditForm() {
   })
 
   const validateName = (name: string) => {
+    const letterOnlyRegex = /^[A-Za-z\s]+$/
+    if (!letterOnlyRegex.test(name)) {
+      return { isValid: false, message: "Name can only contain letters" }
+    }
     if (name.length < 2) {
       return { isValid: false, message: "Name must be at least 2 characters" }
     }
@@ -136,6 +171,10 @@ export default function HAL900AuditForm() {
   }
 
   const validateCompanyName = (companyName: string) => {
+    const companyRegex = /^[A-Za-z0-9\s&.-]+$/
+    if (!companyRegex.test(companyName)) {
+      return { isValid: false, message: "Company name can only contain letters, numbers, spaces, and characters: & . -" }
+    }
     if (companyName.length < 2) {
       return { isValid: false, message: "Company name must be at least 2 characters" }
     }
@@ -228,10 +267,24 @@ export default function HAL900AuditForm() {
               <Input
                 type="text"
                 placeholder="Enter your name"
+                onKeyPress={(e) => {
+                  const key = e.key;
+                  if (!/^[A-Za-z\s]$/.test(key)) {
+                    e.preventDefault();
+                  }
+                }}
                 className={cn(
                   "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
-                  "rounded-lg transition-all duration-200"
+                  "rounded-lg transition-all duration-200",
+                  "[&:-webkit-autofill]:bg-[#2a2a2a]",
+                  "[&:-webkit-autofill]:text-white",
+                  "[&:-webkit-autofill]:[-webkit-text-fill-color:white]",
+                  "[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]",
+                  "[&:-webkit-autofill]:border-[#2a2a2a]",
+                  "[&:-webkit-autofill]:[-webkit-background-clip:text]",
+                  "focus:[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]",
+                  "hover:[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]"
                 )}
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
@@ -251,10 +304,24 @@ export default function HAL900AuditForm() {
               <Input
                 type="text"
                 placeholder="Enter your company name"
+                onKeyPress={(e) => {
+                  const key = e.key;
+                  if (!/^[A-Za-z0-9\s&.-]$/.test(key)) {
+                    e.preventDefault();
+                  }
+                }}
                 className={cn(
                   "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
-                  "rounded-lg transition-all duration-200"
+                  "rounded-lg transition-all duration-200",
+                  "[&:-webkit-autofill]:bg-[#2a2a2a]",
+                  "[&:-webkit-autofill]:text-white",
+                  "[&:-webkit-autofill]:[-webkit-text-fill-color:white]",
+                  "[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]",
+                  "[&:-webkit-autofill]:border-[#2a2a2a]",
+                  "[&:-webkit-autofill]:[-webkit-background-clip:text]",
+                  "focus:[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]",
+                  "hover:[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]"
                 )}
                 value={formData.companyName}
                 onChange={(e) => handleInputChange("companyName", e.target.value)}
@@ -274,10 +341,25 @@ export default function HAL900AuditForm() {
               <Input
                 type="email"
                 placeholder="Enter your email"
+                onKeyPress={(e) => {
+                  const key = e.key;
+                  // Allow letters, numbers, @, ., _, -, and +
+                  if (!/^[A-Za-z0-9@._+-]$/.test(key)) {
+                    e.preventDefault();
+                  }
+                }}
                 className={cn(
                   "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
-                  "rounded-lg transition-all duration-200"
+                  "rounded-lg transition-all duration-200",
+                  "[&:-webkit-autofill]:bg-[#2a2a2a]",
+                  "[&:-webkit-autofill]:text-white",
+                  "[&:-webkit-autofill]:[-webkit-text-fill-color:white]",
+                  "[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]",
+                  "[&:-webkit-autofill]:border-[#2a2a2a]",
+                  "[&:-webkit-autofill]:[-webkit-background-clip:text]",
+                  "focus:[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]",
+                  "hover:[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0_1000px_#2a2a2a_inset]"
                 )}
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}

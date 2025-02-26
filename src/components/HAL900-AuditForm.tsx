@@ -59,7 +59,7 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
 
   return (
     <motion.div
-      className="bg-scailer-light rounded-lg mt-4 overflow-hidden"
+      className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden"
       animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "auto", opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
@@ -199,7 +199,7 @@ export default function HAL900AuditForm() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="bg-scailer-darker rounded-xl p-6 border border-scailer-light/20"
+        className="bg-scailer-light rounded-xl p-6 border border-scailer-light/20"
       >
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-8 rounded-full bg-scailer-green/10 flex items-center justify-center">
@@ -229,7 +229,7 @@ export default function HAL900AuditForm() {
                 type="text"
                 placeholder="Enter your name"
                 className={cn(
-                  "w-full pl-3 pr-9 py-2 bg-scailer-light border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200"
                 )}
@@ -252,7 +252,7 @@ export default function HAL900AuditForm() {
                 type="text"
                 placeholder="Enter your company name"
                 className={cn(
-                  "w-full pl-3 pr-9 py-2 bg-scailer-light border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200"
                 )}
@@ -275,7 +275,7 @@ export default function HAL900AuditForm() {
                 type="email"
                 placeholder="Enter your email"
                 className={cn(
-                  "w-full pl-3 pr-9 py-2 bg-scailer-light border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200"
                 )}
@@ -299,9 +299,9 @@ export default function HAL900AuditForm() {
               type="submit"
               disabled={!isFormValid || loading}
               className={cn(
-                "w-full py-2 text-white font-medium bg-scailer-green",
-                "hover:bg-[#128C7E] disabled:bg-scailer-light disabled:text-gray-500",
-                "disabled:cursor-not-allowed transition-all duration-200 rounded-lg"
+                "w-full py-2 text-white font-medium",
+                isFormValid ? "bg-scailer-green hover:bg-[#128C7E]" : "bg-[#2a2a2a]",
+                "disabled:text-white/30 disabled:cursor-not-allowed transition-all duration-200 rounded-lg"
               )}
             >
               {loading ? (

@@ -52,7 +52,7 @@ const messages = [
 ];
 
 const AttachmentIcon = ({ type, icon: Icon, color }: { type: string; icon: any; color: string }) => (
-  <div className="w-5 md:w-8 h-5 md:h-8 bg-[#25D366]/20 rounded-md flex items-center justify-center">
+  <div className="w-5 md:w-8 h-5 md:h-8 bg-[#2a2a2a] rounded-md flex items-center justify-center">
     <Icon className={`w-2.5 md:w-4 h-2.5 md:h-4 ${color}`} />
   </div>
 );
@@ -106,7 +106,7 @@ export default function HAL900MessageAnimation() {
   };
 
   return (
-    <div className="bg-scailer-darker rounded-xl p-3 md:p-6 border border-scailer-light/20">
+    <div className="bg-scailer-light rounded-xl p-3 md:p-6 border border-scailer-light/20">
       <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
         <div className="w-5 md:w-8 h-5 md:h-8 rounded-full bg-[#25D366]/10 flex items-center justify-center">
           <motion.div
@@ -159,11 +159,11 @@ export default function HAL900MessageAnimation() {
               exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.3 } }}
               className="absolute left-0 right-0 bottom-0 flex gap-2 md:gap-3 items-start mb-2 md:mb-3 origin-bottom"
             >
-              <div className="w-10 md:w-16 h-10 md:h-16 rounded-lg flex-shrink-0 bg-[#25D366]/20 flex items-center justify-center">
+              <div className="w-10 md:w-16 h-10 md:h-16 rounded-lg flex-shrink-0 bg-[#2a2a2a] flex items-center justify-center">
                 <message.icon className={`w-5 md:w-8 h-5 md:h-8 ${message.iconColor}`} />
               </div>
               <motion.div
-                className="flex-1 overflow-hidden bg-scailer-light rounded-lg"
+                className="flex-1 overflow-hidden bg-[#2a2a2a] rounded-lg"
                 initial={{ opacity: 0, scaleY: 0 }}
                 animate={{ opacity: 1, scaleY: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
@@ -184,7 +184,9 @@ export default function HAL900MessageAnimation() {
                   {message.attachments && (
                     <div className="flex gap-1 md:gap-2 mt-1.5 md:mt-3">
                       {message.attachments.map((attachment, idx) => (
-                        <AttachmentIcon key={idx} {...attachment} color={message.iconColor} />
+                        <div key={idx} className="w-5 md:w-8 h-5 md:h-8 bg-[#25D366]/20 rounded-md flex items-center justify-center">
+                          <attachment.icon className={`w-2.5 md:w-4 h-2.5 md:h-4 ${message.iconColor}`} />
+                        </div>
                       ))}
                     </div>
                   )}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import HAL900AnimatedText from "./HAL900-AnimatedText";
 
 const AnimatedHeading = () => {
   const [displayText, setDisplayText] = useState("");
@@ -171,7 +172,7 @@ const AnimatedHeading = () => {
       <div ref={containerRef} className="inline-flex items-center justify-center">
         <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl flex items-center tracking-tight text-white font-medium whitespace-pre-wrap sm:whitespace-nowrap">
           <span
-            className="font-light text-scailer-green text-4xl sm:text-6xl md:text-8xl lg:text-9xl mr-2 md:mr-4 flex items-center"
+            className="font-normal text-scailer-green text-4xl sm:text-6xl md:text-8xl lg:text-9xl mr-2 md:mr-4 flex items-center"
             style={{ ...leftBracketStyle, transformStyle: "preserve-3d" }}
           >
             {"{"}
@@ -188,7 +189,7 @@ const AnimatedHeading = () => {
             </span>
           </div>
           <span
-            className="font-light text-scailer-green text-4xl sm:text-6xl md:text-8xl lg:text-9xl ml-2 md:ml-4 flex items-center"
+            className="font-normal text-scailer-green text-4xl sm:text-6xl md:text-8xl lg:text-9xl ml-2 md:ml-4 flex items-center"
             style={{ ...rightBracketStyle, transformStyle: "preserve-3d" }}
           >
             {"}"}
@@ -200,8 +201,17 @@ const AnimatedHeading = () => {
 };
 
 const HAL900Hero = () => {
+  const [startAnimation, setStartAnimation] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStartAnimation(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <section className="min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 px-4 flex flex-col items-center justify-center bg-gradient-to-b from-scailer-darker to-scailer-dark">
+    <section className="min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 px-4 flex flex-col items-center justify-center bg-scailer-dark">
       <div className="text-center max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -211,21 +221,8 @@ const HAL900Hero = () => {
         >
           <AnimatedHeading />
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-scailer-green text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-medium text-base sm:text-lg shadow-lg shadow-scailer-green/20 hover:shadow-scailer-green/30 transition-shadow"
-          >
-            Learn more
-          </motion.button>
-        </motion.div>
       </div>
+      <HAL900AnimatedText startAnimation={startAnimation} />
     </section>
   );
 };

@@ -156,7 +156,7 @@ export default function HAL900MessageAnimation() {
                   scale: { type: "spring", stiffness: 220, damping: 18 },
                 },
               }}
-              exit={{ opacity: 0, y: -12, transition: { duration: 0.5 } }}
+              exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.3 } }}
               className="absolute left-0 right-0 bottom-0 flex gap-2 md:gap-3 items-start mb-2 md:mb-3 origin-bottom"
             >
               <div className="w-10 md:w-16 h-10 md:h-16 rounded-lg flex-shrink-0 bg-[#25D366]/20 flex items-center justify-center">

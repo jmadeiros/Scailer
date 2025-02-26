@@ -13,8 +13,8 @@ const HAL900ScaleWithPrecision = dynamic(
   { ssr: true }
 );
 
-const HAL900TailoredStrategies = dynamic(
-  () => import("@/components/HAL900-TailoredStrategies"),
+const HAL900FrameworkDiagram = dynamic(
+  () => import("@/components/HAL900-FrameworkDiagram"),
   { ssr: true }
 );
 
@@ -29,7 +29,7 @@ export default function Home() {
       <HAL900Header />
       <HAL900Hero />
       <HAL900ScaleWithPrecision />
-      <HAL900TailoredStrategies />
+      <HAL900FrameworkDiagram />
       <HAL900BookingInterface />
     </main>
   );

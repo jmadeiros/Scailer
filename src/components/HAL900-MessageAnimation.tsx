@@ -106,7 +106,7 @@ export default function HAL900MessageAnimation() {
   };
 
   return (
-    <div className="bg-scailer-dark rounded-xl p-3 md:p-6 border border-scailer-light/20">
+    <div className="bg-scailer-darker rounded-xl p-3 md:p-6 border border-scailer-light/20">
       <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
         <div className="w-5 md:w-8 h-5 md:h-8 rounded-full bg-[#25D366]/10 flex items-center justify-center">
           <motion.div

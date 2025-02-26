@@ -199,7 +199,7 @@ export default function HAL900AuditForm() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="bg-scailer-dark rounded-xl p-6 border border-scailer-light/20"
+        className="bg-scailer-darker rounded-xl p-6 border border-scailer-light/20"
       >
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-8 rounded-full bg-scailer-green/10 flex items-center justify-center">

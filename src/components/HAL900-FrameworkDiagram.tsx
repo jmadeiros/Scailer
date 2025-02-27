@@ -43,7 +43,7 @@ if (typeof document !== "undefined") {
 }
 
 const ColoredIcon = ({ icon: Icon, color }: { icon: any; color: string }) => {
-  return <Icon className={`w-10 h-10`} color={color} />
+  return <Icon className={`w-10 h-10 stroke-[1.5]`} color={color} />
 }
 
 const FeatureBox = ({
@@ -98,7 +98,7 @@ const FeatureBox = ({
                 transition={{ duration: 0.5 }}
               >
                 <div className="relative z-10">
-                  <Icon className="h-8 w-8" style={{ color }} />
+                  <Icon className="h-8 w-8 stroke-[1.5]" style={{ color }} />
                 </div>
               </motion.div>
             )}
@@ -119,7 +119,7 @@ const FeatureBox = ({
                 transition={{ duration: 0.5 }}
               >
                 <div className="relative z-10">
-                  <Icon className="h-8 w-8" style={{ color }} />
+                  <Icon className="h-8 w-8 stroke-[1.5]" style={{ color }} />
                 </div>
               </motion.div>
             )}
@@ -306,12 +306,20 @@ const HAL900FrameworkDiagram = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-48 max-w-5xl mx-auto"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Customisable, automated workflows to scale your ops.</h2>
-          <p className="text-white/80 max-w-2xl mx-auto">
-            Leverage our precision-engineered, intelligent automation frameworks to deliver your business at scale, without added infrastructure overhead.
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <span className="block">Customisable, automated workflows</span>
+            <span className="block">to scale your ops.</span>
+          </h2>
+          <div className="flex flex-col items-center space-y-1">
+            <p className="text-white/80 text-xl">
+              Leverage our precision-engineered, intelligent automation frameworks to deliver
+            </p>
+            <p className="text-white/80 text-xl">
+              your business at scale, without added infrastructure overhead.
+            </p>
+          </div>
         </motion.div>
 
         {/* Main diagram with icons and lines */}
@@ -392,7 +400,6 @@ const HAL900FrameworkDiagram = () => {
                       color={darkMode ? iconColors.dark[index] : iconColors.light[index]}
                     />
                   </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-6 bg-gradient-to-b from-white dark:from-gray-800 to-transparent" />
                 </div>
               ))}
             </div>

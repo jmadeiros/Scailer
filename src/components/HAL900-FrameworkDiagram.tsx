@@ -281,22 +281,22 @@ const HAL900FrameworkDiagram = () => {
 
   // Define the paths for desktop
   const desktopPaths = [
-    "M100 10 C 100 10, 300 405, 600 435",  // Database
-    "M300 10 C 300 10, 400 405, 600 435",  // Zap (Lightning)
-    "M500 10 C 500 10, 500 405, 600 435",  // Network
-    "M700 10 C 700 10, 700 405, 600 435",  // Shield
-    "M900 10 C 900 10, 800 405, 600 435",  // CPU
-    "M1100 10 C 1100 10, 900 405, 600 435" // Server
+    "M100 10 C 100 10, 250 405, 600 405",  // Database
+    "M300 10 C 300 10, 375 405, 600 405",  // Zap (Lightning)
+    "M500 10 C 500 10, 525 405, 600 405",  // Network
+    "M700 10 C 700 10, 675 405, 600 405",  // Shield
+    "M900 10 C 900 10, 825 405, 600 405",  // CPU
+    "M1100 10 C 1100 10, 950 405, 600 405" // Server
   ]
 
   // Define the paths for mobile (adjusted coordinates)
   const mobilePaths = [
-    "M32 32 C 32 32, 100 205, 192 235",    // Database
-    "M96 32 C 96 32, 130 205, 192 235",    // Zap (Lightning)
-    "M160 32 C 160 32, 160 205, 192 235",  // Network
-    "M224 32 C 224 32, 224 205, 192 235",  // Shield
-    "M288 32 C 288 32, 254 205, 192 235",  // CPU
-    "M352 32 C 352 32, 284 205, 192 235",  // Server
+    "M32 32 C 32 32, 100 205, 192 205",    // Database
+    "M96 32 C 96 32, 130 205, 192 205",    // Zap (Lightning)
+    "M160 32 C 160 32, 160 205, 192 205",  // Network
+    "M224 32 C 224 32, 224 205, 192 205",  // Shield
+    "M288 32 C 288 32, 254 205, 192 205",  // CPU
+    "M352 32 C 352 32, 284 205, 192 205"   // Server
   ]
 
   return (

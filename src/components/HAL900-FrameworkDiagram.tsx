@@ -281,22 +281,22 @@ const HAL900FrameworkDiagram = () => {
 
   // Define the paths for desktop
   const desktopPaths = [
-    "M150 10 C 150 10, 300 405, 600 435",
-    "M300 10 C 300 10, 400 405, 600 435",
-    "M450 10 C 450 10, 500 405, 600 435",
-    "M750 10 C 750 10, 700 405, 600 435",
-    "M900 10 C 900 10, 800 405, 600 435",
-    "M1050 10 C 1050 10, 900 405, 600 435"
+    "M100 10 C 100 10, 300 405, 600 435",  // Database
+    "M300 10 C 300 10, 400 405, 600 435",  // Zap (Lightning)
+    "M500 10 C 500 10, 500 405, 600 435",  // Network
+    "M700 10 C 700 10, 700 405, 600 435",  // Shield
+    "M900 10 C 900 10, 800 405, 600 435",  // CPU
+    "M1100 10 C 1100 10, 900 405, 600 435" // Server
   ]
 
   // Define the paths for mobile (adjusted coordinates)
   const mobilePaths = [
-    "M20 32 C 20 32, 100 205, 192 235",  // Leftmost path
-    "M84 32 C 84 32, 130 205, 192 235",  // Second path
-    "M148 32 C 148 32, 160 205, 192 235", // Third path
-    "M236 32 C 236 32, 224 205, 192 235", // Fourth path
-    "M300 32 C 300 32, 254 205, 192 235", // Fifth path
-    "M364 32 C 364 32, 284 205, 192 235", // Rightmost path
+    "M32 32 C 32 32, 100 205, 192 235",    // Database
+    "M96 32 C 96 32, 130 205, 192 235",    // Zap (Lightning)
+    "M160 32 C 160 32, 160 205, 192 235",  // Network
+    "M224 32 C 224 32, 224 205, 192 235",  // Shield
+    "M288 32 C 288 32, 254 205, 192 235",  // CPU
+    "M352 32 C 352 32, 284 205, 192 235",  // Server
   ]
 
   return (
@@ -435,8 +435,8 @@ const HAL900FrameworkDiagram = () => {
           </svg>
 
           {/* Icons at the same level with connection points */}
-          <div className="absolute top-0 inset-x-0 -mt-8 md:-mt-16">
-            <div className="flex justify-between items-center px-2 md:px-12">
+          <div className="absolute top-0 inset-x-0 mt-8 md:-mt-16">
+            <div className="flex justify-between items-center px-4 md:px-16">
               {features.map((feature, index) => (
                 <div
                   key={index}

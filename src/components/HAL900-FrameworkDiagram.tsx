@@ -29,7 +29,7 @@ const purpleDotKeyframes = `
       opacity: 1;
     }
     100% {
-      top: 470px;
+      top: 800px;
       opacity: 0;
     }
   }
@@ -408,17 +408,13 @@ const HAL900FrameworkDiagram = () => {
 
         {/* Timeline section with continuous line - adjusted positioning */}
         <div className="relative max-w-5xl mx-auto" style={{ minHeight: "800px" }}>
-          {/* Continuous vertical line that extends through the entire content */}
-          <div className="absolute left-1/2 top-[360px] bottom-0 w-px bg-[#eaeaea] dark:bg-gray-700 -translate-x-1/2 z-[1]" />
-
+          {/* Animated line - adjusted positioning */}
           <div className="relative pt-8" ref={timelineRef}>
-            {/* Animated line - adjusted positioning */}
             <motion.div
-              className="absolute left-1/2 top-[-125px] w-px -translate-x-1/2 origin-top"
+              className="absolute left-1/2 w-[1px] h-[950px] -top-[150px] origin-top"
               style={{
-                height: lineHeight,
-                backgroundColor: darkMode ? timelineColor.dark : timelineColor.light,
-                opacity: lineOpacity,
+                background: "rgba(255, 255, 255, 0.3)",
+                opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 0.4, 0.4, 0.3]),
               }}
             />
 
@@ -435,7 +431,7 @@ const HAL900FrameworkDiagram = () => {
                     animation: `streamDot 2s cubic-bezier(0.4, 0, 1, 1) infinite`,
                     animationDelay: `${i * 3}s`,
                     willChange: "top, opacity",
-                    top: "-275px",
+                    top: "-150px",
                   }}
                 >
                   <div

@@ -306,13 +306,13 @@ const HAL900FrameworkDiagram = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-24"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-12">
             <span className="block">Customisable, automated workflows</span>
             <span className="block">to scale your ops.</span>
           </h2>
-          <div className="flex flex-col items-center space-y-1">
+          <div className="flex flex-col items-center space-y-1 mt-8">
             <p className="text-white/80 text-xl">
               Leverage our precision-engineered, intelligent automation frameworks to deliver
             </p>

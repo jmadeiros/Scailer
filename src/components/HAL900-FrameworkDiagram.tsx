@@ -43,7 +43,7 @@ if (typeof document !== "undefined") {
 }
 
 const ColoredIcon = ({ icon: Icon, color }: { icon: any; color: string }) => {
-  return <Icon className={`w-10 h-10 stroke-[1.5]`} color={color} />
+  return <Icon className="w-4 h-4 md:w-10 md:h-10 stroke-[1.5]" color={color} />
 }
 
 const FeatureBox = ({
@@ -72,105 +72,103 @@ const FeatureBox = ({
       initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
       animate={{ opacity: isActive || isHovered ? 1 : 0.5, x: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`relative ${isLeft ? "text-right pr-12" : "pl-12"}`}
+      className={`relative ${isLeft ? "text-right md:pr-12 pr-6" : "md:pl-12 pl-6"}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div className="relative overflow-hidden" transition={{ duration: 0.3 }}>
-        <div className="relative">
-          <motion.div
-            className={`flex items-center gap-3 mb-3 ${isLeft ? "justify-end" : ""}`}
-            initial={{ y: 0 }}
-            animate={{ y: isHovered ? -2 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {!isLeft && (
-              <motion.div
-                className="relative"
-                animate={
-                  isHovered
-                    ? {
-                        scale: [1, 1.1, 1],
-                        rotate: [0, -5, 5, 0],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.5 }}
-              >
-                <div className="relative z-10">
-                  <Icon className="h-8 w-8 stroke-[1.5]" style={{ color }} />
-                </div>
-              </motion.div>
-            )}
-            <div>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">{label}</span>
-            </div>
-            {isLeft && (
-              <motion.div
-                className="relative"
-                animate={
-                  isHovered
-                    ? {
-                        scale: [1, 1.1, 1],
-                        rotate: [0, -5, 5, 0],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.5 }}
-              >
-                <div className="relative z-10">
-                  <Icon className="h-8 w-8 stroke-[1.5]" style={{ color }} />
-                </div>
-              </motion.div>
-            )}
-          </motion.div>
-
-          <motion.h3
-            className="text-lg font-semibold text-white mb-2"
-            initial={{ y: 0 }}
-            animate={{ y: isHovered ? -1 : 0 }}
-            transition={{ duration: 0.2, delay: 0.1 }}
-          >
-            {title}
-          </motion.h3>
-
-          <motion.p
-            className="text-gray-300 mb-4 text-sm leading-relaxed"
-            initial={{ y: 0 }}
-            animate={{ y: isHovered ? -1 : 0 }}
-            transition={{ duration: 0.2, delay: 0.2 }}
-          >
-            {description}
-          </motion.p>
-
-          <motion.div
-            initial={{ x: 0 }}
-            animate={{ x: isHovered ? (isLeft ? -3 : 3) : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Link
-              href="#"
-              className={`inline-flex items-center text-sm font-medium transition-colors relative group ${
-                isLeft ? "flex-row-reverse" : ""
-              }`}
-              style={{ color: isHovered ? color : "#6B7280" }}
+        <motion.div
+          className={`flex items-center gap-2 md:gap-3 mb-2 md:mb-3 ${isLeft ? "justify-end" : ""}`}
+          initial={{ y: 0 }}
+          animate={{ y: isHovered ? -2 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {!isLeft && (
+            <motion.div
+              className="relative"
+              animate={
+                isHovered
+                  ? {
+                      scale: [1, 1.1, 1],
+                      rotate: [0, -5, 5, 0],
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5 }}
             >
-              Learn more
-              <motion.div animate={isHovered ? { x: isLeft ? -5 : 5 } : { x: 0 }} transition={{ duration: 0.2 }}>
-                <ArrowRight className={`h-4 w-4 ${isLeft ? "mr-2" : "ml-2"}`} />
-              </motion.div>
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
-                style={{ backgroundColor: color }}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: isHovered ? 1 : 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </Link>
-          </motion.div>
-        </div>
+              <div className="relative z-10">
+                <Icon className="h-6 w-6 md:h-8 md:w-8 stroke-[1.5]" style={{ color }} />
+              </div>
+            </motion.div>
+          )}
+          <div>
+            <span className="text-[10px] md:text-xs font-medium text-gray-400 uppercase tracking-wider">{label}</span>
+          </div>
+          {isLeft && (
+            <motion.div
+              className="relative"
+              animate={
+                isHovered
+                  ? {
+                      scale: [1, 1.1, 1],
+                      rotate: [0, -5, 5, 0],
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5 }}
+            >
+              <div className="relative z-10">
+                <Icon className="h-6 w-6 md:h-8 md:w-8 stroke-[1.5]" style={{ color }} />
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+
+        <motion.h3
+          className="text-base md:text-lg font-semibold text-white mb-1 md:mb-2"
+          initial={{ y: 0 }}
+          animate={{ y: isHovered ? -1 : 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+        >
+          {title}
+        </motion.h3>
+
+        <motion.p
+          className="text-xs md:text-sm text-gray-300 mb-3 md:mb-4 leading-relaxed"
+          initial={{ y: 0 }}
+          animate={{ y: isHovered ? -1 : 0 }}
+          transition={{ duration: 0.2, delay: 0.2 }}
+        >
+          {description}
+        </motion.p>
+
+        <motion.div
+          initial={{ x: 0 }}
+          animate={{ x: isHovered ? (isLeft ? -3 : 3) : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Link
+            href="#"
+            className={`inline-flex items-center text-xs md:text-sm font-medium transition-colors relative group ${
+              isLeft ? "flex-row-reverse" : ""
+            }`}
+            style={{ color: isHovered ? color : "#6B7280" }}
+          >
+            Learn more
+            <motion.div animate={isHovered ? { x: isLeft ? -5 : 5 } : { x: 0 }} transition={{ duration: 0.2 }}>
+              <ArrowRight className={`h-3 w-3 md:h-4 md:w-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
+            </motion.div>
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
+              style={{ backgroundColor: color }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: isHovered ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          </Link>
+        </motion.div>
       </motion.div>
-      <div className="h-12" />
+      <div className="h-8 md:h-12" />
     </motion.div>
   )
 }
@@ -281,14 +279,24 @@ const HAL900FrameworkDiagram = () => {
     }
   }
 
-  // Define the paths
-  const paths = [
-    "M100 10 C 100 10, 250 505, 600 505",
-    "M300 10 C 300 10, 375 505, 600 505",
-    "M500 10 C 500 10, 525 505, 600 505",
-    "M700 10 C 700 10, 675 505, 600 505",
-    "M900 10 C 900 10, 825 505, 600 505",
-    "M1100 10 C 1100 10, 950 505, 600 505",
+  // Define the paths for desktop
+  const desktopPaths = [
+    "M150 10 C 150 10, 300 405, 600 435",
+    "M300 10 C 300 10, 400 405, 600 435",
+    "M450 10 C 450 10, 500 405, 600 435",
+    "M750 10 C 750 10, 700 405, 600 435",
+    "M900 10 C 900 10, 800 405, 600 435",
+    "M1050 10 C 1050 10, 900 405, 600 435"
+  ]
+
+  // Define the paths for mobile (adjusted coordinates)
+  const mobilePaths = [
+    "M20 32 C 20 32, 100 205, 192 235",  // Leftmost path
+    "M84 32 C 84 32, 130 205, 192 235",  // Second path
+    "M148 32 C 148 32, 160 205, 192 235", // Third path
+    "M236 32 C 236 32, 224 205, 192 235", // Fourth path
+    "M300 32 C 300 32, 254 205, 192 235", // Fifth path
+    "M364 32 C 364 32, 284 205, 192 235", // Rightmost path
   ]
 
   return (
@@ -306,84 +314,133 @@ const HAL900FrameworkDiagram = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-24"
+          className="text-center mb-12 md:mb-24"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-12">
             <span className="block">Customisable, automated workflows</span>
             <span className="block">to scale your ops.</span>
           </h2>
-          <div className="flex flex-col items-center space-y-1 mt-8">
-            <p className="text-white/80 text-xl">
+          <div className="flex flex-col items-center space-y-1 mt-4 md:mt-8">
+            <p className="text-white/80 text-lg md:text-xl px-4 md:px-0">
               Leverage our precision-engineered, intelligent automation frameworks to deliver
             </p>
-            <p className="text-white/80 text-xl">
+            <p className="text-white/80 text-lg md:text-xl px-4 md:px-0">
               your business at scale, without added infrastructure overhead.
             </p>
           </div>
         </motion.div>
 
         {/* Main diagram with icons and lines */}
-        <div className="relative w-full max-w-5xl mx-auto aspect-[16/9] z-10">
-          <svg viewBox="0 0 1200 675" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="relative w-full max-w-sm mx-auto z-10 md:max-w-5xl">
+          {/* Mobile SVG */}
+          <svg viewBox="0 0 384 275" className="block md:hidden w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              {paths.map((d, i) => (
-                <path key={i} id={`path-${i}`} d={d} />
+              {mobilePaths.map((d, i) => (
+                <path key={i} id={`path-mobile-${i}`} d={d} />
               ))}
             </defs>
 
             {/* Curved paths with smooth convergence */}
-            {paths.map((d, i) => (
-              <use key={i} href={`#path-${i}`} stroke={darkMode ? iconColors.dark[i] : iconColors.light[i]} strokeWidth="3" />
+            {mobilePaths.map((d, i) => (
+              <path
+                key={i}
+                d={d}
+                stroke={darkMode ? iconColors.dark[i] : iconColors.light[i]}
+                strokeWidth="2"
+                fill="none"
+              />
             ))}
 
-            {/* Connection circles at the bottom of each icon */}
-            {[100, 300, 500, 700, 900, 1100].map((cx, i) => (
-              <circle key={i} cx={cx} cy="10" r="3" fill={darkMode ? iconColors.dark[i] : iconColors.light[i]} />
-            ))}
-
-            {/* Streaming dots for each path */}
-            {paths.map((_, i) =>
-              [...Array(3)].map((_, dotIndex) => (
-                <circle key={`${i}-${dotIndex}`} r="4" fill={darkMode ? iconColors.dark[i] : iconColors.light[i]}>
-                  <animateMotion dur="3s" repeatCount="indefinite" begin={`${dotIndex * 1}s`}>
-                    <mpath href={`#path-${i}`} />
+            {/* Animated dots for each path */}
+            {mobilePaths.map((_, i) => (
+              [...Array(2)].map((__, dotIndex) => (
+                <circle
+                  key={`${i}-${dotIndex}`}
+                  r="3"
+                  fill={darkMode ? iconColors.dark[i] : iconColors.light[i]}
+                >
+                  <animateMotion
+                    dur="3s"
+                    repeatCount="indefinite"
+                    begin={`${dotIndex * 1.5}s`}
+                  >
+                    <mpath href={`#path-mobile-${i}`} />
                   </animateMotion>
                 </circle>
-              )),
-            )}
+              ))
+            ))}
 
-            {/* Our Services button */}
-            <g transform="translate(500, 485)" style={{ cursor: "pointer" }} onClick={scrollToTimeline}>
-              <rect
-                x="0"
-                y="0"
-                width="200"
-                height="56"
-                rx="28"
-                fill={darkMode ? "#4ADE80" : "#22C55E"}
-                className="hover:fill-green-600 dark:hover:fill-green-500 transition-colors"
+            {/* Explore Services Button */}
+            <g transform="translate(192, 235)">
+              <motion.g whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <circle r="24" className="fill-scailer-green cursor-pointer" onClick={() => scrollToTimeline()} />
+                <foreignObject x="-12" y="-12" width="24" height="24" className="overflow-visible">
+                  <div className="flex items-center justify-center w-full h-full text-black">
+                    <ArrowRight className="w-5 h-5 rotate-90" />
+                  </div>
+                </foreignObject>
+              </motion.g>
+            </g>
+          </svg>
+
+          {/* Desktop SVG */}
+          <svg viewBox="0 0 1200 500" className="hidden md:block w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              {desktopPaths.map((d, i) => (
+                <path key={i} id={`path-desktop-${i}`} d={d} />
+              ))}
+            </defs>
+
+            {/* Curved paths with smooth convergence */}
+            {desktopPaths.map((d, i) => (
+              <path
+                key={i}
+                d={d}
+                stroke={darkMode ? iconColors.dark[i] : iconColors.light[i]}
+                strokeWidth="2"
+                fill="none"
               />
-              <text
-                x="100"
-                y="36"
-                textAnchor="middle"
-                fill="white"
-                fontSize="20"
-                fontFamily="Inter, sans-serif"
-                className="font-medium pointer-events-none"
-              >
-                Explore Services
-              </text>
+            ))}
+
+            {/* Animated dots for each path */}
+            {desktopPaths.map((_, i) => (
+              [...Array(2)].map((__, dotIndex) => (
+                <circle
+                  key={`${i}-${dotIndex}`}
+                  r="4"
+                  fill={darkMode ? iconColors.dark[i] : iconColors.light[i]}
+                >
+                  <animateMotion
+                    dur="4s"
+                    repeatCount="indefinite"
+                    begin={`${dotIndex * 1.5}s`}
+                  >
+                    <mpath href={`#path-desktop-${i}`} />
+                  </animateMotion>
+                </circle>
+              ))
+            ))}
+
+            {/* Explore Services Button */}
+            <g transform="translate(600, 435)">
+              <motion.g whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <circle r="32" className="fill-scailer-green cursor-pointer" onClick={() => scrollToTimeline()} />
+                <foreignObject x="-16" y="-16" width="32" height="32" className="overflow-visible">
+                  <div className="flex items-center justify-center w-full h-full text-black">
+                    <ArrowRight className="w-6 h-6 rotate-90" />
+                  </div>
+                </foreignObject>
+              </motion.g>
             </g>
           </svg>
 
           {/* Icons at the same level with connection points */}
-          <div className="absolute top-[10px] transform -translate-y-1/2 inset-x-0">
-            <div className="flex justify-between items-center px-12">
+          <div className="absolute top-0 inset-x-0 -mt-8 md:-mt-16">
+            <div className="flex justify-between items-center px-2 md:px-12">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="relative"
+                  className="relative flex flex-col items-center"
                   onClick={() => scrollToFeature(index)}
                   role="button"
                   tabIndex={0}
@@ -394,7 +451,7 @@ const HAL900FrameworkDiagram = () => {
                     }
                   }}
                 >
-                  <div className="w-20 h-20 rounded-full bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 flex items-center justify-center cursor-pointer transition-transform hover:scale-110">
+                  <div className="w-8 h-8 md:w-20 md:h-20 rounded-full bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 flex items-center justify-center cursor-pointer transition-transform hover:scale-110">
                     <ColoredIcon
                       icon={feature.icon}
                       color={darkMode ? iconColors.dark[index] : iconColors.light[index]}

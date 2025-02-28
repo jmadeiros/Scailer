@@ -26,7 +26,7 @@ export default function HAL900ScaleWithPrecision() {
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white">Scale with Precision</h2>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 gap-4 md:gap-12 items-start max-w-5xl mx-auto">
           <div className="w-full">
             <HAL900AuditForm />
           </div>

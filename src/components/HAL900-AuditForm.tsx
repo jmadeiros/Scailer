@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { useState, useEffect } from "react"
 import { Check, Loader2, User, AlertCircle, ArrowRight, TrendingUp, Users, Target, Zap, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -87,7 +87,7 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
             className="p-3"
           >
             <motion.div
-              className="flex gap-3"
+              className="flex gap-2 md:gap-3"
               animate={
                 animationTriggered
                   ? {
@@ -99,16 +99,22 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
               }
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <motion.div className="w-8 h-8 rounded-lg bg-scailer-green/20 flex items-center justify-center">
-                {messages[currentIndex].icon}
+              <motion.div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-scailer-green/20 flex items-center justify-center">
+                {messages.map((message, idx) => (
+                  <div key={idx} className={currentIndex === idx ? "block" : "hidden"}>
+                    {React.cloneElement(message.icon as React.ReactElement, {
+                      className: "w-3 h-3 md:w-5 md:h-5"
+                    })}
+                  </div>
+                ))}
               </motion.div>
               <motion.div className="flex-1">
-                <p className="text-white text-xs mb-2 leading-relaxed">{messages[currentIndex].text}</p>
-                <div className="flex gap-2">
+                <p className="text-[9px] md:text-sm text-white mb-1.5 md:mb-2 leading-[1.4] md:leading-relaxed">{messages[currentIndex].text}</p>
+                <div className="flex gap-1.5 md:gap-2">
                   {messages[currentIndex].metrics.map((metric) => (
                     <span
                       key={metric}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-scailer-green/20 text-scailer-green font-medium"
+                      className="inline-flex items-center px-1.5 md:px-2 py-0.5 rounded-full text-[8px] md:text-xs bg-scailer-green/20 text-scailer-green font-medium"
                     >
                       {metric}
                     </span>
@@ -238,20 +244,20 @@ export default function HAL900AuditForm() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="bg-scailer-light rounded-xl p-6 border border-scailer-light/20"
+        className="bg-scailer-light rounded-xl p-3 md:p-6 border border-scailer-light/20"
       >
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-8 h-8 rounded-full bg-scailer-green/10 flex items-center justify-center">
-            <User className="w-4 h-4 text-scailer-green" />
+        <div className="flex items-center gap-1.5 md:gap-3 mb-1 md:mb-2">
+          <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-scailer-green/10 flex items-center justify-center">
+            <User className="w-2.5 h-2.5 md:w-4 md:h-4 text-scailer-green" />
           </div>
           <div>
-            <h2 className="text-white font-medium">Get Your Free Growth Roadmap</h2>
-            <p className="text-sm text-gray-400">Tailored strategies for rapid, sustainable growth</p>
+            <h2 className="text-xs md:text-base text-white font-medium">Get Your Free Growth Roadmap</h2>
+            <p className="text-[10px] md:text-sm text-gray-400">Tailored strategies for rapid, sustainable growth</p>
           </div>
         </div>
 
-        <div className="mt-6 mb-4">
-          <div className="h-1.5 w-full bg-scailer-light rounded-full overflow-hidden">
+        <div className="mt-3 md:mt-6 mb-2 md:mb-4">
+          <div className="h-0.5 md:h-1.5 w-full bg-scailer-light rounded-full overflow-hidden">
             <div
               className="h-full bg-scailer-green rounded-full transition-all duration-300"
               style={{
@@ -261,8 +267,8 @@ export default function HAL900AuditForm() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2 md:space-y-4">
+          <div className="space-y-2 md:space-y-4">
             <div className="relative">
               <Input
                 type="text"
@@ -274,7 +280,7 @@ export default function HAL900AuditForm() {
                   }
                 }}
                 className={cn(
-                  "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-1 md:py-2 text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200",
                   "[&:-webkit-autofill]:bg-[#2a2a2a]",
@@ -290,11 +296,11 @@ export default function HAL900AuditForm() {
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
               {formData.name && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <div className="absolute right-1.5 md:right-3 top-1/2 -translate-y-1/2">
                   {validation.name.isValid ? (
-                    <Check className="h-4 w-4 text-scailer-green" />
+                    <Check className="h-2.5 w-2.5 md:h-4 md:w-4 text-scailer-green" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 text-red-400" />
+                    <AlertCircle className="h-2.5 w-2.5 md:h-4 md:w-4 text-red-400" />
                   )}
                 </div>
               )}
@@ -311,7 +317,7 @@ export default function HAL900AuditForm() {
                   }
                 }}
                 className={cn(
-                  "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-1 md:py-2 text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200",
                   "[&:-webkit-autofill]:bg-[#2a2a2a]",
@@ -327,11 +333,11 @@ export default function HAL900AuditForm() {
                 onChange={(e) => handleInputChange("companyName", e.target.value)}
               />
               {formData.companyName && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <div className="absolute right-1.5 md:right-3 top-1/2 -translate-y-1/2">
                   {validation.companyName.isValid ? (
-                    <Check className="h-4 w-4 text-scailer-green" />
+                    <Check className="h-2.5 w-2.5 md:h-4 md:w-4 text-scailer-green" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 text-red-400" />
+                    <AlertCircle className="h-2.5 w-2.5 md:h-4 md:w-4 text-red-400" />
                   )}
                 </div>
               )}
@@ -343,13 +349,12 @@ export default function HAL900AuditForm() {
                 placeholder="Enter your email"
                 onKeyPress={(e) => {
                   const key = e.key;
-                  // Allow letters, numbers, @, ., _, -, and +
                   if (!/^[A-Za-z0-9@._+-]$/.test(key)) {
                     e.preventDefault();
                   }
                 }}
                 className={cn(
-                  "w-full pl-3 pr-9 py-2 bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-1 md:py-2 text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200",
                   "[&:-webkit-autofill]:bg-[#2a2a2a]",
@@ -365,43 +370,45 @@ export default function HAL900AuditForm() {
                 onChange={(e) => handleInputChange("email", e.target.value)}
               />
               {formData.email && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <div className="absolute right-1.5 md:right-3 top-1/2 -translate-y-1/2">
                   {validation.email.isValid ? (
-                    <Check className="h-4 w-4 text-scailer-green" />
+                    <Check className="h-2.5 w-2.5 md:h-4 md:w-4 text-scailer-green" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 text-red-400" />
+                    <AlertCircle className="h-2.5 w-2.5 md:h-4 md:w-4 text-red-400" />
                   )}
                 </div>
               )}
             </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-1 md:pt-2">
             <Button
               type="submit"
               disabled={!isFormValid || loading}
               className={cn(
-                "w-full py-2 text-white font-medium",
+                "w-full py-1 md:py-2 text-[11px] md:text-sm text-white font-medium",
                 isFormValid ? "bg-scailer-green hover:bg-[#128C7E]" : "bg-[#2a2a2a]",
                 "disabled:text-white/30 disabled:cursor-not-allowed transition-all duration-200 rounded-lg"
               )}
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-1 md:mr-2 h-2.5 w-2.5 md:h-4 md:w-4 animate-spin" />
                   Creating your roadmap...
                 </>
               ) : (
-                <div className="flex items-center justify-center gap-2">
-                  Get Your Free Growth Roadmap
-                  <ArrowRight className="w-4 h-4" />
+                <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <span className="hidden md:inline">Get Your Free Growth Roadmap</span>
+                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                 </div>
               )}
             </Button>
           </div>
         </form>
 
-        <MessageFeed animationTriggered={animationTriggered} />
+        <div className="hidden md:block">
+          <MessageFeed animationTriggered={animationTriggered} />
+        </div>
       </motion.div>
     </div>
   )

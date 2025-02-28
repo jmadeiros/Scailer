@@ -417,7 +417,6 @@ const HAL900FrameworkDiagram = () => {
                   <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer transition-transform hover:scale-110">
                     <ColoredIcon icon={Icon} color={iconColors[index]} />
                   </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-6 bg-gradient-to-b from-white to-transparent" />
                 </div>
               ))}
             </div>

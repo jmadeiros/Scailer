@@ -228,27 +228,39 @@ const HAL900FrameworkDiagram = () => {
   const features = [
     {
       icon: Database,
-      label: "Vercel Data Cache",
-      title: "Total control.",
-      description: "Regenerate pages or cache function responses on demand, improving performance and reducing costs.",
-    },
-    {
-      icon: Network,
-      label: "Vercel Edge Network",
-      title: "Accelerate your delivery.",
-      description: "Every request travels through private fiber to the nearest region, ensuring optimal performance.",
+      label: "AI-DRIVEN LEAD ACQUISITION",
+      title: "Smart Lead Targeting",
+      description: "Uncover high-value leads with AI-powered data scraping and predictive targeting.",
     },
     {
       icon: Zap,
-      label: "Vercel Functions",
-      title: "Servers made simple.",
-      description: "We deploy and optimize the necessary compute for any scale, replicated across 18 regions.",
+      label: "PROCESS AUTOMATION",
+      title: "Supercharge Your Workflow",
+      description: "Streamline tasks, boost efficiency, and enhance customer interactions with smart automation.",
+    },
+    {
+      icon: Network,
+      label: "MARKETING OPTIMISATION",
+      title: "Precision Marketing",
+      description: "Elevate campaigns with AI-driven targeting, content creation, and predictive analytics.",
     },
     {
       icon: Shield,
-      label: "Vercel Firewall",
-      title: "Edge-localized protection.",
-      description: "L3/L4 protection at every edge location. Your site stays protected without adding latency.",
+      label: "CUSTOMER RETENTION SYSTEMS",
+      title: "Loyalty on Autopilot",
+      description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
+    },
+    {
+      icon: Cpu,
+      label: "AI-POWERED HIRING & OPTIMISATION",
+      title: "Build Your Dream Team",
+      description: "Streamline hiring and workforce management with AI-powered sourcing and optimization.",
+    },
+    {
+      icon: Server,
+      label: "WEBSITE DESIGN",
+      title: "Websites That Convert",
+      description: "Create high-performance, SEO-friendly sites optimized for conversions and user experience.",
     },
   ]
 

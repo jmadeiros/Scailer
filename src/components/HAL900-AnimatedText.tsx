@@ -111,7 +111,7 @@ export default function HAL900AnimatedText({ startAnimation }: AnimatedTextProps
       className="max-w-4xl mx-auto px-4 text-center mt-24"
     >
       <div className="min-h-[180px] flex flex-col items-center justify-center max-w-[95%] mx-auto">
-        <p className="text-[26px] text-white leading-[1.7] tracking-[-0.01em] font-normal mb-10">
+        <p className="text-lg md:text-[26px] text-white leading-[1.7] tracking-[-0.01em] font-normal mb-10">
           {sections.map((section, sectionIndex) => (
             <span key={sectionIndex}>
               {section.map((word, wordIndex) => (

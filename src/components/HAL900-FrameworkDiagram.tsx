@@ -4,6 +4,7 @@ import { Database, Cloud, Zap, Network, Cpu, Server, Shield, ArrowRight } from "
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
+import { cn } from "@/lib/utils"
 
 const iconColors = ["#9CA3AF", "#0EA5E9", "#22C55E", "#EF4444", "#EC4899", "#F59E0B"]
 const timelineColor = "#8B5CF6"
@@ -28,15 +29,48 @@ const purpleDotKeyframes = `
   }
 `
 
-// Add all keyframes to the document
+const mobileStyles = `
+  @media (max-width: 768px) {
+    .w-6 {
+      width: 1.5rem;
+    }
+    .h-6 {
+      height: 1.5rem;
+    }
+    .w-4 {
+      width: 1rem;
+    }
+    .h-4 {
+      height: 1rem;
+    }
+    .mobile-icon-adjust {
+      transform: translateX(0);
+      transition: transform 0.3s ease-in-out;
+    }
+    .mobile-icon-adjust:nth-child(2) {
+      transform: translateX(25%);
+    }
+    .mobile-icon-adjust:nth-child(3) {
+      transform: translateX(15%);
+    }
+    .mobile-icon-adjust:nth-child(4) {
+      transform: translateX(-5%);
+    }
+    .mobile-icon-adjust:nth-child(5) {
+      transform: translateX(-15%);
+    }
+  }
+`
+
+// Add all keyframes to document
 if (typeof document !== "undefined") {
   const style = document.createElement("style")
-  style.textContent = purpleDotKeyframes
+  style.textContent = purpleDotKeyframes + mobileStyles
   document.head.appendChild(style)
 }
 
 const ColoredIcon = ({ icon: Icon, color }: { icon: any; color: string }) => {
-  return <Icon className={`w-10 h-10 text-white`} />
+  return <Icon className="w-4 h-4 md:w-10 md:h-10" color={color} />
 }
 
 const FeatureBox = ({
@@ -166,50 +200,22 @@ const FeatureBox = ({
   )
 }
 
-const HAL900FrameworkDiagram = () => {
-  const features = [
-    {
-      icon: Database,
-      label: "ai-driven lead acquisition",
-      title: "Smart Lead Targeting",
-      description: "Uncover high-value leads with AI-powered data scraping and predictive targeting.",
-    },
-    {
-      icon: Zap,
-      label: "process automation",
-      title: "Supercharge Your Workflow",
-      description: "Streamline tasks, boost efficiency, and enhance customer interactions with smart automation.",
-    },
-    {
-      icon: Network,
-      label: "marketing optimisation",
-      title: "Precision Marketing",
-      description: "Elevate campaigns with AI-driven targeting, content creation, and predictive analytics.",
-    },
-    {
-      icon: Shield,
-      label: "customer retention systems",
-      title: "Loyalty on Autopilot",
-      description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
-    },
-    {
-      icon: Cpu,
-      label: "ai-powered hiring & optimisation",
-      title: "Build Your Dream Team",
-      description: "Streamline hiring and workforce management with AI-powered sourcing and optimization.",
-    },
-    {
-      icon: Server,
-      label: "website design",
-      title: "Websites That Convert",
-      description: "Create high-performance, SEO-friendly sites optimized for conversions and user experience.",
-    },
-  ]
+// Define the paths
+const paths = [
+  "M100 10 C 100 10, 250 505, 600 505",
+  "M300 10 C 300 10, 375 505, 600 505",
+  "M500 10 C 500 10, 525 505, 600 505",
+  "M700 10 C 700 10, 675 505, 600 505",
+  "M900 10 C 900 10, 825 505, 600 505",
+  "M1100 10 C 1100 10, 950 505, 600 505",
+]
 
+const HAL900FrameworkDiagram = () => {
   const containerRef = useRef(null)
   const timelineRef = useRef(null)
   const [activeFeature, setActiveFeature] = useState(0)
   const featureRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [isMounted, setIsMounted] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -219,6 +225,33 @@ const HAL900FrameworkDiagram = () => {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
   const lineOpacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.1, 0.15, 0.15, 0.1])
 
+  const features = [
+    {
+      icon: Database,
+      label: "Vercel Data Cache",
+      title: "Total control.",
+      description: "Regenerate pages or cache function responses on demand, improving performance and reducing costs.",
+    },
+    {
+      icon: Network,
+      label: "Vercel Edge Network",
+      title: "Accelerate your delivery.",
+      description: "Every request travels through private fiber to the nearest region, ensuring optimal performance.",
+    },
+    {
+      icon: Zap,
+      label: "Vercel Functions",
+      title: "Servers made simple.",
+      description: "We deploy and optimize the necessary compute for any scale, replicated across 18 regions.",
+    },
+    {
+      icon: Shield,
+      label: "Vercel Firewall",
+      title: "Edge-localized protection.",
+      description: "L3/L4 protection at every edge location. Your site stays protected without adding latency.",
+    },
+  ]
+
   useEffect(() => {
     const unsubscribe = scrollYProgress.onChange((latest) => {
       const featureIndex = Math.min(Math.floor(latest * features.length), features.length - 1)
@@ -227,6 +260,10 @@ const HAL900FrameworkDiagram = () => {
 
     return () => unsubscribe()
   }, [scrollYProgress, features.length])
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const scrollToTimeline = () => {
     if (timelineRef.current) {
@@ -245,7 +282,7 @@ const HAL900FrameworkDiagram = () => {
   const scrollToFeature = (index: number) => {
     const featureElement = featureRefs.current[index]
     if (featureElement) {
-      const offset = 100 // Adjust this value to fine-tune the scroll position
+      const offset = 100
       const elementPosition = featureElement.getBoundingClientRect().top + window.pageYOffset
       const offsetPosition = elementPosition - offset
 
@@ -256,15 +293,21 @@ const HAL900FrameworkDiagram = () => {
     }
   }
 
-  // Define the paths
-  const paths = [
-    "M100 10 C 100 10, 250 505, 600 505",
-    "M300 10 C 300 10, 375 505, 600 505",
-    "M500 10 C 500 10, 525 505, 600 505",
-    "M700 10 C 700 10, 675 505, 600 505",
-    "M900 10 C 900 10, 825 505, 600 505",
-    "M1100 10 C 1100 10, 950 505, 600 505",
-  ]
+  useEffect(() => {
+    // Debug logging for container and SVG dimensions
+    const container = document.querySelector('.max-w-sm');
+    const svg = container?.querySelector('svg');
+    const iconContainer = container?.querySelector('.flex.justify-between');
+    
+    if (container && svg && iconContainer) {
+      console.log('Container width:', container.clientWidth);
+      console.log('SVG width:', svg.clientWidth);
+      console.log('SVG viewBox:', svg.getAttribute('viewBox'));
+      console.log('Icon container width:', iconContainer.clientWidth);
+      console.log('Icon container offset:', iconContainer.getBoundingClientRect().x);
+      console.log('Visible viewport width:', window.innerWidth);
+    }
+  }, []);
 
   return (
     <section className="py-24 md:py-32 bg-scailer-dark relative">
@@ -291,8 +334,14 @@ const HAL900FrameworkDiagram = () => {
         </motion.div>
 
         {/* Main diagram with icons and lines */}
-        <div className="relative w-full max-w-sm mx-auto z-10 md:max-w-5xl">
-          <svg viewBox="0 0 1200 675" className="w-full h-full scale-75 md:scale-100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="relative w-full aspect-[16/9] max-w-sm mx-auto z-10 md:max-w-5xl">
+          <svg
+            viewBox="0 0 1200 675"
+            className="w-full h-full"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid meet"
+          >
             <defs>
               {paths.map((d, i) => (
                 <path key={i} id={`path-${i}`} d={d} />
@@ -321,7 +370,7 @@ const HAL900FrameworkDiagram = () => {
             )}
 
             {/* Our Services button */}
-            <g transform="translate(500, 485)" style={{ cursor: "pointer" }} onClick={() => scrollToTimeline()}>
+            <g transform="translate(500, 485)" style={{ cursor: "pointer" }} onClick={scrollToTimeline}>
               <rect
                 x="0"
                 y="0"
@@ -347,11 +396,14 @@ const HAL900FrameworkDiagram = () => {
 
           {/* Icons at the same level with connection points */}
           <div className="absolute top-[10px] transform -translate-y-1/2 inset-x-0">
-            <div className="flex justify-between items-center px-2 md:px-12 max-w-sm mx-auto md:max-w-none">
+            <div className="flex justify-between items-center px-4 md:px-12">
               {[Database, Cloud, Zap, Network, Cpu, Server].map((Icon, index) => (
                 <div
                   key={index}
-                  className="relative"
+                  className={cn(
+                    "relative",
+                    index === 1 || index === 2 || index === 3 || index === 4 ? "mobile-icon-adjust" : ""
+                  )}
                   onClick={() => scrollToFeature(index)}
                   role="button"
                   tabIndex={0}
@@ -362,10 +414,10 @@ const HAL900FrameworkDiagram = () => {
                     }
                   }}
                 >
-                  <div className="w-8 h-8 md:w-20 md:h-20 rounded-full bg-scailer-light shadow-md flex items-center justify-center cursor-pointer transition-transform hover:scale-110 hover:bg-scailer-light/80">
-                    <Icon className="w-4 h-4 md:w-10 md:h-10 text-white" />
+                  <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer transition-transform hover:scale-110">
+                    <ColoredIcon icon={Icon} color={iconColors[index]} />
                   </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-0.5 md:w-1 h-3 md:h-6 bg-gradient-to-b from-scailer-light to-transparent" />
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-6 bg-gradient-to-b from-white to-transparent" />
                 </div>
               ))}
             </div>

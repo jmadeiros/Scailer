@@ -1,19 +1,12 @@
 "use client"
 
-import { Database, Zap, Network, Cpu, Server, Shield, ArrowRight, Moon, Sun } from "lucide-react"
+import { Database, Cloud, Zap, Network, Cpu, Server, Shield, ArrowRight } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
 
-const iconColors = {
-  light: ["#22C55E", "#0EA5E9", "#F59E0B", "#EC4899", "#8B5CF6", "#EF4444"],
-  dark: ["#4ADE80", "#38BDF8", "#FBBF24", "#F472B6", "#A78BFA", "#FB7185"],
-}
-
-const timelineColor = {
-  light: "#22C55E",
-  dark: "#4ADE80",
-}
+const iconColors = ["#9CA3AF", "#0EA5E9", "#22C55E", "#EF4444", "#EC4899", "#F59E0B"]
+const timelineColor = "#8B5CF6"
 
 // Add the purple dot keyframes
 const purpleDotKeyframes = `
@@ -29,7 +22,7 @@ const purpleDotKeyframes = `
       opacity: 1;
     }
     100% {
-      top: 800px;
+      top: 470px;
       opacity: 0;
     }
   }
@@ -43,7 +36,7 @@ if (typeof document !== "undefined") {
 }
 
 const ColoredIcon = ({ icon: Icon, color }: { icon: any; color: string }) => {
-  return <Icon className="w-4 h-4 md:w-10 md:h-10 stroke-[1.5]" color={color} />
+  return <Icon className={`w-10 h-10 text-white`} />
 }
 
 const FeatureBox = ({
@@ -174,22 +167,6 @@ const FeatureBox = ({
 }
 
 const HAL900FrameworkDiagram = () => {
-  const [darkMode, setDarkMode] = useState(true)
-
-  useEffect(() => {
-    const isDarkMode = localStorage.getItem("darkMode") === "true"
-    setDarkMode(isDarkMode)
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark")
-    }
-  }, [])
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-    localStorage.setItem("darkMode", (!darkMode).toString())
-    document.documentElement.classList.toggle("dark")
-  }
-
   const features = [
     {
       icon: Database,
@@ -279,36 +256,19 @@ const HAL900FrameworkDiagram = () => {
     }
   }
 
-  // Define the paths for desktop
-  const desktopPaths = [
-    "M100 10 C 100 10, 250 405, 600 405",  // Database
-    "M300 10 C 300 10, 375 405, 600 405",  // Zap (Lightning)
-    "M500 10 C 500 10, 525 405, 600 405",  // Network
-    "M700 10 C 700 10, 675 405, 600 405",  // Shield
-    "M900 10 C 900 10, 825 405, 600 405",  // CPU
-    "M1100 10 C 1100 10, 950 405, 600 405" // Server
-  ]
-
-  // Define the paths for mobile (adjusted coordinates)
-  const mobilePaths = [
-    "M32 32 C 32 32, 100 205, 192 205",    // Database
-    "M96 32 C 96 32, 130 205, 192 205",    // Zap (Lightning)
-    "M160 32 C 160 32, 160 205, 192 205",  // Network
-    "M224 32 C 224 32, 224 205, 192 205",  // Shield
-    "M288 32 C 288 32, 254 205, 192 205",  // CPU
-    "M352 32 C 352 32, 284 205, 192 205"   // Server
+  // Define the paths
+  const paths = [
+    "M100 10 C 100 10, 250 505, 600 505",
+    "M300 10 C 300 10, 375 505, 600 505",
+    "M500 10 C 500 10, 525 505, 600 505",
+    "M700 10 C 700 10, 675 505, 600 505",
+    "M900 10 C 900 10, 825 505, 600 505",
+    "M1100 10 C 1100 10, 950 505, 600 505",
   ]
 
   return (
     <section className="py-24 md:py-32 bg-scailer-dark relative">
       <div className="container mx-auto px-4">
-        <button
-          onClick={toggleDarkMode}
-          className="fixed top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300"
-        >
-          {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-        </button>
-
         {/* Title Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -332,131 +292,80 @@ const HAL900FrameworkDiagram = () => {
 
         {/* Main diagram with icons and lines */}
         <div className="relative w-full max-w-sm mx-auto z-10 md:max-w-5xl">
-          {/* Mobile SVG */}
-          <svg viewBox="0 0 384 275" className="block md:hidden w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 1200 675" className="w-full h-full scale-75 md:scale-100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              {mobilePaths.map((d, i) => (
-                <path key={i} id={`path-mobile-${i}`} d={d} />
+              {paths.map((d, i) => (
+                <path key={i} id={`path-${i}`} d={d} />
               ))}
             </defs>
 
             {/* Curved paths with smooth convergence */}
-            {mobilePaths.map((d, i) => (
-              <path
-                key={i}
-                d={d}
-                stroke={darkMode ? iconColors.dark[i] : iconColors.light[i]}
-                strokeWidth="2"
-                fill="none"
-              />
+            {paths.map((d, i) => (
+              <use key={i} href={`#path-${i}`} stroke={iconColors[i]} strokeWidth="3" />
             ))}
 
-            {/* Animated dots for each path */}
-            {mobilePaths.map((_, i) => (
-              [...Array(2)].map((__, dotIndex) => (
-                <circle
-                  key={`${i}-${dotIndex}`}
-                  r="3"
-                  fill={darkMode ? iconColors.dark[i] : iconColors.light[i]}
-                >
-                  <animateMotion
-                    dur="3s"
-                    repeatCount="indefinite"
-                    begin={`${dotIndex * 1.5}s`}
-                  >
-                    <mpath href={`#path-mobile-${i}`} />
+            {/* Connection circles at the bottom of each icon */}
+            {[100, 300, 500, 700, 900, 1100].map((cx, i) => (
+              <circle key={i} cx={cx} cy="10" r="3" fill={iconColors[i]} />
+            ))}
+
+            {/* Streaming dots for each path */}
+            {paths.map((_, i) =>
+              [...Array(3)].map((_, dotIndex) => (
+                <circle key={`${i}-${dotIndex}`} r="4" fill={iconColors[i]}>
+                  <animateMotion dur="3s" repeatCount="indefinite" begin={`${dotIndex * 1}s`}>
+                    <mpath href={`#path-${i}`} />
                   </animateMotion>
                 </circle>
               ))
-            ))}
+            )}
 
-            {/* Explore Services Button */}
-            <g transform="translate(192, 235)">
-              <motion.g whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <circle r="24" className="fill-scailer-green cursor-pointer" onClick={() => scrollToTimeline()} />
-                <foreignObject x="-12" y="-12" width="24" height="24" className="overflow-visible">
-                  <div className="flex items-center justify-center w-full h-full text-black">
-                    <ArrowRight className="w-5 h-5 rotate-90" />
-                  </div>
-                </foreignObject>
-              </motion.g>
-            </g>
-          </svg>
-
-          {/* Desktop SVG */}
-          <svg viewBox="0 0 1200 500" className="hidden md:block w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              {desktopPaths.map((d, i) => (
-                <path key={i} id={`path-desktop-${i}`} d={d} />
-              ))}
-            </defs>
-
-            {/* Curved paths with smooth convergence */}
-            {desktopPaths.map((d, i) => (
-              <path
-                key={i}
-                d={d}
-                stroke={darkMode ? iconColors.dark[i] : iconColors.light[i]}
-                strokeWidth="2"
-                fill="none"
+            {/* Our Services button */}
+            <g transform="translate(500, 485)" style={{ cursor: "pointer" }} onClick={() => scrollToTimeline()}>
+              <rect
+                x="0"
+                y="0"
+                width="200"
+                height="56"
+                rx="28"
+                fill="#1a1a1a"
+                className="hover:fill-scailer-light transition-colors"
               />
-            ))}
-
-            {/* Animated dots for each path */}
-            {desktopPaths.map((_, i) => (
-              [...Array(2)].map((__, dotIndex) => (
-                <circle
-                  key={`${i}-${dotIndex}`}
-                  r="4"
-                  fill={darkMode ? iconColors.dark[i] : iconColors.light[i]}
-                >
-                  <animateMotion
-                    dur="4s"
-                    repeatCount="indefinite"
-                    begin={`${dotIndex * 1.5}s`}
-                  >
-                    <mpath href={`#path-desktop-${i}`} />
-                  </animateMotion>
-                </circle>
-              ))
-            ))}
-
-            {/* Explore Services Button */}
-            <g transform="translate(600, 435)">
-              <motion.g whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <circle r="32" className="fill-scailer-green cursor-pointer" onClick={() => scrollToTimeline()} />
-                <foreignObject x="-16" y="-16" width="32" height="32" className="overflow-visible">
-                  <div className="flex items-center justify-center w-full h-full text-black">
-                    <ArrowRight className="w-6 h-6 rotate-90" />
-                  </div>
-                </foreignObject>
-              </motion.g>
+              <text
+                x="100"
+                y="36"
+                textAnchor="middle"
+                fill="white"
+                fontSize="20"
+                fontFamily="system-ui"
+                className="font-medium pointer-events-none"
+              >
+                Our Services
+              </text>
             </g>
           </svg>
 
           {/* Icons at the same level with connection points */}
-          <div className="absolute top-0 inset-x-0 mt-8 md:-mt-16">
-            <div className="flex justify-between items-center px-4 md:px-16">
-              {features.map((feature, index) => (
+          <div className="absolute top-[10px] transform -translate-y-1/2 inset-x-0">
+            <div className="flex justify-between items-center px-2 md:px-12 max-w-sm mx-auto md:max-w-none">
+              {[Database, Cloud, Zap, Network, Cpu, Server].map((Icon, index) => (
                 <div
                   key={index}
-                  className="relative flex flex-col items-center"
+                  className="relative"
                   onClick={() => scrollToFeature(index)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Scroll to ${feature.label}`}
+                  aria-label={`Scroll to ${features[index]?.label}`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       scrollToFeature(index)
                     }
                   }}
                 >
-                  <div className="w-8 h-8 md:w-20 md:h-20 rounded-full bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 flex items-center justify-center cursor-pointer transition-transform hover:scale-110">
-                    <ColoredIcon
-                      icon={feature.icon}
-                      color={darkMode ? iconColors.dark[index] : iconColors.light[index]}
-                    />
+                  <div className="w-8 h-8 md:w-20 md:h-20 rounded-full bg-scailer-light shadow-md flex items-center justify-center cursor-pointer transition-transform hover:scale-110 hover:bg-scailer-light/80">
+                    <Icon className="w-4 h-4 md:w-10 md:h-10 text-white" />
                   </div>
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-0.5 md:w-1 h-3 md:h-6 bg-gradient-to-b from-scailer-light to-transparent" />
                 </div>
               ))}
             </div>
@@ -494,7 +403,7 @@ const HAL900FrameworkDiagram = () => {
                   <div
                     className="w-full h-full rounded-full"
                     style={{
-                      backgroundColor: darkMode ? timelineColor.dark : timelineColor.light,
+                      backgroundColor: timelineColor,
                     }}
                   />
                 </div>
@@ -515,7 +424,7 @@ const HAL900FrameworkDiagram = () => {
                     {...feature}
                     isLeft={index % 2 === 0}
                     isActive={index === activeFeature}
-                    color={darkMode ? iconColors.dark[index] : iconColors.light[index]}
+                    color={iconColors[index]}
                   />
                 </div>
               ))}
@@ -527,4 +436,4 @@ const HAL900FrameworkDiagram = () => {
   )
 }
 
-export default HAL900FrameworkDiagram 
+export default HAL900FrameworkDiagram

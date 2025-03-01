@@ -19,6 +19,10 @@ const nextConfig = {
   compiler: {
     removeConsole: false,
   },
+  // Configure static generation
+  experimental: {
+    appDocumentPreloading: false,
+  },
   webpack: (config) => {
     config.resolve.fallback = { 
       fs: false,

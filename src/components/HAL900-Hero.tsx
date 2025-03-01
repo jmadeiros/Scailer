@@ -200,7 +200,11 @@ const AnimatedHeading = () => {
   );
 };
 
-const HAL900Hero = () => {
+interface HAL900HeroProps {
+  onLearnMore: () => void;
+}
+
+const HAL900Hero = ({ onLearnMore }: HAL900HeroProps) => {
   const [startAnimation, setStartAnimation] = useState(false);
 
   useEffect(() => {
@@ -222,7 +226,7 @@ const HAL900Hero = () => {
           <AnimatedHeading />
         </motion.div>
       </div>
-      <HAL900AnimatedText startAnimation={startAnimation} />
+      <HAL900AnimatedText startAnimation={startAnimation} onLearnMore={onLearnMore} />
     </section>
   );
 };

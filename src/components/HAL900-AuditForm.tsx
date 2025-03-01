@@ -289,6 +289,8 @@ export default function HAL900AuditForm() {
             <div className="relative">
               <Input
                 type="text"
+                id="name"
+                name="name"
                 placeholder="Enter your name"
                 onKeyPress={(e) => {
                   const key = e.key;
@@ -326,6 +328,8 @@ export default function HAL900AuditForm() {
             <div className="relative">
               <Input
                 type="text"
+                id="companyName"
+                name="companyName"
                 placeholder="Enter your company name"
                 onKeyPress={(e) => {
                   const key = e.key;
@@ -363,6 +367,8 @@ export default function HAL900AuditForm() {
             <div className="relative">
               <Input
                 type="email"
+                id="email"
+                name="email"
                 placeholder="Enter your email"
                 onKeyPress={(e) => {
                   const key = e.key;

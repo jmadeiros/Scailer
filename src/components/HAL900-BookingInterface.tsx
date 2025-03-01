@@ -13,11 +13,34 @@ const timeSlots = [
   "04:00 PM",
 ];
 
+const convertTo24Hour = (time12h: string) => {
+  // Extract time and AM/PM
+  const timeMatch = time12h.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!timeMatch) {
+    console.error('Invalid time format:', time12h);
+    return '00:00'; // Default fallback
+  }
+  
+  let hours = parseInt(timeMatch[1], 10);
+  const minutes = timeMatch[2];
+  const modifier = timeMatch[3].toUpperCase();
+  
+  // Convert hours based on AM/PM
+  if (hours === 12) {
+    hours = modifier === 'AM' ? 0 : 12;
+  } else if (modifier === 'PM') {
+    hours += 12;
+  }
+  
+  return `${hours.toString().padStart(2, '0')}:${minutes}`;
+};
+
 const HAL900BookingInterface = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [isBooking, setIsBooking] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -43,12 +66,92 @@ const HAL900BookingInterface = () => {
   const handleBooking = async () => {
     if (selectedDate && selectedTime) {
       setIsBooking(true);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setIsBooking(false);
-      // Reset selection
-      setSelectedDate(new Date());
-      setSelectedTime("");
+      setBookingSuccess(false);
+      try {
+        const formData = {
+          firstName: "",
+          lastName: "",
+          phone: "",
+          email: "",
+          additionalInfo: "",
+          marketingConsent: false
+        };
+
+        // Show the booking form
+        const bookingForm = document.createElement('div');
+        bookingForm.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+        bookingForm.innerHTML = `<div id="booking-form-container"></div>`;
+        document.body.appendChild(bookingForm);
+
+        // Handle form submission
+        const handleSubmit = async (formData: any) => {
+          try {
+            const convertedTime = convertTo24Hour(selectedTime);
+            console.log('Time conversion:', {
+              original: selectedTime,
+              converted: convertedTime
+            });
+            
+            const response = await fetch('/api/book-session', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                formData,
+                selectedDate,
+                selectedTime: convertedTime,
+              }),
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+              console.error('API error response:', data);
+              throw new Error(data.error || 'Failed to book session');
+            }
+
+            // Remove the form
+            document.body.removeChild(bookingForm);
+            
+            // Show success message
+            setBookingSuccess(true);
+            
+            // Reset selection after a delay
+            setTimeout(() => {
+              setSelectedDate(new Date());
+              setSelectedTime("");
+              setBookingSuccess(false);
+            }, 5000);
+            
+            console.log('Booking successful:', data);
+          } catch (error) {
+            console.error('Booking error:', error);
+            alert(error instanceof Error ? error.message : 'Failed to book session');
+          } finally {
+            setIsBooking(false);
+          }
+        };
+
+        // Render the booking form
+        const BookingFormComponent = (await import('./HAL900-BookingForm')).default;
+        const root = document.getElementById('booking-form-container');
+        if (root) {
+          const form = <BookingFormComponent 
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            onClose={() => document.body.removeChild(bookingForm)}
+            onSubmit={handleSubmit}
+          />;
+          // Use ReactDOM to render the form
+          const ReactDOM = (await import('react-dom/client')).default;
+          const formRoot = ReactDOM.createRoot(root);
+          formRoot.render(form);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsBooking(false);
+      }
     }
   };
 
@@ -66,6 +169,19 @@ const HAL900BookingInterface = () => {
             Schedule a one-on-one consultation with our scaling experts.
           </p>
         </motion.div>
+
+        {bookingSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-2xl mx-auto bg-scailer-green/20 border border-scailer-green p-6 rounded-xl text-center mb-8"
+          >
+            <h3 className="text-2xl font-bold text-scailer-green mb-2">Booking Successful!</h3>
+            <p className="text-white mb-4">
+              Your strategy session has been scheduled. Check your calendar for details.
+            </p>
+          </motion.div>
+        )}
 
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
           {/* Calendar */}

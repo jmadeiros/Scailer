@@ -44,9 +44,10 @@ const AnimatedWord = ({ word, delay, isAlliteration, section, startAnimation, is
 
 interface AnimatedTextProps {
   startAnimation: boolean
+  onLearnMore: () => void
 }
 
-export default function HAL900AnimatedText({ startAnimation }: AnimatedTextProps) {
+export default function HAL900AnimatedText({ startAnimation, onLearnMore }: AnimatedTextProps) {
   const [showButton, setShowButton] = useState(false)
 
   // Group words into three sections with their respective delays
@@ -79,20 +80,6 @@ export default function HAL900AnimatedText({ startAnimation }: AnimatedTextProps
     ],
   ]
 
-  const scrollToOptimized = () => {
-    const element = document.getElementById("optimized-section")
-    if (element) {
-      const offset = 80
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-      const offsetPosition = elementPosition - offset
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      })
-    }
-  }
-
   useEffect(() => {
     if (startAnimation) {
       const timer = setTimeout(() => {
@@ -102,6 +89,10 @@ export default function HAL900AnimatedText({ startAnimation }: AnimatedTextProps
       return () => clearTimeout(timer)
     }
   }, [startAnimation])
+
+  const handleClick = () => {
+    onLearnMore();
+  };
 
   return (
     <motion.div
@@ -139,7 +130,7 @@ export default function HAL900AnimatedText({ startAnimation }: AnimatedTextProps
             {showButton && (
               <Button
                 className="bg-[#00FF7F] hover:bg-[#00FF7F]/90 text-black text-base px-6 py-3 font-medium rounded-lg"
-                onClick={scrollToOptimized}
+                onClick={handleClick}
               >
                 Learn more
               </Button>

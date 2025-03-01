@@ -52,10 +52,12 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % messages.length)
+      if (!showSuccessMessage) {  // Only cycle if success message isn't shown
+        setCurrentIndex((prev) => (prev + 1) % messages.length)
+      }
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [showSuccessMessage])  // Add showSuccessMessage as dependency
 
   useEffect(() => {
     if (animationTriggered) {

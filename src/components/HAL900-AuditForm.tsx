@@ -1,7 +1,6 @@
 "use client"
 
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Check, Loader2, User, AlertCircle, ArrowRight, TrendingUp, Users, Target, Zap, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -49,102 +48,78 @@ const messages = [
 
 function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  const intervalIdRef = useRef<NodeJS.Timeout>()
+  const mountCountRef = useRef(0)
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % messages.length)
-    }, 3500)
-    return () => clearInterval(timer)
+    mountCountRef.current += 1
+    console.log(`[MessageFeed] Component mounted (count: ${mountCountRef.current})`)
+    console.log(`[MessageFeed] Initial currentIndex:`, currentIndex)
+    console.log(`[MessageFeed] Messages array length:`, messages.length)
+
+    if (intervalIdRef.current) {
+      console.log(`[MessageFeed] Clearing existing interval`)
+      clearInterval(intervalIdRef.current)
+    }
+
+    intervalIdRef.current = setInterval(() => {
+      console.log(`[MessageFeed] Timer tick - current index before update:`, currentIndex)
+      setCurrentIndex((prev) => {
+        const newIndex = (prev + 1) % messages.length
+        console.log(`[MessageFeed] Updating index from ${prev} to ${newIndex}`)
+        return newIndex
+      })
+    }, 5000)
+
+    return () => {
+      console.log(`[MessageFeed] Component unmounting - clearing interval`)
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current)
+      }
+    }
   }, [])
 
   useEffect(() => {
-    if (animationTriggered) {
-      const timer = setTimeout(() => {
-        setShowSuccessMessage(true)
-      }, 2000)
-      return () => clearTimeout(timer)
-    }
-  }, [animationTriggered])
+    console.log(`[MessageFeed] currentIndex changed to:`, currentIndex)
+    console.log(`[MessageFeed] Current message:`, messages[currentIndex])
+  }, [currentIndex])
 
   return (
-    <>
-      <motion.div
-        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden"
-        animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "auto", opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.32, 0.72, 0, 1],
-            }}
-            className="p-3"
-          >
-            <motion.div
-              className="flex gap-2 md:gap-3"
-              animate={
-                animationTriggered
-                  ? {
-                      x: "100%",
-                      rotate: 10,
-                      scale: 0.8,
-                    }
-                  : {}
-              }
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              <motion.div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-scailer-green/20 flex items-center justify-center">
-                {messages.map((message, idx) => (
-                  <div key={idx} className={currentIndex === idx ? "block" : "hidden"}>
-                    {React.cloneElement(message.icon as React.ReactElement, {
-                      className: "w-3 h-3 md:w-5 md:h-5"
-                    })}
-                  </div>
+    <div className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden h-[90px]">
+      <AnimatePresence mode="wait" initial={false} onExitComplete={() => console.log(`[MessageFeed] Animation exit completed`)}>
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="p-2 h-full flex items-center"
+          onAnimationStart={() => console.log(`[MessageFeed] Animation started for index:`, currentIndex)}
+          onAnimationComplete={() => console.log(`[MessageFeed] Animation completed for index:`, currentIndex)}
+        >
+          <div className="flex gap-2 w-full">
+            <div className="w-6 h-6 rounded-lg bg-scailer-green/20 flex items-center justify-center flex-shrink-0">
+              {React.cloneElement(messages[currentIndex].icon as React.ReactElement, {
+                className: "w-3 h-3 text-scailer-green"
+              })}
+            </div>
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
+              <p className="text-[13px] text-white mb-1.5 leading-[1.4]">{messages[currentIndex].text}</p>
+              <div className="flex gap-1.5 flex-wrap">
+                {messages[currentIndex].metrics.map((metric) => (
+                  <span
+                    key={metric}
+                    className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
+                  >
+                    {metric}
+                  </span>
                 ))}
-              </motion.div>
-              <motion.div className="flex-1">
-                <p className="text-[9px] md:text-sm text-white mb-1.5 md:mb-2 leading-[1.4] md:leading-relaxed">{messages[currentIndex].text}</p>
-                <div className="flex gap-1.5 md:gap-2">
-                  {messages[currentIndex].metrics.map((metric) => (
-                    <span
-                      key={metric}
-                      className="inline-flex items-center px-1.5 md:px-2 py-0.5 rounded-full text-[8px] md:text-xs bg-scailer-green/20 text-scailer-green font-medium"
-                    >
-                      {metric}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
-
-      <AnimatePresence>
-        {showSuccessMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="mt-4 text-center"
-          >
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-scailer-green/20 rounded-full"
-            >
-              <span className="text-scailer-green font-medium">On its way!</span>
-            </motion.div>
-          </motion.div>
-        )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </AnimatePresence>
-    </>
+    </div>
   )
 }
 

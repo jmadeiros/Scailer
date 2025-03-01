@@ -16,18 +16,15 @@ export default function HAL900ScaleWithPrecision() {
   }, []);
 
   return (
-    <section className="py-4 md:py-6 -mt-24 md:-mt-32 bg-scailer-dark">
+    <section className="py-24 md:py-32 bg-scailer-dark">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-6 md:mb-8"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Scale with Precision</h2>
-          <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto">
-            Transform your business growth with our AI-powered solutions. We analyze, optimize, and automate your processes to deliver measurable results.
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white">Scale with Precision</h2>
         </motion.div>
         <div className="grid grid-cols-2 gap-4 md:gap-12 items-start max-w-5xl mx-auto">
           <div className="w-full">

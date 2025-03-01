@@ -49,44 +49,37 @@ const messages = [
 function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const intervalIdRef = useRef<NodeJS.Timeout>()
-  const mountCountRef = useRef(0)
 
   useEffect(() => {
-    mountCountRef.current += 1
-    console.log(`[MessageFeed] Component mounted (count: ${mountCountRef.current})`)
-    console.log(`[MessageFeed] Initial currentIndex:`, currentIndex)
-    console.log(`[MessageFeed] Messages array length:`, messages.length)
-
+    console.log(`[MessageFeed] Setting up interval, animationTriggered:`, animationTriggered)
+    
+    // Clear any existing interval
     if (intervalIdRef.current) {
-      console.log(`[MessageFeed] Clearing existing interval`)
       clearInterval(intervalIdRef.current)
     }
 
-    intervalIdRef.current = setInterval(() => {
-      console.log(`[MessageFeed] Timer tick - current index before update:`, currentIndex)
-      setCurrentIndex((prev) => {
-        const newIndex = (prev + 1) % messages.length
-        console.log(`[MessageFeed] Updating index from ${prev} to ${newIndex}`)
-        return newIndex
-      })
-    }, 5000)
+    // Start the cycling
+    const cycleMessages = () => {
+      setCurrentIndex((prev) => (prev + 1) % messages.length)
+    }
+
+    // Initial cycle
+    cycleMessages()
+    
+    // Set up the interval for continuous cycling
+    intervalIdRef.current = setInterval(cycleMessages, 5000)
 
     return () => {
-      console.log(`[MessageFeed] Component unmounting - clearing interval`)
+      console.log(`[MessageFeed] Cleaning up interval`)
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current)
       }
     }
-  }, [])
-
-  useEffect(() => {
-    console.log(`[MessageFeed] currentIndex changed to:`, currentIndex)
-    console.log(`[MessageFeed] Current message:`, messages[currentIndex])
-  }, [currentIndex])
+  }, [animationTriggered]) // Reset interval when animationTriggered changes
 
   return (
     <div className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden h-[90px]">
-      <AnimatePresence mode="wait" initial={false} onExitComplete={() => console.log(`[MessageFeed] Animation exit completed`)}>
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, y: 20 }}
@@ -94,8 +87,6 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
           className="p-2 h-full flex items-center"
-          onAnimationStart={() => console.log(`[MessageFeed] Animation started for index:`, currentIndex)}
-          onAnimationComplete={() => console.log(`[MessageFeed] Animation completed for index:`, currentIndex)}
         >
           <div className="flex gap-2 w-full">
             <div className="w-6 h-6 rounded-lg bg-scailer-green/20 flex items-center justify-center flex-shrink-0">

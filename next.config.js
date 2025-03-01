@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove static export to enable API routes
-  // output: 'export',
+  // Enable static export for Firebase Hosting
+  output: 'export',
   images: {
     unoptimized: true
   },

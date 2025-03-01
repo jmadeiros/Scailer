@@ -48,69 +48,98 @@ const messages = [
 
 function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const intervalIdRef = useRef<NodeJS.Timeout>()
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   useEffect(() => {
-    console.log(`[MessageFeed] Setting up interval, animationTriggered:`, animationTriggered)
-    
-    // Clear any existing interval
-    if (intervalIdRef.current) {
-      clearInterval(intervalIdRef.current)
-    }
-
-    // Start the cycling
-    const cycleMessages = () => {
+    const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % messages.length)
-    }
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
 
-    // Initial cycle
-    cycleMessages()
-    
-    // Set up the interval for continuous cycling
-    intervalIdRef.current = setInterval(cycleMessages, 5000)
-
-    return () => {
-      console.log(`[MessageFeed] Cleaning up interval`)
-      if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current)
-      }
+  useEffect(() => {
+    if (animationTriggered) {
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(true)
+      }, 2000)
+      return () => clearTimeout(timer)
     }
-  }, [animationTriggered]) // Reset interval when animationTriggered changes
+  }, [animationTriggered])
 
   return (
-    <div className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden h-[90px]">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="p-2 h-full flex items-center"
-        >
-          <div className="flex gap-2 w-full">
-            <div className="w-6 h-6 rounded-lg bg-scailer-green/20 flex items-center justify-center flex-shrink-0">
-              {React.cloneElement(messages[currentIndex].icon as React.ReactElement, {
-                className: "w-3 h-3 text-scailer-green"
-              })}
-            </div>
-            <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <p className="text-[13px] text-white mb-1.5 leading-[1.4]">{messages[currentIndex].text}</p>
-              <div className="flex gap-1.5 flex-wrap">
-                {messages[currentIndex].metrics.map((metric) => (
-                  <span
-                    key={metric}
-                    className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
-                  >
-                    {metric}
-                  </span>
-                ))}
+    <>
+      <motion.div
+        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden"
+        animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "90px", opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.32, 0.72, 0, 1],
+            }}
+            className="p-2 h-full flex items-center"
+          >
+            <motion.div
+              className="flex gap-2 w-full"
+              animate={
+                animationTriggered
+                  ? {
+                      x: "100%",
+                      rotate: 10,
+                      scale: 0.8,
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              <div className="w-6 h-6 rounded-lg bg-scailer-green/20 flex items-center justify-center flex-shrink-0">
+                {React.cloneElement(messages[currentIndex].icon as React.ReactElement, {
+                  className: "w-3 h-3 text-scailer-green"
+                })}
               </div>
-            </div>
-          </div>
-        </motion.div>
+              <div className="flex-1 min-w-0 flex flex-col justify-center">
+                <p className="text-[13px] text-white mb-1.5 leading-[1.4]">{messages[currentIndex].text}</p>
+                <div className="flex gap-1.5 flex-wrap">
+                  {messages[currentIndex].metrics.map((metric) => (
+                    <span
+                      key={metric}
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
+                    >
+                      {metric}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+
+      <AnimatePresence>
+        {showSuccessMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="mt-4 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-scailer-green/20 rounded-full"
+            >
+              <span className="text-scailer-green font-medium">On its way!</span>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
-    </div>
+    </>
   )
 }
 

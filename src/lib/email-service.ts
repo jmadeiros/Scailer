@@ -8,6 +8,9 @@ let transporter: nodemailer.Transporter;
 async function initializeTransporter() {
   // For production, use environment variables
   if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    console.log('Initializing email transporter with production credentials');
+    
+    // Create transporter with Gmail settings
     transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '587'),
@@ -17,29 +20,47 @@ async function initializeTransporter() {
         pass: process.env.EMAIL_PASS,
       },
     });
-    console.log('Email transporter initialized with production credentials');
+    
+    // Verify connection configuration
+    try {
+      await transporter.verify();
+      console.log('Email server connection verified successfully');
+    } catch (error) {
+      console.error('Email server connection failed:', error);
+      console.log('Falling back to test email account');
+      await createTestAccount();
+    }
     return;
   }
 
   // For development/testing, use Ethereal Email
+  await createTestAccount();
+}
+
+// Create a test account for development
+async function createTestAccount() {
   console.log('Creating test email account...');
-  const testAccount = await nodemailer.createTestAccount();
-  
-  transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false,
-    auth: {
+  try {
+    const testAccount = await nodemailer.createTestAccount();
+    
+    transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
+    
+    console.log('Test email account created:', {
       user: testAccount.user,
       pass: testAccount.pass,
-    },
-  });
-  
-  console.log('Test email account created:', {
-    user: testAccount.user,
-    pass: testAccount.pass,
-    previewURL: 'https://ethereal.email'
-  });
+      previewURL: 'https://ethereal.email'
+    });
+  } catch (error) {
+    console.error('Failed to create test email account:', error);
+  }
 }
 
 // Send booking confirmation email to client

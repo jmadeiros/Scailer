@@ -17,7 +17,7 @@ async function initializeTransporter() {
       secure: process.env.EMAIL_SECURE === 'true',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        pass: process.env.EMAIL_PASS?.replace(/\s+/g, ''), // Remove any spaces from the App Password
       },
     });
     
@@ -25,15 +25,15 @@ async function initializeTransporter() {
     try {
       await transporter.verify();
       console.log('Email server connection verified successfully');
+      return; // Return early if Gmail connection is successful
     } catch (error) {
       console.error('Email server connection failed:', error);
       console.log('Falling back to test email account');
-      await createTestAccount();
+      // Fall through to create test account
     }
-    return;
   }
 
-  // For development/testing, use Ethereal Email
+  // For development/testing or if Gmail fails, use Ethereal Email
   await createTestAccount();
 }
 

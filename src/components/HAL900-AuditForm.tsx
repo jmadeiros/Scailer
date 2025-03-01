@@ -49,15 +49,35 @@ const messages = [
 function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  const intervalRef = useRef<NodeJS.Timeout>()
+  const mountTimeRef = useRef(Date.now())
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (!showSuccessMessage) {  // Only cycle if success message isn't shown
-        setCurrentIndex((prev) => (prev + 1) % messages.length)
-      }
+    console.log(`[MessageFeed] Component mounted at ${new Date().toISOString()}`)
+    
+    intervalRef.current = setInterval(() => {
+      const timeSinceMount = Date.now() - mountTimeRef.current
+      console.log(`[MessageFeed] Interval triggered at ${timeSinceMount}ms since mount`)
+      console.log(`[MessageFeed] Current index before update: ${currentIndex}`)
+      
+      setCurrentIndex((prev) => {
+        const newIndex = (prev + 1) % messages.length
+        console.log(`[MessageFeed] Updating index from ${prev} to ${newIndex}`)
+        return newIndex
+      })
     }, 5000)
-    return () => clearInterval(timer)
-  }, [showSuccessMessage])  // Add showSuccessMessage as dependency
+
+    return () => {
+      console.log(`[MessageFeed] Component cleanup - clearing interval`)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(`[MessageFeed] Index changed to ${currentIndex}`)
+  }, [currentIndex])
 
   useEffect(() => {
     if (animationTriggered) {

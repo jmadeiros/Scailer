@@ -377,27 +377,49 @@ export default function HAL900AuditForm() {
           </div>
 
           <div className="pt-1 md:pt-2">
-            <Button
-              type="submit"
-              disabled={!isFormValid || loading}
-              className={cn(
-                "w-full py-1 md:py-2 text-[11px] md:text-sm text-white font-medium",
-                isFormValid ? "bg-scailer-green hover:bg-[#128C7E]" : "bg-[#2a2a2a]",
-                "disabled:text-white/30 disabled:cursor-not-allowed transition-all duration-200 rounded-lg"
-              )}
+            <motion.div
+              animate={animationTriggered ? { height: 0, opacity: 0, marginTop: 0 } : { height: "auto", opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-1 md:mr-2 h-2.5 w-2.5 md:h-4 md:w-4 animate-spin" />
-                  Creating your roadmap...
-                </>
-              ) : (
-                <div className="flex items-center justify-center gap-1 md:gap-2">
-                  <span className="hidden md:inline">Get Your Free Growth Roadmap</span>
-                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                </div>
-              )}
-            </Button>
+              <Button
+                type="submit"
+                disabled={!isFormValid || loading}
+                className={cn(
+                  "w-full py-1 md:py-2 text-[11px] md:text-sm text-white font-medium",
+                  isFormValid ? "bg-scailer-green hover:bg-[#128C7E]" : "bg-[#2a2a2a]",
+                  "disabled:text-white/30 disabled:cursor-not-allowed transition-all duration-200 rounded-lg"
+                )}
+              >
+                <motion.div
+                  className="flex items-center justify-center"
+                  animate={
+                    loading
+                      ? {
+                          scale: 0.95,
+                          opacity: 0.8,
+                        }
+                      : {
+                          scale: 1,
+                          opacity: 1,
+                        }
+                  }
+                  transition={{ duration: 0.2 }}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-1 md:mr-2 h-2.5 w-2.5 md:h-4 md:w-4 animate-spin" />
+                      <span>Creating your roadmap...</span>
+                    </>
+                  ) : (
+                    <div className="flex items-center justify-center gap-1 md:gap-2">
+                      <span className="hidden md:inline">Get Your Free Growth Roadmap</span>
+                      <span className="md:hidden">Get Roadmap</span>
+                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                    </div>
+                  )}
+                </motion.div>
+              </Button>
+            </motion.div>
           </div>
         </form>
 

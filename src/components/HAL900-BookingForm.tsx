@@ -45,7 +45,10 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
     toast.promise(
       (async () => {
         try {
+          console.log('Starting booking submission process...');
+          
           // Create calendar event via API route
+          console.log('Creating calendar event...');
           const calendarResponse = await fetch('/api/calendar', {
             method: 'POST',
             headers: {
@@ -60,34 +63,52 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
 
           if (!calendarResponse.ok) {
             const errorData = await calendarResponse.json();
+            console.error('Calendar API error:', errorData);
             throw new Error(errorData.error || 'Failed to create calendar event');
           }
 
           const calendarResult = await calendarResponse.json();
+          console.log('Calendar event created successfully');
 
           // Send email notifications
           const isProduction = process.env.NODE_ENV === 'production';
-          const functionUrl = isProduction 
-            ? process.env.NEXT_PUBLIC_FIREBASE_FUNCTION_URL || 'https://us-central1-scailertest-37078.cloudfunctions.net/sendBookingEmails'
-            : '/api/send-booking-emails';
+          // Always use the API route for now until Firebase function is fixed
+          const functionUrl = '/api/send-booking-emails';
+          
+          console.log(`Sending email notifications using API route...`);
+          console.log('Email endpoint:', functionUrl);
+          
+          const emailPayload = {
+            formData,
+            selectedDate,
+            selectedTime,
+            calendarLink: calendarResult.htmlLink,
+          };
+          
+          console.log('Email payload prepared (excluding sensitive data)');
           
           const emailResponse = await fetch(functionUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              formData,
-              selectedDate,
-              selectedTime,
-              calendarLink: calendarResult.htmlLink,
-            }),
+            body: JSON.stringify(emailPayload),
           });
 
-          if (!emailResponse.ok) {
-            const errorData = await emailResponse.json();
-            throw new Error(`Failed to send email notifications: ${errorData.error}`);
+          let emailResult;
+          try {
+            emailResult = await emailResponse.json();
+          } catch (parseError) {
+            console.error('Failed to parse email response:', parseError);
+            throw new Error('Failed to parse email service response');
           }
+
+          if (!emailResponse.ok) {
+            console.error('Email API error:', emailResult);
+            throw new Error(`Failed to send email notifications: ${emailResult.error || 'Unknown error'}`);
+          }
+
+          console.log('Email notifications sent successfully');
 
           // Reset form
           setFormData({
@@ -115,7 +136,7 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
       {
         loading: "Scheduling your session...",
         success: "Your strategy session has been scheduled. You will receive a confirmation email shortly.",
-        error: (err) => err.toString()
+        error: (err) => `Error: ${err.toString()}`
       }
     );
   }

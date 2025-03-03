@@ -142,6 +142,76 @@ In addition to the code changes, we also ensured that the Firebase Functions had
 
 3. Updated the code to use `functions.config()` instead of `process.env` to access environment variables in Firebase Functions.
 
+## Google Cloud Console Setup
+
+To ensure the booking system functions correctly, several configurations are required in the Google Cloud Console:
+
+### 1. Firebase Blaze Plan Upgrade
+
+The application requires the Firebase Blaze (pay-as-you-go) plan because:
+- It enables outbound network requests from Firebase Functions (required for Google Calendar API)
+- It allows for higher quotas on function executions and storage
+- It enables access to additional Google Cloud services
+
+Steps to upgrade:
+1. Go to the [Firebase Console](https://console.firebase.google.com/)
+2. Select the project (scailertest-37078)
+3. Navigate to "Billing" from the left sidebar
+4. Click "Upgrade plan" and select the "Blaze" plan
+5. Complete the billing information and confirm the upgrade
+
+### 2. Required API Permissions
+
+The following APIs must be enabled in the Google Cloud Console:
+1. Google Calendar API
+2. Gmail API (if using Gmail for sending emails)
+3. Cloud Functions API
+4. Cloud Build API
+
+Steps to enable APIs:
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Select the project (scailertest-37078)
+3. Navigate to "APIs & Services" > "Library"
+4. Search for each API and click "Enable"
+
+### 3. Service Account Configuration
+
+The application uses a service account for authentication with Google APIs:
+
+1. Create or use an existing service account:
+   - Go to "IAM & Admin" > "Service Accounts"
+   - Create a new service account or use the Firebase Admin SDK service account
+
+2. Assign the following roles to the service account:
+   - Calendar API: "Calendar Editor" role
+   - Firebase: "Firebase Admin" role
+   - Storage: "Storage Admin" role (if using Firebase Storage)
+
+3. Generate and download a new private key:
+   - Click on the service account
+   - Go to the "Keys" tab
+   - Click "Add Key" > "Create new key"
+   - Select JSON format and download the key file
+
+4. Store the key securely and use it for authentication in the application
+
+### 4. Domain Verification and Security
+
+If using custom domains or requiring additional security:
+
+1. Verify domain ownership:
+   - Go to "APIs & Services" > "Credentials"
+   - Under "Domain verification", add and verify your domain
+
+2. Configure OAuth consent screen:
+   - Go to "APIs & Services" > "OAuth consent screen"
+   - Set up the consent screen with appropriate information
+   - Add authorized domains and scopes
+
+3. Set up CORS configuration if needed:
+   - Go to Firebase Storage or other services
+   - Configure CORS settings to allow requests from your domain
+
 ## Deployment Steps
 
 After making the changes, we deployed the updated code:

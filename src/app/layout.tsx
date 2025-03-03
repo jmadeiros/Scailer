@@ -1,8 +1,26 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+// Debug logging
+const debug = (...args: any[]) => console.log('[Font Debug]', ...args);
+
+debug('Initializing font configuration...');
+
+// Configure Inter font with all weights and display swap
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-inter",
+});
+
+debug('Font configuration complete:', {
+  variable: inter.variable,
+  className: inter.className,
+});
 
 export const metadata: Metadata = {
   title: "Scailer - Business Scaling Service",
@@ -14,9 +32,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  debug('Rendering RootLayout');
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-scailer-dark text-white min-h-screen`}>
+    <html lang="en" className={cn("antialiased", inter.variable)}>
+      <body className={cn(
+        inter.className,
+        "min-h-screen bg-scailer-dark text-white",
+        "flex flex-col antialiased",
+        "selection:bg-scailer-green selection:text-white"
+      )}>
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: '#3a3a3a',
+              color: '#ffffff',
+              border: '1px solid rgba(37, 211, 102, 0.1)',
+            },
+            className: 'toast-custom',
+          }}
+        />
         {children}
       </body>
     </html>

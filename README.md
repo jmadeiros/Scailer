@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scailer Booking System
 
-## Getting Started
+A booking system for Scailer with Google Calendar integration and email notifications.
 
-First, run the development server:
+## Features
+
+- Book strategy sessions with date and time selection
+- Google Calendar integration for event creation
+- Email notifications for both clients and admin
+- Responsive design for all devices
+
+## Development
+
+To run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start the Next.js development server at http://localhost:3001.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+1. Make sure you have the Firebase CLI installed:
+   ```bash
+   npm install -g firebase-tools
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Log in to Firebase:
+   ```bash
+   firebase login
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Ensure your Firebase project is set up and configured in `.firebaserc`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Deploy the Application
 
-## Deploy on Vercel
+To deploy the entire application (website and Cloud Functions):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run deploy
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This will:
+1. Build the Next.js application
+2. Create necessary files for client-side routing
+3. Deploy to Firebase Hosting
+
+### Deploy Only Cloud Functions
+
+If you only need to update the Cloud Functions:
+
+```bash
+npm run deploy:functions
+```
+
+## Email Configuration
+
+The booking system uses Gmail for sending emails. To configure email sending:
+
+1. Set up an App Password in your Google Account:
+   - Go to your Google Account settings
+   - Navigate to Security → App passwords
+   - Create a new App Password for "Scailer Booking System"
+
+2. Update the `.env.local` file with your email credentials:
+   ```
+   EMAIL_USER=your-email@gmail.com
+   EMAIL_PASS=your-app-password
+   EMAIL_FROM=your-email@gmail.com
+   ADMIN_EMAIL=admin-email@gmail.com
+   ```
+
+3. For production, update the same variables in the Firebase Cloud Functions environment.
+
+## Google Calendar Integration
+
+The booking system integrates with Google Calendar. To configure:
+
+1. Set up a Google Cloud project and enable the Google Calendar API
+2. Create a service account and download the credentials
+3. Update the `.env.local` file with your Google Calendar credentials:
+   ```
+   GOOGLE_CLIENT_EMAIL=your-service-account@project-id.iam.gserviceaccount.com
+   GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour Private Key\n-----END PRIVATE KEY-----\n"
+   GOOGLE_CALENDAR_ID=your-calendar-id@gmail.com
+   ```
+
+## Testing
+
+To test the booking system, navigate to `/test-booking` in your browser. This page provides a simple interface to test the entire booking flow, including:
+
+1. Creating a calendar event
+2. Sending confirmation emails
+3. Sending admin notification emails
+
+## Troubleshooting
+
+### Email Issues
+
+If emails are not being sent:
+
+1. Check that your App Password is correct
+2. Ensure your Google account allows less secure apps or has the correct App Password
+3. Check the console logs for error messages
+
+### Calendar Issues
+
+If calendar events are not being created:
+
+1. Verify your Google Cloud project has the Calendar API enabled
+2. Check that your service account has the correct permissions
+3. Ensure the GOOGLE_PRIVATE_KEY is properly formatted with newlines

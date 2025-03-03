@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -6,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { GB } from 'country-flag-icons/react/3x2'
+import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 interface BookingFormProps {
   selectedDate: Date
@@ -23,7 +27,7 @@ export interface BookingFormData {
   marketingConsent: boolean
 }
 
-export default function HAL900BookingForm({ selectedDate, selectedTime, onClose, onSubmit }: BookingFormProps) {
+export default function HAL900BookingForm({ selectedDate, selectedTime, onClose }: BookingFormProps) {
   const [formData, setFormData] = useState<BookingFormData>({
     firstName: "",
     lastName: "",
@@ -33,22 +37,87 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose,
     marketingConsent: false
   })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError(null)
-    try {
-      await onSubmit(formData)
-      setSuccess(true)
-    } catch (error) {
-      console.error("Error submitting form:", error)
-      setError(error instanceof Error ? error.message : 'Failed to book session')
-    } finally {
-      setLoading(false)
-    }
+    
+    toast.promise(
+      (async () => {
+        try {
+          // Create calendar event via API route
+          const calendarResponse = await fetch('/api/calendar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              formData,
+              selectedDate,
+              selectedTime,
+            }),
+          });
+
+          if (!calendarResponse.ok) {
+            const errorData = await calendarResponse.json();
+            throw new Error(errorData.error || 'Failed to create calendar event');
+          }
+
+          const calendarResult = await calendarResponse.json();
+
+          // Send email notifications
+          const isProduction = process.env.NODE_ENV === 'production';
+          const functionUrl = isProduction 
+            ? process.env.NEXT_PUBLIC_FIREBASE_FUNCTION_URL || 'https://us-central1-scailertest-37078.cloudfunctions.net/sendBookingEmails'
+            : '/api/send-booking-emails';
+          
+          const emailResponse = await fetch(functionUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              formData,
+              selectedDate,
+              selectedTime,
+              calendarLink: calendarResult.htmlLink,
+            }),
+          });
+
+          if (!emailResponse.ok) {
+            const errorData = await emailResponse.json();
+            throw new Error(`Failed to send email notifications: ${errorData.error}`);
+          }
+
+          // Reset form
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            additionalInfo: '',
+            marketingConsent: false,
+          });
+          
+          // Close the form after a short delay
+          setTimeout(() => {
+            onClose();
+          }, 2000);
+          
+          return "success";
+        } catch (error) {
+          console.error('Submission error:', error);
+          throw error instanceof Error ? error.message : 'An unknown error occurred';
+        } finally {
+          setLoading(false);
+        }
+      })(),
+      {
+        loading: "Scheduling your session...",
+        success: "Your strategy session has been scheduled. You will receive a confirmation email shortly.",
+        error: (err) => err.toString()
+      }
+    );
   }
 
   return (
@@ -154,8 +223,8 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose,
           <Checkbox
             id="marketingConsent"
             checked={formData.marketingConsent}
-            onCheckedChange={(checked) => 
-              setFormData(prev => ({ ...prev, marketingConsent: checked as boolean }))
+            onCheckedChange={(checked: boolean) => 
+              setFormData(prev => ({ ...prev, marketingConsent: checked }))
             }
             className="mt-1"
           />
@@ -164,39 +233,32 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose,
           </label>
         </div>
 
-        <div className="pt-1 md:pt-2">
-          {error && (
-            <div className="text-red-400 text-sm mb-2">
-              {error}
-            </div>
-          )}
-          {success && (
-            <div className="bg-scailer-green/20 border border-scailer-green rounded-lg p-4 mb-4">
-              <h3 className="text-scailer-green font-medium mb-2">Booking Successful!</h3>
-              <p className="text-white/90 text-sm mb-2">
-                Your strategy session has been scheduled. You will receive a confirmation email shortly.
-              </p>
-              <p className="text-white/70 text-xs">
-                If you don't receive an email within a few minutes, please check your spam folder or contact us.
-              </p>
-            </div>
-          )}
-        </div>
-
         <div className="flex justify-end gap-4">
           <Button
             type="button"
             onClick={onClose}
             className="bg-transparent border border-scailer-green text-scailer-green hover:bg-scailer-green/10"
+            disabled={loading}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={loading}
-            className="bg-scailer-green text-white hover:bg-[#128C7E]"
+            className={cn(
+              "bg-scailer-green text-white",
+              "hover:bg-scailer-green/90",
+              "disabled:opacity-50 disabled:cursor-not-allowed"
+            )}
           >
-            {loading ? "Scheduling..." : "Schedule Meeting"}
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Scheduling...
+              </>
+            ) : (
+              "Schedule Session"
+            )}
           </Button>
         </div>
       </form>

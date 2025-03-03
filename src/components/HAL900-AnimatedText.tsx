@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import React from "react"
 
 interface AnimatedWordProps {
   word: string
@@ -104,11 +105,10 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
       <div className="min-h-[180px] flex flex-col items-center justify-center max-w-[95%] mx-auto">
         <p className="text-lg md:text-[26px] text-white leading-[1.7] tracking-[-0.01em] font-normal mb-10">
           {sections.map((section, sectionIndex) => (
-            <span key={sectionIndex}>
+            <span key={`section-${sectionIndex}`}>
               {section.map((word, wordIndex) => (
-                <>
+                <React.Fragment key={`word-${sectionIndex}-${wordIndex}`}>
                   <AnimatedWord
-                    key={`${sectionIndex}-${wordIndex}`}
                     word={word.word}
                     delay={word.delay}
                     isAlliteration={word.isAlliteration}
@@ -116,7 +116,7 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
                     startAnimation={startAnimation}
                     isBold={word.isBold}
                   />{" "}
-                </>
+                </React.Fragment>
               ))}
             </span>
           ))}

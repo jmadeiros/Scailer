@@ -32,7 +32,12 @@ const nextConfig = {
     GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
   },
 
-  // Remove experimental features temporarily for debugging
+  // Exclude API routes from static export
+  experimental: {
+    appDir: true,
+  },
+
+  // Disable server-side API routes in static export
   // experimental: {
   //   optimizeCss: {
   //     preset: ['default', { 

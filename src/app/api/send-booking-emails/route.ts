@@ -246,6 +246,7 @@ async function sendAdminNotificationEmail(formData: any, selectedDate: string, s
 export async function POST(req: NextRequest) {
   try {
     console.log("Starting email sending process...");
+    console.log("Request headers:", Object.fromEntries([...req.headers.entries()]));
     
     // Parse request body
     let body;
@@ -264,8 +265,34 @@ export async function POST(req: NextRequest) {
 
     // Validate required fields
     if (!formData || !selectedDate || !selectedTime) {
-      console.error("Missing required fields:", { formData: !!formData, selectedDate: !!selectedDate, selectedTime: !!selectedTime });
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      console.error("Missing required fields:", { 
+        formData: !!formData, 
+        selectedDate: !!selectedDate, 
+        selectedTime: !!selectedTime,
+        formDataKeys: formData ? Object.keys(formData) : 'null',
+        selectedDateType: selectedDate ? typeof selectedDate : 'null',
+        selectedTimeType: selectedTime ? typeof selectedTime : 'null'
+      });
+      return NextResponse.json({ 
+        error: "Missing required fields",
+        details: {
+          formData: !!formData, 
+          selectedDate: !!selectedDate, 
+          selectedTime: !!selectedTime
+        }
+      }, { status: 400 });
+    }
+
+    // Validate formData structure
+    const requiredFormFields = ['firstName', 'lastName', 'email', 'phone'];
+    const missingFields = requiredFormFields.filter(field => !formData[field]);
+    
+    if (missingFields.length > 0) {
+      console.error("Missing required form fields:", missingFields);
+      return NextResponse.json({ 
+        error: "Missing required form fields", 
+        details: { missingFields } 
+      }, { status: 400 });
     }
 
     console.log("Received booking request:", {

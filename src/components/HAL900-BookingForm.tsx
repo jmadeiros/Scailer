@@ -47,45 +47,108 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
         try {
           console.log('Starting booking submission process...');
           
-          // Create calendar event via API route
+          // Get the Firebase Functions base URL
+          const isProduction = process.env.NODE_ENV === 'production';
+          const functionsBaseUrl = isProduction 
+            ? 'https://europe-west1-scailertest-37078.cloudfunctions.net'
+            : 'http://localhost:5001/scailertest-37078/europe-west1';
+          
+          console.log('Using Firebase Functions base URL:', functionsBaseUrl);
+          
+          // Create calendar event via Firebase Function
           console.log('Creating calendar event...');
-          const calendarResponse = await fetch('/api/calendar', {
+          console.log('Current environment:', process.env.NODE_ENV);
+          console.log('Current URL:', window.location.href);
+          console.log('API endpoint:', `${functionsBaseUrl}/calendar`);
+          
+          // First, check if the API endpoint exists by making a HEAD request
+          try {
+            const checkResponse = await fetch(`${functionsBaseUrl}/calendar`, { 
+              method: 'HEAD',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            console.log('API endpoint check result:', {
+              status: checkResponse.status,
+              statusText: checkResponse.statusText,
+              headers: Object.fromEntries([...checkResponse.headers.entries()])
+            });
+          } catch (checkError) {
+            console.error('API endpoint check failed:', checkError);
+          }
+          
+          const calendarResponse = await fetch(`${functionsBaseUrl}/calendar`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               formData,
-              selectedDate,
+              selectedDate: selectedDate.toISOString(),
               selectedTime,
             }),
           });
 
-          if (!calendarResponse.ok) {
-            const errorData = await calendarResponse.json();
-            console.error('Calendar API error:', errorData);
-            throw new Error(errorData.error || 'Failed to create calendar event');
+          console.log('Calendar response status:', calendarResponse.status, calendarResponse.statusText);
+          console.log('Calendar response headers:', Object.fromEntries([...calendarResponse.headers.entries()]));
+          
+          // Get the raw response text first
+          const rawCalendarResponseText = await calendarResponse.text();
+          console.log('Raw calendar response (first 200 chars):', rawCalendarResponseText.substring(0, 200));
+          
+          // Check if the response is HTML (which would indicate routing to index.html)
+          const isCalendarHtmlResponse = rawCalendarResponseText.trim().startsWith('<!DOCTYPE') || 
+                                rawCalendarResponseText.trim().startsWith('<html');
+          
+          if (isCalendarHtmlResponse) {
+            console.error('Received HTML response instead of JSON. This indicates the Firebase Function is not available.');
+            throw new Error('Calendar Firebase Function is not available. Please check your Firebase Functions deployment.');
+          }
+          
+          let calendarResult;
+          try {
+            // Try to parse the response as JSON
+            calendarResult = rawCalendarResponseText ? JSON.parse(rawCalendarResponseText) : null;
+          } catch (parseError) {
+            console.error('Failed to parse calendar response as JSON:', parseError);
+            console.error('Response was not valid JSON:', rawCalendarResponseText.substring(0, 500));
+            throw new Error('Failed to parse calendar service response');
           }
 
-          const calendarResult = await calendarResponse.json();
+          if (!calendarResponse.ok) {
+            console.error('Calendar API error:', calendarResult);
+            throw new Error(calendarResult?.error || 'Failed to create calendar event');
+          }
+
           console.log('Calendar event created successfully');
 
-          // Send email notifications
-          const isProduction = process.env.NODE_ENV === 'production';
-          // Always use the API route for now until Firebase function is fixed
-          const functionUrl = '/api/send-booking-emails';
+          // Send email notifications via Firebase Function
+          const functionUrl = `${functionsBaseUrl}/sendBookingEmails`;
           
-          console.log(`Sending email notifications using API route...`);
+          console.log(`Sending email notifications using Firebase Function...`);
           console.log('Email endpoint:', functionUrl);
           
           const emailPayload = {
             formData,
-            selectedDate,
+            selectedDate: selectedDate.toISOString(),
             selectedTime,
             calendarLink: calendarResult.htmlLink,
           };
           
-          console.log('Email payload prepared (excluding sensitive data)');
+          console.log('Email payload:', JSON.stringify({
+            formData: {
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              email: formData.email,
+              phone: formData.phone?.substring(0, 3) + "***", // Mask phone for privacy
+              hasAdditionalInfo: !!formData.additionalInfo,
+              marketingConsent: formData.marketingConsent
+            },
+            selectedDate: selectedDate.toISOString(),
+            selectedTime,
+            hasCalendarLink: !!calendarResult.htmlLink
+          }));
           
           const emailResponse = await fetch(functionUrl, {
             method: 'POST',
@@ -95,17 +158,36 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
             body: JSON.stringify(emailPayload),
           });
 
+          console.log('Email response status:', emailResponse.status, emailResponse.statusText);
+          console.log('Email response headers:', Object.fromEntries([...emailResponse.headers.entries()]));
+          
+          // Get the raw response text first
+          const rawResponseText = await emailResponse.text();
+          console.log('Raw email response (first 200 chars):', rawResponseText.substring(0, 200));
+          
+          // Check if the response is HTML (which would indicate routing to index.html)
+          const isHtmlResponse = rawResponseText.trim().startsWith('<!DOCTYPE') || 
+                                rawResponseText.trim().startsWith('<html');
+          
+          if (isHtmlResponse) {
+            console.error('Received HTML response instead of JSON. This indicates the Firebase Function is not available.');
+            throw new Error('Email Firebase Function is not available. Please check your Firebase Functions deployment.');
+          }
+          
           let emailResult;
           try {
-            emailResult = await emailResponse.json();
+            // Try to parse the response as JSON
+            emailResult = rawResponseText ? JSON.parse(rawResponseText) : null;
+            console.log('Parsed email result:', emailResult);
           } catch (parseError) {
-            console.error('Failed to parse email response:', parseError);
+            console.error('Failed to parse email response as JSON:', parseError);
+            console.error('Response was not valid JSON:', rawResponseText.substring(0, 500));
             throw new Error('Failed to parse email service response');
           }
 
           if (!emailResponse.ok) {
             console.error('Email API error:', emailResult);
-            throw new Error(`Failed to send email notifications: ${emailResult.error || 'Unknown error'}`);
+            throw new Error(`Failed to send email notifications: ${emailResult?.error || 'Unknown error'}`);
           }
 
           console.log('Email notifications sent successfully');

@@ -11,6 +11,10 @@ const HAL900Hero = dynamic(() => import("@/components/HAL900-Hero"), {
   ssr: true,
 });
 
+const HAL900OperationsService = dynamic(() => import("@/components/HAL900-OperationsService"), {
+  ssr: true,
+});
+
 const HAL900ScaleWithPrecision = dynamic(
   () => import("@/components/HAL900-ScaleWithPrecision"),
   { ssr: true }
@@ -61,6 +65,7 @@ export default function Home() {
       <HAL900Header />
       <HAL900Hero onLearnMore={handleLearnMore} />
       <div className={`transition-opacity duration-500 ${allowScroll ? 'opacity-100' : 'opacity-0'}`}>
+        <HAL900OperationsService />
         <HAL900ScaleWithPrecision />
         <div id="framework-diagram">
           <HAL900FrameworkDiagram />

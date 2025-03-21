@@ -31,22 +31,10 @@ const HAL900BookingInterface = dynamic(
 );
 
 export default function Home() {
-  const [allowScroll, setAllowScroll] = useState(false);
-
-  useEffect(() => {
-    // Prevent scrolling initially
-    document.body.style.overflow = 'hidden';
-    
-    return () => {
-      // Cleanup: restore scrolling when component unmounts
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
+  const [showContent, setShowContent] = useState(false);
 
   const handleLearnMore = () => {
-    // Enable scrolling
-    document.body.style.overflow = 'unset';
-    setAllowScroll(true);
+    setShowContent(true);
     
     // Scroll to framework diagram
     const element = document.getElementById("framework-diagram");
@@ -61,10 +49,10 @@ export default function Home() {
   };
 
   return (
-    <main className={`min-h-screen bg-scailer-dark ${!allowScroll ? 'max-h-screen' : ''}`}>
+    <main className="min-h-[300vh] bg-[#2a2a2a]">
       <HAL900Header />
       <HAL900Hero onLearnMore={handleLearnMore} />
-      <div className={`transition-opacity duration-500 ${allowScroll ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`transition-opacity duration-700 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
         <HAL900OperationsService />
         <HAL900ScaleWithPrecision />
         <div id="framework-diagram">

@@ -37,7 +37,7 @@ export default function RootLayout({
     <html lang="en" className={cn("antialiased", inter.variable)}>
       <body className={cn(
         inter.className,
-        "min-h-screen bg-scailer-dark text-white",
+        "min-h-screen bg-[#2a2a2a] text-white",
         "flex flex-col antialiased",
         "selection:bg-scailer-green selection:text-white"
       )}>

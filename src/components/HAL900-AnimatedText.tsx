@@ -91,6 +91,76 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
     }
   }, [startAnimation])
 
+  useEffect(() => {
+    const style = document.createElement("style")
+    style.textContent = `
+      .shimmer-button {
+        position: relative;
+        background: #00FF7F;
+        transition: all 0.3s ease;
+        border: none;
+        isolation: isolate;
+      }
+
+      .shimmer-button::before {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        background: #00FF7F;
+        border-radius: 8px;
+        z-index: -1;
+        box-shadow: 0 0 15px rgba(0, 255, 127, 0.5);
+      }
+
+      .shimmer-button::after {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        border-radius: 8px;
+        background: linear-gradient(90deg, 
+          transparent 0%,
+          transparent 35%,
+          rgba(255, 255, 255, 0.9) 50%,
+          transparent 65%,
+          transparent 100%
+        );
+        background-size: 400% 100%;
+        -webkit-mask: 
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 3px;
+        animation: borderMove 8s linear infinite;
+      }
+
+      @keyframes borderMove {
+        0% {
+          background-position: 400% 0;
+        }
+        100% {
+          background-position: -400% 0;
+        }
+      }
+
+      .shimmer-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .shimmer-button:hover::before {
+        box-shadow: 0 0 20px rgba(0, 255, 127, 0.7);
+      }
+
+      .shimmer-button:active {
+        transform: translateY(0);
+      }
+    `
+    document.head.appendChild(style)
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
+
   const handleClick = () => {
     onLearnMore();
   };
@@ -129,7 +199,7 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
           >
             {showButton && (
               <Button
-                className="bg-[#00FF7F] hover:bg-[#00FF7F]/90 text-black text-base px-6 py-3 font-medium rounded-lg"
+                className="shimmer-button text-black text-base px-6 py-3 font-medium rounded-lg"
                 onClick={handleClick}
               >
                 Learn more

@@ -322,7 +322,7 @@ const HAL900FrameworkDiagram = () => {
   }, []);
 
   return (
-    <section className="py-24 md:py-32 bg-scailer-dark relative">
+    <section className="py-24 md:py-32 bg-[#2a2a2a] relative">
       <div className="container mx-auto px-4">
         {/* Title Section */}
         <motion.div
@@ -426,7 +426,7 @@ const HAL900FrameworkDiagram = () => {
                     }
                   }}
                 >
-                  <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer transition-transform hover:scale-110">
+                  <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-[#1a1a1a] hover:bg-[#252525] shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110">
                     <ColoredIcon icon={Icon} color={iconColors[index]} />
                   </div>
                 </div>

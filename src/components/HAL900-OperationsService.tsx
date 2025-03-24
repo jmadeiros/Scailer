@@ -159,6 +159,7 @@ export default function HAL900OperationsService() {
   const opsContentRef = useRef<HTMLDivElement>(null)
   const implementationContentRef = useRef<HTMLDivElement>(null)
   const whySpeedMattersRef = useRef<HTMLDivElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
 
   // All state defined at the top level
   const [expandedStep, setExpandedStep] = useState<number | null>(null)
@@ -269,8 +270,29 @@ export default function HAL900OperationsService() {
     }),
   }
 
+  useEffect(() => {
+    if (headingRef.current) {
+      // Log the heading's content structure
+      console.log('Heading Debug:', {
+        rawHTML: headingRef.current.innerHTML,
+        textContent: headingRef.current.textContent,
+        childNodes: Array.from(headingRef.current.childNodes).map(node => ({
+          type: node.nodeType,
+          nodeValue: node.nodeValue,
+          nodeName: node.nodeName
+        })),
+        computedStyle: {
+          lineHeight: window.getComputedStyle(headingRef.current).lineHeight,
+          width: window.getComputedStyle(headingRef.current).width,
+          display: window.getComputedStyle(headingRef.current).display,
+          whiteSpace: window.getComputedStyle(headingRef.current).whiteSpace
+        }
+      });
+    }
+  }, []);
+
   return (
-    <section id="optimized-section" className="w-full bg-[#222222] py-20 pb-40 mt-12 overflow-hidden">
+    <section id="optimized-section" className="w-full bg-[#2a2a2a] py-20 pb-0 mt-0 overflow-hidden">
       <div className="container mx-auto px-4 relative max-w-6xl">
         {/* Background elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#25D366]/5 rounded-full blur-3xl -z-10 opacity-50"></div>
@@ -285,17 +307,12 @@ export default function HAL900OperationsService() {
             transition={{ duration: 0.5 }}
             className="text-center mb-24"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-16 leading-tight max-w-4xl mx-auto">
-              The difference between <span className="text-[#25D366]">thriving</span> and{" "}
-              <br className="hidden md:block" />
-              <span className="text-gray-500">stagnant</span> isn't effort—it's strategy.
+            <h2 ref={headingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-16 leading-tight max-w-6xl mx-auto text-center whitespace-pre-line">
+              {'We build growth systems for businesses that work\nwithout you'}
             </h2>
 
             <p className="text-gray-300 text-xl mb-24 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
-              <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential
-              growth, but with countless tools available, the path forward often feels overwhelming. You see the
-              potential, but without a clear strategy,{" "}
-              <span className="text-gray-500 font-bold">opportunity quickly turns into complexity</span>.
+              <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential growth, but with countless tools available, the path forward often feels overwhelming. You see the potential, but without a clear strategy, <span className="text-gray-500 font-bold">opportunity quickly turns into complexity</span>.
             </p>
 
             <div className="mb-28 max-w-3xl mx-auto text-center">
@@ -702,7 +719,7 @@ export default function HAL900OperationsService() {
                     {/* Implementation Button */}
                     <div className="text-center mb-16 mt-8">
                       <p className="text-[#25D366] text-3xl font-bold mb-12 tracking-tight">
-                        When you're ready to scale, we're the team you call.
+                        Still hiring people? Let's automate that.
                       </p>
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                         <Button className="bg-[#25D366] hover:bg-[#128C7E] text-black font-bold text-lg px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-[#25D366]/20">

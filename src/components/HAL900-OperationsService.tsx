@@ -307,11 +307,14 @@ export default function HAL900OperationsService() {
             transition={{ duration: 0.5 }}
             className="text-center mb-24"
           >
-            <h2 ref={headingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-16 leading-tight max-w-6xl mx-auto text-center">
-              The difference between thriving and surviving is
-              <br />
-              <span className="text-[#25D366]">automation</span>
-            </h2>
+            <div className="container mx-auto px-4">
+              <h2 ref={headingRef} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-16 leading-tight">
+                <div className="flex flex-col items-center">
+                  <div className="inline-flex whitespace-pre">The difference between <span className="text-[#25D366]">potential</span> &</div>
+                  <div className="inline-flex whitespace-pre mt-2"><span className="text-gray-400">progress</span>? Strategy that knows the <span className="text-[#25D366]">scale</span> of things</div>
+                </div>
+              </h2>
+            </div>
 
             <p className="text-gray-300 text-xl mb-24 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
               <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential growth, but with countless tools available, the path forward often feels overwhelming. You see the potential, but without a clear strategy, <span className="text-gray-500 font-bold">opportunity quickly turns into complexity</span>.
@@ -678,7 +681,7 @@ export default function HAL900OperationsService() {
                       <p className="text-[#25D366] text-xl font-bold mb-2">
                         "We achieved in 2 weeks what would have taken us 3 months internally."
                       </p>
-                      <p className="text-white text-sm mb-12">— Client Testimonial</p>
+                      <p className="text-white text-sm mb-12">— Nima S, Women's Faith Forum</p>
                     </motion.div>
 
                     {/* What sets us apart section */}

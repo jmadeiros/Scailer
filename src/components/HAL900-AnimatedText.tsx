@@ -53,31 +53,24 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
 
   // Group words into three sections with their respective delays
   const sections = [
-    // Section 1: "We automate, optimize, and accelerate"
+    // Section 1: "We Build AI-Powered"
     [
       { word: "We", delay: 0, isAlliteration: false, isBold: false },
-      { word: "automate,", delay: 0.25, isAlliteration: true, isBold: true },
-      { word: "optimize,", delay: 0.45, isAlliteration: true, isBold: true },
-      { word: "and", delay: 0.65, isAlliteration: false, isBold: false },
-      { word: "accelerate", delay: 0.8, isAlliteration: true, isBold: true },
+      { word: "Build", delay: 0.25, isAlliteration: true, isBold: true },
+      { word: "AI-Powered", delay: 0.45, isAlliteration: true, isBold: true },
     ],
-    // Section 2: "how you attract, convert, and retain"
+    // Section 2: "Systems to Help"
     [
-      { word: "how", delay: 1.4, isAlliteration: false, isBold: false },
-      { word: "you", delay: 1.4, isAlliteration: false, isBold: false },
-      { word: "attract,", delay: 1.85, isAlliteration: true, isBold: true },
-      { word: "convert,", delay: 2.05, isAlliteration: true, isBold: true },
-      { word: "and", delay: 2.25, isAlliteration: false, isBold: false },
-      { word: "retain", delay: 2.4, isAlliteration: true, isBold: true },
+      { word: "Systems", delay: 1.4, isAlliteration: true, isBold: true },
+      { word: "to", delay: 1.6, isAlliteration: false, isBold: false },
+      { word: "Help", delay: 1.8, isAlliteration: true, isBold: true },
     ],
-    // Section 3: "— scaling smarter, faster, and stronger"
+    // Section 3: "your Company Scale Effortlessly"
     [
-      { word: "—", delay: 3.0, isAlliteration: false, isBold: false },
-      { word: "scaling", delay: 3.0, isAlliteration: false, isBold: false },
-      { word: "smarter,", delay: 3.45, isAlliteration: true, isBold: true },
-      { word: "faster,", delay: 3.65, isAlliteration: true, isBold: true },
-      { word: "and", delay: 3.85, isAlliteration: false, isBold: false },
-      { word: "stronger.", delay: 4.0, isAlliteration: true, isBold: true },
+      { word: "your", delay: 2.4, isAlliteration: false, isBold: false },
+      { word: "Company", delay: 2.6, isAlliteration: false, isBold: false },
+      { word: "Scale", delay: 2.8, isAlliteration: true, isBold: true },
+      { word: "Effortlessly", delay: 3.0, isAlliteration: true, isBold: true },
     ],
   ]
 

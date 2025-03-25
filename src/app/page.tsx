@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
+import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 
 const HAL900Header = dynamic(() => import("@/components/HAL900-Header"), {
   ssr: true,
@@ -51,14 +52,24 @@ export default function Home() {
   return (
     <main className="min-h-[300vh] bg-[#2a2a2a]">
       <HAL900Header />
-      <HAL900Hero onLearnMore={handleLearnMore} />
+      <ScrollAnimationWrapper>
+        <HAL900Hero onLearnMore={handleLearnMore} />
+      </ScrollAnimationWrapper>
       <div className={`transition-opacity duration-700 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-        <HAL900OperationsService />
-        <HAL900ScaleWithPrecision />
+        <ScrollAnimationWrapper delay={0.2}>
+          <HAL900OperationsService />
+        </ScrollAnimationWrapper>
+        <ScrollAnimationWrapper delay={0.3}>
+          <HAL900ScaleWithPrecision />
+        </ScrollAnimationWrapper>
         <div id="framework-diagram">
-          <HAL900FrameworkDiagram />
+          <ScrollAnimationWrapper delay={0.4}>
+            <HAL900FrameworkDiagram />
+          </ScrollAnimationWrapper>
         </div>
-        <HAL900BookingInterface />
+        <ScrollAnimationWrapper delay={0.5}>
+          <HAL900BookingInterface />
+        </ScrollAnimationWrapper>
       </div>
     </main>
   );

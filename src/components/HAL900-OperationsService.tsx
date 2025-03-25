@@ -307,8 +307,10 @@ export default function HAL900OperationsService() {
             transition={{ duration: 0.5 }}
             className="text-center mb-24"
           >
-            <h2 ref={headingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-16 leading-tight max-w-6xl mx-auto text-center whitespace-pre-line">
-              {'We build growth systems for businesses that work\nwithout you'}
+            <h2 ref={headingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-16 leading-tight max-w-6xl mx-auto text-center">
+              The difference between thriving and surviving is
+              <br />
+              <span className="text-[#25D366]">automation</span>
             </h2>
 
             <p className="text-gray-300 text-xl mb-24 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">

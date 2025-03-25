@@ -268,8 +268,8 @@ export default function HAL900AuditForm() {
             <User className="w-2.5 h-2.5 md:w-4 md:h-4 text-scailer-green" />
           </div>
           <div>
-            <h2 className="text-xs md:text-base text-white font-medium">Get Your Free Growth Roadmap</h2>
-            <p className="text-[10px] md:text-sm text-gray-400">Tailored strategies for rapid, sustainable growth</p>
+            <h2 className="text-xs md:text-base text-white font-medium">Get Your Free Scaling Audit</h2>
+            <p className="text-[10px] md:text-sm text-gray-400">Expert analysis of your scaling potential and opportunities</p>
           </div>
         </div>
 
@@ -436,12 +436,12 @@ export default function HAL900AuditForm() {
                   {loading ? (
                     <>
                       <Loader2 className="mr-1 md:mr-2 h-2.5 w-2.5 md:h-4 md:w-4 animate-spin" />
-                      <span>Creating your roadmap...</span>
+                      <span>Creating your scaling audit...</span>
                     </>
                   ) : (
                     <div className="flex items-center justify-center gap-1 md:gap-2">
-                      <span className="hidden md:inline">Get Your Free Growth Roadmap</span>
-                      <span className="md:hidden">Get Roadmap</span>
+                      <span className="hidden md:inline">Get Your Free Scaling Audit</span>
+                      <span className="md:hidden">Get Scaling Audit</span>
                       <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                     </div>
                   )}

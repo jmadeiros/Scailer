@@ -7,7 +7,7 @@ const debug = (...args) => {
 };
 
 const nextConfig = {
-  // Configure for static export
+  // Configure for static export in all environments
   output: 'export',
   distDir: 'out',
   
@@ -30,11 +30,6 @@ const nextConfig = {
   env: {
     GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
     GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
-  },
-
-  // Exclude API routes from static export
-  experimental: {
-    appDir: true,
   },
 
   // Disable server-side API routes in static export

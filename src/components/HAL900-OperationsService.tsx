@@ -380,19 +380,17 @@ export default function HAL900OperationsService() {
             </div>
           </motion.div>
 
-          <div className="relative min-h-[1500px] h-[1500px] overflow-hidden overflow-x-hidden" ref={containerRef}>
-            {/* Strategic Growth Section */}
-            <AnimatePresence mode="popLayout" custom={direction}>
+          <div className="relative overflow-hidden" ref={containerRef}>
+            <AnimatePresence mode="wait">
               {activeSection === "strategic" && (
                 <motion.div
                   ref={strategicRef}
                   key="strategic"
-                  custom={direction}
-                  variants={containerVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  className="absolute top-0 left-0 w-full"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full"
                 >
                   {/* Header that slides in with the section */}
                   <motion.div className="text-center mb-12">
@@ -502,17 +500,15 @@ export default function HAL900OperationsService() {
                 </motion.div>
               )}
 
-              {/* Operations as a Service Section */}
               {activeSection === "ops" && (
                 <motion.div
                   ref={opsRef}
                   key="ops"
-                  custom={direction}
-                  variants={containerVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  className="absolute top-0 left-0 w-full"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full"
                 >
                   {/* Header that slides in with the section */}
                   <motion.div className="text-center mb-12">
@@ -643,17 +639,15 @@ export default function HAL900OperationsService() {
                 </motion.div>
               )}
 
-              {/* Rapid Implementation Section */}
               {activeSection === "implementation" && (
                 <motion.div
                   ref={implementationRef}
                   key="implementation"
-                  custom={direction}
-                  variants={containerVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  className="absolute top-0 left-0 w-full"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full"
                 >
                   {/* Header that slides in with the section */}
                   <motion.div className="text-center mb-12">

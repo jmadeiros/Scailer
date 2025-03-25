@@ -32,13 +32,39 @@ const HAL900BookingInterface = dynamic(
 );
 
 export default function Home() {
-  const [showContent, setShowContent] = useState(false);
+  const [showContent, setShowContent] = useState(true);
 
   const handleLearnMore = () => {
-    setShowContent(true);
-    
-    // Scroll to framework diagram
-    const element = document.getElementById("framework-diagram");
+    // Scroll to operations service
+    const element = document.getElementById("operations-service");
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.offsetTop;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  const handleBookMeeting = () => {
+    // Add delay before scrolling
+    setTimeout(() => {
+      // Scroll to booking calendar
+      const element = document.getElementById("booking-interface");
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.offsetTop;
+        window.scrollTo({
+          top: elementPosition - offset,
+          behavior: "smooth"
+        });
+      }
+    }, 300); // 300ms delay
+  };
+
+  const handleTryForFree = () => {
+    const element = document.getElementById("scale-with-precision");
     if (element) {
       const offset = 80;
       const elementPosition = element.offsetTop;
@@ -51,16 +77,18 @@ export default function Home() {
 
   return (
     <main className="min-h-[300vh] bg-[#2a2a2a]">
-      <HAL900Header />
+      <HAL900Header onTryForFree={handleTryForFree} />
       <ScrollAnimationWrapper>
-        <HAL900Hero onLearnMore={handleLearnMore} />
+        <HAL900Hero onLearnMore={handleLearnMore} onBookMeeting={handleBookMeeting} />
       </ScrollAnimationWrapper>
-      <div className={`transition-opacity duration-700 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-        <ScrollAnimationWrapper delay={0.2}>
-          <HAL900OperationsService />
-        </ScrollAnimationWrapper>
-        <div className="mb-40">
-          <ScrollAnimationWrapper delay={0.3}>
+      <div className="transition-opacity duration-700 opacity-100">
+        <div id="operations-service" className="mt-24">
+          <ScrollAnimationWrapper delay={0.6}>
+            <HAL900OperationsService />
+          </ScrollAnimationWrapper>
+        </div>
+        <div className="mt-40 mb-40" id="scale-with-precision">
+          <ScrollAnimationWrapper delay={1.8}>
             <HAL900ScaleWithPrecision />
           </ScrollAnimationWrapper>
         </div>
@@ -69,9 +97,11 @@ export default function Home() {
             <HAL900FrameworkDiagram />
           </ScrollAnimationWrapper>
         </div>
-        <ScrollAnimationWrapper delay={0.5}>
-          <HAL900BookingInterface />
-        </ScrollAnimationWrapper>
+        <div id="booking-interface">
+          <ScrollAnimationWrapper delay={0.5}>
+            <HAL900BookingInterface />
+          </ScrollAnimationWrapper>
+        </div>
       </div>
     </main>
   );

@@ -168,6 +168,7 @@ export default function HAL900OperationsService() {
   const [prevSection, setPrevSection] = useState<"strategic" | "ops" | "implementation">("strategic")
   const [direction, setDirection] = useState<"forward" | "backward">("forward")
   const [resetScroll, setResetScroll] = useState(false)
+  const [contentHeight, setContentHeight] = useState<number>(0)
 
   // All hooks called unconditionally at the top level
   const { scrollYProgress } = useScroll({
@@ -242,6 +243,23 @@ export default function HAL900OperationsService() {
     // No automatic scrolling
   }
 
+  // Update content height when section changes
+  useEffect(() => {
+    const updateHeight = () => {
+      if (activeSection === "strategic" && strategicRef.current) {
+        setContentHeight(strategicRef.current.offsetHeight);
+      } else if (activeSection === "ops" && opsRef.current) {
+        setContentHeight(opsRef.current.offsetHeight);
+      } else if (activeSection === "implementation" && implementationRef.current) {
+        setContentHeight(implementationRef.current.offsetHeight);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, [activeSection]);
+
   // Animation variants for consistent scrolling in both directions
   const containerVariants = {
     enter: (direction: "forward" | "backward") => ({
@@ -292,7 +310,7 @@ export default function HAL900OperationsService() {
   }, []);
 
   return (
-    <section id="optimized-section" className="w-full bg-[#2a2a2a] py-20 pb-0 mt-0 overflow-hidden">
+    <section id="optimized-section" className="w-full bg-[#222222] py-20 pb-40 mt-12 overflow-hidden">
       <div className="container mx-auto px-4 relative max-w-6xl">
         {/* Background elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#25D366]/5 rounded-full blur-3xl -z-10 opacity-50"></div>
@@ -307,17 +325,17 @@ export default function HAL900OperationsService() {
             transition={{ duration: 0.5 }}
             className="text-center mb-24"
           >
-            <div className="container mx-auto px-4">
-              <h2 ref={headingRef} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-16 leading-tight">
-                <div className="flex flex-col items-center">
-                  <div className="inline-flex whitespace-pre">The difference between <span className="text-[#25D366]">potential</span> &</div>
-                  <div className="inline-flex whitespace-pre mt-2"><span className="text-gray-400">progress</span>? Strategy that knows the <span className="text-[#25D366]">scale</span> of things</div>
-                </div>
-              </h2>
-            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-16 leading-tight max-w-4xl mx-auto">
+              The difference between <span className="text-[#25D366]">scaling</span> and{" "}
+              <br className="hidden md:block" />
+              <span className="text-gray-500">stalling</span> isn't effort—it's strategy.
+            </h2>
 
             <p className="text-gray-300 text-xl mb-24 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
-              <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential growth, but with countless tools available, the path forward often feels overwhelming. You see the potential, but without a clear strategy, <span className="text-gray-500 font-bold">opportunity quickly turns into complexity</span>.
+              <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential
+              growth, but with countless tools available, the path forward often feels overwhelming. You see the
+              potential, but without a clear strategy,{" "}
+              <span className="text-gray-500 font-bold">opportunity quickly turns into complexity</span>.
             </p>
 
             <div className="mb-28 max-w-3xl mx-auto text-center">
@@ -380,16 +398,22 @@ export default function HAL900OperationsService() {
             </div>
           </motion.div>
 
-          <div className="relative overflow-hidden" ref={containerRef}>
-            <AnimatePresence mode="wait">
+          {/* Content container with dynamic height */}
+          <div 
+            className="relative overflow-hidden transition-all duration-300"
+            ref={containerRef}
+            style={{ minHeight: contentHeight }}
+          >
+            <AnimatePresence mode="popLayout" custom={direction}>
               {activeSection === "strategic" && (
                 <motion.div
                   ref={strategicRef}
                   key="strategic"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5 }}
+                  custom={direction}
+                  variants={containerVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
                   className="w-full"
                 >
                   {/* Header that slides in with the section */}
@@ -504,10 +528,11 @@ export default function HAL900OperationsService() {
                 <motion.div
                   ref={opsRef}
                   key="ops"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5 }}
+                  custom={direction}
+                  variants={containerVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
                   className="w-full"
                 >
                   {/* Header that slides in with the section */}
@@ -643,10 +668,11 @@ export default function HAL900OperationsService() {
                 <motion.div
                   ref={implementationRef}
                   key="implementation"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5 }}
+                  custom={direction}
+                  variants={containerVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
                   className="w-full"
                 >
                   {/* Header that slides in with the section */}
@@ -732,6 +758,16 @@ export default function HAL900OperationsService() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Spacer that adjusts based on content height */}
+          <motion.div
+            className="h-24 md:h-32 lg:h-40"
+            initial={false}
+            animate={{ 
+              marginTop: "4rem"
+            }}
+            transition={{ duration: 0.3 }}
+          />
         </div>
       </div>
     </section>

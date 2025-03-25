@@ -7,9 +7,11 @@ const debug = (...args) => {
 };
 
 const nextConfig = {
-  // Configure for static export in all environments
-  output: 'export',
-  distDir: 'out',
+  // Configure for static export only in production
+  ...(process.env.NODE_ENV === 'production' && {
+    output: 'export',
+    distDir: 'out',
+  }),
   
   // Disable image optimization for static export
   images: {

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import HAL900AnimatedText from "./HAL900-AnimatedText";
+import HAL900BookingIconAnimation from "./HAL900-BookingIconAnimation";
 
 const AnimatedHeading = () => {
   const [displayText, setDisplayText] = useState("");
@@ -202,15 +203,22 @@ const AnimatedHeading = () => {
 
 interface HAL900HeroProps {
   onLearnMore: () => void;
+  onBookMeeting: () => void;
 }
 
-const HAL900Hero = ({ onLearnMore }: HAL900HeroProps) => {
-  const [startAnimation, setStartAnimation] = useState(false);
+const HAL900Hero = ({ onLearnMore, onBookMeeting }: HAL900HeroProps) => {
+  const [startLearnMoreAnimation, setStartLearnMoreAnimation] = useState(false);
+  const [startBookingAnimation, setStartBookingAnimation] = useState(false);
 
   useEffect(() => {
+    // Start Learn More animation immediately
+    setStartLearnMoreAnimation(true);
+    
+    // Start booking animation with delay
     const timer = setTimeout(() => {
-      setStartAnimation(true);
+      setStartBookingAnimation(true);
     }, 500);
+    
     return () => clearTimeout(timer);
   }, []);
 
@@ -220,13 +228,20 @@ const HAL900Hero = ({ onLearnMore }: HAL900HeroProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1.2, delay: 0.3 }}
           className="mb-6 md:mb-8"
         >
           <AnimatedHeading />
         </motion.div>
       </div>
-      <HAL900AnimatedText startAnimation={startAnimation} onLearnMore={onLearnMore} />
+      <HAL900AnimatedText startAnimation={startLearnMoreAnimation} onLearnMore={onLearnMore} />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, delay: 2.4 }}
+      >
+        <HAL900BookingIconAnimation startAnimation={startBookingAnimation} onBookMeeting={onBookMeeting} />
+      </motion.div>
     </section>
   );
 };

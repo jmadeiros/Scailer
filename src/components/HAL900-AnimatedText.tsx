@@ -55,22 +55,22 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
   const sections = [
     // Section 1: "We Build AI-Powered"
     [
-      { word: "We", delay: 0, isAlliteration: false, isBold: false },
-      { word: "Build", delay: 0.25, isAlliteration: true, isBold: true },
-      { word: "AI-Powered", delay: 0.45, isAlliteration: true, isBold: true },
+      { word: "We", delay: 1.2, isAlliteration: false, isBold: false },
+      { word: "Build", delay: 1.4, isAlliteration: true, isBold: true },
+      { word: "AI-Powered", delay: 1.6, isAlliteration: true, isBold: true },
     ],
     // Section 2: "Systems to Help"
     [
-      { word: "Systems", delay: 1.4, isAlliteration: true, isBold: true },
-      { word: "to", delay: 1.6, isAlliteration: false, isBold: false },
-      { word: "Help", delay: 1.8, isAlliteration: true, isBold: true },
+      { word: "Systems", delay: 2.0, isAlliteration: true, isBold: true },
+      { word: "to", delay: 2.2, isAlliteration: false, isBold: false },
+      { word: "Help", delay: 2.4, isAlliteration: true, isBold: true },
     ],
     // Section 3: "your Company Scale Effortlessly"
     [
-      { word: "your", delay: 2.4, isAlliteration: false, isBold: false },
-      { word: "Company", delay: 2.6, isAlliteration: false, isBold: false },
-      { word: "Scale", delay: 2.8, isAlliteration: true, isBold: true },
-      { word: "Effortlessly", delay: 3.0, isAlliteration: true, isBold: true },
+      { word: "your", delay: 2.8, isAlliteration: false, isBold: false },
+      { word: "Company", delay: 3.0, isAlliteration: false, isBold: false },
+      { word: "Scale", delay: 3.2, isAlliteration: true, isBold: true },
+      { word: "Effortlessly", delay: 3.4, isAlliteration: true, isBold: true },
     ],
   ]
 
@@ -162,7 +162,7 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: startAnimation ? 1 : 0 }}
-      transition={{ duration: 0.8, delay: 0.5 }}
+      transition={{ duration: 1.2, delay: 1.0 }}
       className="max-w-4xl mx-auto px-4 text-center mt-24"
     >
       <div className="min-h-[180px] flex flex-col items-center justify-center max-w-[95%] mx-auto">

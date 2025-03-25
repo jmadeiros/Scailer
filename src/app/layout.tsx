@@ -23,7 +23,7 @@ debug('Font configuration complete:', {
 });
 
 export const metadata: Metadata = {
-  title: "Scailer - Business Scaling Service",
+  title: "Scailer | Your Tech-Powered Growth Partner ⚡",
   description: "Scale your business with precision using Scailer's innovative solutions.",
 };
 

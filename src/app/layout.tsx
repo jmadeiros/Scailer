@@ -23,8 +23,8 @@ debug('Font configuration complete:', {
 });
 
 export const metadata: Metadata = {
-  title: "Scailer | Your Tech-Powered Growth Partner ⚡",
-  description: "Scale your business with precision using Scailer's innovative solutions.",
+  title: "Your New Growth Accelerator",
+  description: "Automate and scale your business operations with AI-powered solutions.",
 };
 
 export default function RootLayout({

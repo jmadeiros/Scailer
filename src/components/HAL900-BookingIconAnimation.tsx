@@ -121,7 +121,7 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
               color: fillPercentage > 40 || isClicked ? "#2a2a2a" : "#00FF7F",
             }}
           >
-            Book a meeting
+            Let's chat
           </span>
         </button>
       </div>

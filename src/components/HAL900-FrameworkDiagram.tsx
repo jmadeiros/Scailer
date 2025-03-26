@@ -1,10 +1,69 @@
 "use client"
 
-import { Database, Cloud, Zap, Network, Cpu, Server, Shield, ArrowRight } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { Modal } from "@/components/ui/modal"
+
+// Define SVG props interface
+interface SVGProps extends React.SVGProps<SVGSVGElement> {
+  color?: string;
+  className?: string;
+}
+
+// Simple SVG icons instead of Lucide icons
+const IconBarChart = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="12" y1="20" x2="12" y2="10"></line>
+    <line x1="18" y1="20" x2="18" y2="4"></line>
+    <line x1="6" y1="20" x2="6" y2="16"></line>
+  </svg>
+);
+
+const IconSettings = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="3"></circle>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+  </svg>
+);
+
+const IconZap = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+  </svg>
+);
+
+const IconUsers = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </svg>
+);
+
+const IconUser = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+);
+
+const IconGlobe = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="2" y1="12" x2="22" y2="12"></line>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+  </svg>
+);
+
+const IconArrowRight = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+    <polyline points="12 5 19 12 12 19"></polyline>
+  </svg>
+);
 
 const iconColors = ["#9CA3AF", "#0EA5E9", "#22C55E", "#EF4444", "#EC4899", "#F59E0B"]
 const timelineColor = "#8B5CF6"
@@ -77,21 +136,37 @@ const FeatureBox = ({
   icon: Icon,
   title,
   description,
+  details,
   label,
   isActive,
   color,
   isLeft,
+  isModalOpen,
+  setActiveModal,
+  featureIndex,
 }: {
   icon: any
   title: string
   description: string
+  details: string[]
   label: string
   isActive: boolean
   color: string
   isLeft: boolean
+  isModalOpen: boolean
+  setActiveModal: React.Dispatch<React.SetStateAction<number | null>>
+  featureIndex: number
 }) => {
   const ref = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Add a click handler that stops propagation
+  const handleLearnMoreClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveModal(featureIndex);
+  };
 
   return (
     <motion.div
@@ -103,13 +178,15 @@ const FeatureBox = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <motion.div className="relative overflow-hidden" transition={{ duration: 0.3 }}>
+      <motion.div className="relative overflow-visible" transition={{ duration: 0.3 }}>
+        {/* Feature Title and Icon section */}
         <motion.div
           className={`flex items-center gap-2 md:gap-3 mb-2 md:mb-3 ${isLeft ? "justify-end" : ""}`}
           initial={{ y: 0 }}
           animate={{ y: isHovered ? -2 : 0 }}
           transition={{ duration: 0.2 }}
         >
+          {/* Icon left side rendering */}
           {!isLeft && (
             <motion.div
               className="relative"
@@ -131,6 +208,7 @@ const FeatureBox = ({
           <div>
             <span className="text-[10px] md:text-xs font-medium text-gray-400 uppercase tracking-wider">{label}</span>
           </div>
+          {/* Icon right side rendering */}
           {isLeft && (
             <motion.div
               className="relative"
@@ -173,9 +251,11 @@ const FeatureBox = ({
           initial={{ x: 0 }}
           animate={{ x: isHovered ? (isLeft ? -3 : 3) : 0 }}
           transition={{ duration: 0.2 }}
+          className="relative"
         >
-          <Link
-            href="#"
+          <button
+            ref={buttonRef}
+            onClick={handleLearnMoreClick}
             className={`inline-flex items-center text-xs md:text-sm font-medium transition-colors relative group ${
               isLeft ? "flex-row-reverse" : ""
             }`}
@@ -183,7 +263,7 @@ const FeatureBox = ({
           >
             Learn more
             <motion.div animate={isHovered ? { x: isLeft ? -5 : 5 } : { x: 0 }} transition={{ duration: 0.2 }}>
-              <ArrowRight className={`h-3 w-3 md:h-4 md:w-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
+              <IconArrowRight className={`h-3 w-3 md:h-4 md:w-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
             </motion.div>
             <motion.div
               className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
@@ -192,10 +272,21 @@ const FeatureBox = ({
               animate={{ scaleX: isHovered ? 1 : 0 }}
               transition={{ duration: 0.3 }}
             />
-          </Link>
+          </button>
         </motion.div>
       </motion.div>
       <div className="h-8 md:h-12" />
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setActiveModal(null)}
+          title={title}
+          description={description}
+          details={details}
+          buttonRef={buttonRef}
+          isLeft={isLeft}
+        />
+      )}
     </motion.div>
   )
 }
@@ -214,6 +305,7 @@ const HAL900FrameworkDiagram = () => {
   const containerRef = useRef(null)
   const timelineRef = useRef(null)
   const [activeFeature, setActiveFeature] = useState(0)
+  const [activeModal, setActiveModal] = useState<number | null>(null)
   const featureRefs = useRef<(HTMLDivElement | null)[]>([])
   const [isMounted, setIsMounted] = useState(false)
 
@@ -227,40 +319,76 @@ const HAL900FrameworkDiagram = () => {
 
   const features = [
     {
-      icon: Database,
+      icon: IconBarChart,
       label: "Data-Driven Lead Acquisition",
-      title: "Smart Lead Targeting",
+      title: "Personalised Lead Generation",
       description: "Uncover high-value leads with advanced data scraping and predictive targeting.",
+      details: [
+        "AI-powered lead scoring and qualification to identify your ideal prospects",
+        "Advanced data enrichment to build comprehensive prospect profiles",
+        "Automated outreach sequence optimization based on engagement metrics",
+        "Real-time market insights and competitor analysis for targeted campaigns"
+      ]
     },
     {
-      icon: Cloud,
+      icon: IconSettings,
       label: "Process Automation",
-      title: "Supercharge Your Workflow",
+      title: "Workflow Management Systems",
       description: "Streamline tasks, boost efficiency, and enhance customer interactions with intelligent automation.",
+      details: [
+        "Custom workflow automation tailored to your business processes",
+        "Integration with existing tools and platforms for seamless operations",
+        "Smart task prioritization and resource allocation",
+        "Automated reporting and performance analytics"
+      ]
     },
     {
-      icon: Zap,
+      icon: IconZap,
       label: "Marketing Optimisation",
       title: "Precision Marketing",
       description: "Elevate campaigns with data-driven targeting, content creation, and predictive analytics.",
+      details: [
+        "AI-driven content optimization and personalization",
+        "Multi-channel campaign automation and synchronization",
+        "Predictive analytics for campaign performance",
+        "Dynamic audience segmentation and targeting"
+      ]
     },
     {
-      icon: Network,
+      icon: IconUsers,
       label: "Customer Retention Systems",
-      title: "Loyalty on Autopilot",
+      title: "Project Management",
       description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
+      details: [
+        "Automated project timeline and milestone tracking",
+        "Resource allocation and capacity planning",
+        "Real-time collaboration and communication tools",
+        "Risk assessment and mitigation strategies"
+      ]
     },
     {
-      icon: Cpu,
+      icon: IconUser,
       label: "Smart Hiring & Optimisation",
-      title: "Build Your Dream Team",
+      title: "Hiring Systems",
       description: "Streamline hiring and workforce management with intelligent sourcing and optimisation.",
+      details: [
+        "AI-powered candidate screening and matching",
+        "Automated interview scheduling and follow-ups",
+        "Skills assessment and cultural fit analysis",
+        "Data-driven hiring decisions and insights"
+      ]
     },
     {
-      icon: Server,
+      icon: IconGlobe,
       label: "Website Design",
       title: "Websites That Convert",
       description: "Create high-performance, SEO-friendly sites optimized for conversions and user experience.",
+      details: [
+        "Conversion-focused design and user experience optimization",
+        "Mobile-first responsive development",
+        "Advanced SEO implementation and monitoring",
+        "Performance optimization and analytics integration"
+      ]
     },
   ]
 
@@ -409,25 +537,25 @@ const HAL900FrameworkDiagram = () => {
           {/* Icons at the same level with connection points */}
           <div className="absolute top-[10px] transform -translate-y-1/2 inset-x-0">
             <div className="flex justify-between items-center px-4 md:px-12">
-              {[Database, Cloud, Zap, Network, Cpu, Server].map((Icon, index) => (
+              {[IconBarChart, IconSettings, IconZap, IconUsers, IconUser, IconGlobe].map((Icon, index) => (
                 <div
                   key={index}
                   className={cn(
                     "relative",
                     index === 1 || index === 2 || index === 3 || index === 4 ? "mobile-icon-adjust" : ""
                   )}
-                  onClick={() => scrollToFeature(index)}
+                  onClick={() => setActiveFeature(index)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Scroll to ${features[index]?.label}`}
+                  aria-label={`View ${features[index]?.label}`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      scrollToFeature(index)
+                      setActiveFeature(index)
                     }
                   }}
                 >
                   <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-[#1a1a1a] hover:bg-[#252525] shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110">
-                    <ColoredIcon icon={Icon} color={iconColors[index]} />
+                    <Icon className="w-4 h-4 md:w-10 md:h-10" color={iconColors[index]} />
                   </div>
                 </div>
               ))}
@@ -488,6 +616,9 @@ const HAL900FrameworkDiagram = () => {
                     isLeft={index % 2 === 0}
                     isActive={index === activeFeature}
                     color={iconColors[index]}
+                    isModalOpen={activeModal === index}
+                    setActiveModal={setActiveModal}
+                    featureIndex={index}
                   />
                 </div>
               ))}

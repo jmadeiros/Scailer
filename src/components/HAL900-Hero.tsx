@@ -5,6 +5,33 @@ import { motion } from "framer-motion";
 import HAL900AnimatedText from "./HAL900-AnimatedText";
 import HAL900BookingIconAnimation from "./HAL900-BookingIconAnimation";
 
+const smoothScrollTo = (targetPosition: number, duration: number = 2500) => {
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+
+  const animation = (currentTime: number) => {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+
+    // Easing function for smoother acceleration and deceleration
+    const ease = (t: number) => {
+      return t < 0.5
+        ? 4 * t * t * t
+        : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    };
+
+    window.scrollTo(0, startPosition + distance * ease(progress));
+
+    if (progress < 1) {
+      requestAnimationFrame(animation);
+    }
+  };
+
+  requestAnimationFrame(animation);
+};
+
 const AnimatedHeading = () => {
   const [displayText, setDisplayText] = useState("");
   const texts = ["scailer", "a better way to"];
@@ -222,6 +249,19 @@ const HAL900Hero = ({ onLearnMore, onBookMeeting }: HAL900HeroProps) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleBookMeeting = () => {
+    // Add delay before scrolling
+    setTimeout(() => {
+      // Scroll to booking calendar
+      const element = document.getElementById("booking-interface");
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.offsetTop;
+        smoothScrollTo(elementPosition - offset);
+      }
+    }, 300); // 300ms delay
+  };
+
   return (
     <section className="min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 px-4 flex flex-col items-center justify-center bg-scailer-dark">
       <div className="text-center max-w-4xl mx-auto">
@@ -240,7 +280,7 @@ const HAL900Hero = ({ onLearnMore, onBookMeeting }: HAL900HeroProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 2.4 }}
       >
-        <HAL900BookingIconAnimation startAnimation={startBookingAnimation} onBookMeeting={onBookMeeting} />
+        <HAL900BookingIconAnimation startAnimation={startBookingAnimation} onBookMeeting={handleBookMeeting} />
       </motion.div>
     </section>
   );

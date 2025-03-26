@@ -147,6 +147,33 @@ const TimelineStep = ({
   )
 }
 
+const smoothScrollTo = (targetPosition: number, duration: number = 2500) => {
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+
+  const animation = (currentTime: number) => {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+
+    // Easing function for smoother acceleration and deceleration
+    const ease = (t: number) => {
+      return t < 0.5
+        ? 4 * t * t * t
+        : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    };
+
+    window.scrollTo(0, startPosition + distance * ease(progress));
+
+    if (progress < 1) {
+      requestAnimationFrame(animation);
+    }
+  };
+
+  requestAnimationFrame(animation);
+};
+
 export default function HAL900OperationsService() {
   // All refs defined at the top level
   const strategicRef = useRef<HTMLDivElement>(null)
@@ -746,8 +773,22 @@ export default function HAL900OperationsService() {
                       <p className="text-[#25D366] text-3xl font-bold mb-12 tracking-tight">
                         Still hiring people? Let's automate that.
                       </p>
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
-                        <Button className="bg-[#25D366] hover:bg-[#128C7E] text-black font-bold text-lg px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-[#25D366]/20">
+                      <motion.div 
+                        whileHover={{ scale: 1.05 }} 
+                        whileTap={{ scale: 0.95 }} 
+                        className="inline-block"
+                      >
+                        <Button 
+                          className="bg-[#25D366] hover:bg-[#128C7E] text-black font-bold text-lg px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-[#25D366]/20"
+                          onClick={() => {
+                            const element = document.getElementById("booking-interface");
+                            if (element) {
+                              const offset = 80;
+                              const elementPosition = element.offsetTop;
+                              smoothScrollTo(elementPosition - offset);
+                            }
+                          }}
+                        >
                           Start Your Implementation
                           <ArrowRight className="w-5 h-5" />
                         </Button>

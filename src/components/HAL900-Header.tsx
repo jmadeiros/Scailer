@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useState, useCallback } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, MessageSquare, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const smoothScroll = (targetPosition: number, duration: number = 1500) => {
@@ -40,6 +40,7 @@ interface HAL900HeaderProps {
 
 const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hasCopied, setHasCopied] = useState(false);
 
   const scrollToElement = useCallback((elementId: string) => {
     const element = document.getElementById(elementId);
@@ -49,6 +50,12 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
       smoothScroll(elementPosition - offset);
     }
   }, []);
+
+  const handleCopyEmail = async () => {
+    await navigator.clipboard.writeText('josh@scailer.io');
+    setHasCopied(true);
+    setTimeout(() => setHasCopied(false), 2000);
+  };
 
   return (
     <motion.header
@@ -80,9 +87,32 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
           <Link href="/blog" className="text-white/80 hover:text-white transition-colors">
             Blog
           </Link>
-          <Link href="/contact" className="text-white/80 hover:text-white transition-colors">
-            Contact
-          </Link>
+          
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <button className="text-white/80 hover:text-white transition-colors outline-none">
+                Contact
+              </button>
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content
+                className="min-w-[220px] bg-[#111] rounded-lg p-2 shadow-xl border border-[#333] animate-in fade-in-0 zoom-in-95"
+                sideOffset={5}
+                align="end"
+              >
+                <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm text-white/90 hover:bg-white/10 rounded-md outline-none cursor-pointer" onClick={handleCopyEmail}>
+                  <MessageSquare className="w-4 h-4" />
+                  <span className="flex-1">josh@scailer.io</span>
+                  {hasCopied ? (
+                    <Check className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Copy className="w-4 h-4 opacity-50" />
+                  )}
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -135,9 +165,18 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
             <Link href="/blog" className="text-white/80 hover:text-white transition-colors py-2">
               Blog
             </Link>
-            <Link href="/contact" className="text-white/80 hover:text-white transition-colors py-2">
-              Contact
-            </Link>
+            <button 
+              onClick={handleCopyEmail}
+              className="w-full text-left text-white/80 hover:text-white transition-colors py-2 flex items-center gap-2"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>josh@scailer.io</span>
+              {hasCopied ? (
+                <Check className="w-4 h-4 text-green-500 ml-auto" />
+              ) : (
+                <Copy className="w-4 h-4 opacity-50 ml-auto" />
+              )}
+            </button>
             <Button
               onClick={onTryForFree}
               className="bg-white hover:bg-white/90 text-black px-6 py-2 rounded-full font-medium transition-colors mt-2"

@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Modal } from "@/components/ui/modal"
+import { BarChart, Settings2, Zap, Users, User, Globe, BotIcon, CircuitBoard } from "lucide-react"
 
 // Define SVG props interface
 interface SVGProps extends React.SVGProps<SVGSVGElement> {
@@ -65,7 +66,7 @@ const IconArrowRight = (props: SVGProps) => (
   </svg>
 );
 
-const iconColors = ["#9CA3AF", "#0EA5E9", "#22C55E", "#EF4444", "#EC4899", "#F59E0B"]
+const iconColors = ["#9CA3AF", "#0EA5E9", "#22C55E", "#EF4444", "#EC4899", "#F59E0B", "#8B5CF6", "#ffffff"]
 const timelineColor = "#8B5CF6"
 
 // Add the purple dot keyframes
@@ -82,7 +83,7 @@ const purpleDotKeyframes = `
       opacity: 1;
     }
     100% {
-      top: 470px;
+      top: 800px;
       opacity: 0;
     }
   }
@@ -357,7 +358,7 @@ const HAL900FrameworkDiagram = () => {
     {
       icon: IconUsers,
       label: "Customer Retention Systems",
-      title: "Project Management",
+      title: "Project Management Systems",
       description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
       details: [
         "Automated project timeline and milestone tracking",
@@ -369,7 +370,7 @@ const HAL900FrameworkDiagram = () => {
     {
       icon: IconUser,
       label: "Smart Hiring & Optimisation",
-      title: "Hiring Systems",
+      title: "Smart Hiring Systems",
       description: "Streamline hiring and workforce management with intelligent sourcing and optimisation.",
       details: [
         "AI-powered candidate screening and matching",
@@ -381,7 +382,7 @@ const HAL900FrameworkDiagram = () => {
     {
       icon: IconGlobe,
       label: "Website Design",
-      title: "Websites That Convert",
+      title: "Website Design & Optimisation",
       description: "Create high-performance, SEO-friendly sites optimized for conversions and user experience.",
       details: [
         "Conversion-focused design and user experience optimization",
@@ -390,6 +391,30 @@ const HAL900FrameworkDiagram = () => {
         "Performance optimization and analytics integration"
       ]
     },
+    {
+      icon: BotIcon,
+      label: "Conversational AI",
+      title: "Conversational AI",
+      description: "Build intelligent chatbots and virtual assistants that engage customers and automate support.",
+      details: [
+        "AI-powered chatbot development and deployment",
+        "Natural language processing and understanding",
+        "Automated customer support and engagement",
+        "Integration with existing communication channels"
+      ]
+    },
+    {
+      icon: CircuitBoard,
+      label: "AI Strategy & Implementation",
+      title: "AI Strategy & Consultancy",
+      description: "Expert guidance on AI strategy, implementation, and integration with your existing systems.",
+      details: [
+        "Comprehensive AI strategy development",
+        "Implementation roadmap and planning",
+        "System integration and optimization",
+        "Performance monitoring and optimization"
+      ]
+    }
   ]
 
   useEffect(() => {
@@ -564,11 +589,11 @@ const HAL900FrameworkDiagram = () => {
         </div>
 
         {/* Timeline section with continuous line - adjusted positioning */}
-        <div className="relative max-w-5xl mx-auto" style={{ minHeight: "800px" }}>
+        <div className="relative max-w-5xl mx-auto" style={{ minHeight: "1200px" }}>
           {/* Animated line - adjusted positioning */}
           <div className="relative pt-8" ref={timelineRef}>
             <motion.div
-              className="absolute left-1/2 w-[1px] h-[950px] -top-[150px] origin-top"
+              className="absolute left-1/2 w-[1px] h-[1250px] -top-[150px] origin-top"
               style={{
                 background: "rgba(255, 255, 255, 0.3)",
                 opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 0.4, 0.4, 0.3]),

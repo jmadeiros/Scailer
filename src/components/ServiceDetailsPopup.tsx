@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, ArrowRight, Check, FileText, BarChart } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { createPortal } from "react-dom"
 
 interface ServiceDetail {
   overview?: string
@@ -43,6 +44,21 @@ export default function ServiceDetailsPopup({
   service
 }: ServiceDetailsPopupProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "benefits" | "comparison">("overview")
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    
+    // Lock body scroll when popup is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    }
+    
+    return () => {
+      // Restore body scroll when popup is closed
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
 
   if (!service) return null;
 
@@ -87,18 +103,19 @@ export default function ServiceDetailsPopup({
 
   const buttonColors = getButtonColors();
 
-  return (
+  const popupContent = (
     <AnimatePresence>
       {isOpen && (
         <>
           {/* Fixed backdrop - high z-index to ensure it stays on top */}
           <div 
-            className="fixed inset-0 bg-black/60 z-[999]" 
+            className="fixed inset-0 bg-black/60 z-[9999]" 
             onClick={onClose} 
+            style={{ pointerEvents: 'auto' }}
           />
           
           {/* Popup content */}
-          <div className="fixed inset-0 flex items-center justify-center z-[1000]" onClick={(e) => e.stopPropagation()}>
+          <div className="fixed inset-0 flex items-center justify-center z-[10000]" style={{ pointerEvents: 'none' }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -106,6 +123,7 @@ export default function ServiceDetailsPopup({
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative w-full max-w-2xl mx-4 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
+              style={{ position: "relative", zIndex: 10000, pointerEvents: 'auto' } as any}
             >
               <div className="bg-[#1a1a1a] rounded-xl overflow-hidden shadow-2xl">
                 {/* Header */}
@@ -314,5 +332,8 @@ export default function ServiceDetailsPopup({
         </>
       )}
     </AnimatePresence>
-  )
+  );
+
+  // Use React Portal to render at the root level to avoid z-index stacking issues
+  return mounted && typeof document !== 'undefined' ? createPortal(popupContent, document.body) : null;
 } 

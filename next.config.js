@@ -20,7 +20,9 @@ const nextConfig = {
   
   // Disable type checking during build
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
+    // Don't terminate on error
+    tsconfigPath: "tsconfig.json",
   },
   eslint: {
     ignoreDuringBuilds: true
@@ -34,40 +36,17 @@ const nextConfig = {
     GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
   },
 
-  // Disable server-side API routes in static export
-  // experimental: {
-  //   optimizeCss: {
-  //     preset: ['default', { 
-  //       discardComments: { removeAll: true },
-  //       mergeLonghand: false,
-  //       cssDeclarationSorter: false
-  //     }]
-  //   },
-  //   outputFileTracingRoot: path.join(__dirname),
-  //   outputFileTracingExcludes: {
-  //     '*': [
-  //       'node_modules/@swc/core-linux-x64-gnu',
-  //       'node_modules/@swc/core-linux-x64-musl',
-  //       'node_modules/@esbuild/linux-x64',
-  //     ],
-  //   },
-  // },
-
   webpack: (config, { isServer, dev }) => {
-    debug('Webpack build starting');
-    debug('Build mode:', dev ? 'development' : 'production');
-    debug('Environment:', isServer ? 'server' : 'client');
-    debug('Node version:', process.version);
-    debug('Dependencies:', {
-      next: require('next/package.json').version,
-      react: require('react/package.json').version,
-      postcss: require('postcss/package.json').version,
-      tailwindcss: require('tailwindcss/package.json').version,
-    });
+    // Only log in development when needed
+    if (dev) {
+      debug('Build mode:', dev ? 'development' : 'production');
+      debug('Environment:', isServer ? 'server' : 'client');
+      debug('Node version:', process.version);
+    }
 
-    // Add more detailed webpack logging
+    // Reduce logging verbosity
     config.infrastructureLogging = {
-      level: 'verbose',
+      level: dev ? 'error' : 'none',
     };
 
     // Basic alias configuration
@@ -89,7 +68,18 @@ const nextConfig = {
     return config;
   },
 
-  reactStrictMode: true
+  // Development-specific configuration
+  ...(process.env.NODE_ENV === 'development' && {
+    reactStrictMode: false, // Disabling strict mode to prevent double rendering
+    swcMinify: false, // Disable minification in development for faster builds
+    webpackDevMiddleware: config => {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      }
+      return config
+    },
+  })
 }
 
 module.exports = nextConfig 

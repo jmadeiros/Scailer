@@ -6,23 +6,24 @@ import { X, ArrowRight, Check, FileText, BarChart } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
 interface ServiceDetail {
-  description: string
-  benefits: string[]
-  howItWorks: string[]
-  results: string[]
-  integrations: {
+  overview?: string
+  whatYoullGet?: string[]
+  comparison?: Array<{
+    traditional: string
+    ourApproach: string
+  }>
+  serviceDetails?: {
+    overview?: string
+  }
+  description?: string
+  benefits?: string[]
+  howItWorks?: string[]
+  results?: string[]
+  integrations?: {
     name: string
     description: string
     category: string
   }[]
-  comparison: {
-    traditional: string
-    ourApproach: string
-  }[]
-  whatYoullGet: string[]
-  serviceDetails: {
-    overview: string
-  }
 }
 
 interface ServiceDetailsPopupProps {
@@ -33,17 +34,21 @@ interface ServiceDetailsPopupProps {
     title: string
     color: string
     details: ServiceDetail
-  } | null
+  }
 }
 
-export default function ServiceDetailsPopup({ isOpen, onClose, service }: ServiceDetailsPopupProps) {
+export default function ServiceDetailsPopup({
+  isOpen,
+  onClose,
+  service
+}: ServiceDetailsPopupProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "benefits" | "comparison">("overview")
 
-  if (!service) return null
+  if (!service) return null;
 
-  const { icon: Icon, title, color, details } = service
+  const { icon: Icon, title, color, details } = service;
 
-  // Get the category label based on the service title
+  // Get the service styles and category label based on the title
   const getCategoryLabel = () => {
     switch (title) {
       case "Personalised Lead Generation":
@@ -61,32 +66,8 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
       case "AI Strategy & Consultancy":
         return "AI INTEGRATION"
       default:
-        return ""
+        return title.toUpperCase()
     }
-  }
-
-  // Function to render description with hyperlinks
-  const renderDescription = (description: string) => {
-    if (title === "Website Design & Optimisation" && description.includes("Current portfolio:")) {
-      const parts = description.split("Current portfolio:")
-      return (
-        <>
-          {parts[0]}
-          <div className="mt-2">
-            <p className="font-medium">Current portfolio:</p>
-            <a
-              href="https://womensfaithforum.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              womensfaithforum.com
-            </a>
-          </div>
-        </>
-      )
-    }
-    return description
   }
 
   return (
@@ -101,7 +82,7 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
             transition={{ duration: 0.2 }}
             className="fixed inset-0 bg-black/60 z-40 overflow-y-auto"
             onClick={onClose}
-            style={{ overflowY: "auto", paddingTop: "5vh", paddingBottom: "5vh" }}
+            style={{ overflowY: "auto", paddingTop: "5vh", paddingBottom: "5vh" } as any}
           >
             <div className="min-h-full flex items-center justify-center p-4">
               {/* Popup */}
@@ -110,37 +91,36 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl z-50"
-                style={{ position: "absolute" }}
-                onClick={(e) => e.stopPropagation()} // Add this line to prevent click propagation
+                className="relative w-full max-w-2xl z-50"
+                onClick={(e) => e.stopPropagation()}
               >
-                <div className="bg-white dark:bg-[#2a2a2a] rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-[#3a3a3a]">
+                <div className="bg-[#1a1a1a] rounded-xl overflow-hidden shadow-2xl">
                   {/* Header */}
-                  <div className="p-6 flex items-center justify-between" style={{ backgroundColor: `${color}15` }}>
+                  <div className="p-6 flex items-center justify-between" style={{ backgroundColor: title === "AI Strategy & Consultancy" ? "#0c1c2b" : `${color}10` }}>
                     <div className="flex items-center gap-4">
                       <div
                         className="w-12 h-12 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: `${color}30` }}
+                        style={{ backgroundColor: title === "AI Strategy & Consultancy" ? "#0f2942" : `${color}20` }}
                       >
-                        <Icon className="w-6 h-6" style={{ color }} />
+                        {Icon && <Icon className="w-6 h-6" style={{ color }} />}
                       </div>
                       <div>
-                        <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">
+                        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
                           {getCategoryLabel()}
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h3>
+                        <h3 className="text-xl font-bold text-white">{title}</h3>
                       </div>
                     </div>
                     <button
                       onClick={onClose}
-                      className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 dark:bg-[#3a3a3a] hover:bg-gray-300 dark:hover:bg-[#4a4a4a] transition-colors"
+                      className="w-8 h-8 rounded-full flex items-center justify-center bg-[#2a2a2a] hover:bg-[#3a3a3a] transition-colors"
                     >
-                      <X className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                      <X className="w-4 h-4 text-gray-400" />
                     </button>
                   </div>
 
                   {/* Tabs */}
-                  <div className="flex border-b border-gray-200 dark:border-[#3a3a3a] overflow-x-auto">
+                  <div className="flex border-b border-[#2a2a2a] overflow-x-auto">
                     {[
                       { id: "overview", label: "Overview", icon: FileText },
                       { id: "benefits", label: "What You'll Get", icon: Check },
@@ -151,8 +131,8 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                         onClick={() => setActiveTab(tab.id as any)}
                         className={`px-4 py-3 text-sm font-medium relative flex items-center whitespace-nowrap ${
                           activeTab === tab.id
-                            ? "text-gray-900 dark:text-white"
-                            : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                            ? "text-white"
+                            : "text-gray-400 hover:text-gray-300"
                         }`}
                       >
                         <tab.icon className="w-4 h-4 mr-2" color={color} />
@@ -161,7 +141,7 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                           <motion.div
                             layoutId="activeTab"
                             className="absolute bottom-0 left-0 right-0 h-0.5"
-                            style={{ backgroundColor: color }}
+                            style={{ backgroundColor: color } as any}
                             transition={{ type: "spring", damping: 20, stiffness: 300 }}
                           />
                         )}
@@ -170,7 +150,22 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 overflow-y-auto max-h-[60vh]">
+                  <div className="p-6 overflow-y-auto max-h-[60vh] text-left custom-scrollbar">
+                    <style jsx>{`
+                      .custom-scrollbar::-webkit-scrollbar {
+                        width: 8px;
+                      }
+                      .custom-scrollbar::-webkit-scrollbar-track {
+                        background: transparent;
+                      }
+                      .custom-scrollbar::-webkit-scrollbar-thumb {
+                        background-color: rgba(75, 75, 75, 0.5);
+                        border-radius: 4px;
+                      }
+                      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                        background-color: rgba(100, 100, 100, 0.6);
+                      }
+                    `}</style>
                     <AnimatePresence mode="wait">
                       {activeTab === "overview" && (
                         <motion.div
@@ -180,14 +175,14 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                            {renderDescription(details.serviceDetails?.overview || details.description)}
+                          <p className="text-gray-300 mb-6 leading-relaxed">
+                            {details?.serviceDetails?.overview || details?.description || ""}
                           </p>
                           <div className="flex justify-end">
                             <Button
                               onClick={() => setActiveTab("benefits")}
-                              className="flex items-center gap-2"
-                              style={{ backgroundColor: color }}
+                              className="flex items-center gap-2 text-white px-4 py-2 rounded-md"
+                              style={{ backgroundColor: color } as any}
                             >
                               <span>See What You'll Get</span>
                               <ArrowRight className="w-4 h-4" />
@@ -205,11 +200,11 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                           transition={{ duration: 0.2 }}
                         >
                           <div className="mb-4">
-                            <h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
+                            <h4 className="text-lg font-semibold mb-3 text-white">
                               What You'll Get
                             </h4>
                             <ul className="space-y-3 mb-6">
-                              {details.whatYoullGet.map((benefit, index) => (
+                              {(details?.whatYoullGet || details?.benefits || []).map((benefit: string, index: number) => (
                                 <motion.li
                                   key={index}
                                   initial={{ opacity: 0, x: -10 }}
@@ -218,16 +213,16 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                                   className="flex items-start gap-3"
                                 >
                                   <Check className="w-5 h-5 mt-0.5 flex-shrink-0" color={color} />
-                                  <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
+                                  <span className="text-gray-300 text-[15px] leading-relaxed">{benefit}</span>
                                 </motion.li>
                               ))}
                             </ul>
                           </div>
-                          <div className="flex justify-end">
+                          <div className="flex justify-end mt-8">
                             <Button
                               onClick={() => setActiveTab("comparison")}
-                              className="flex items-center gap-2"
-                              style={{ backgroundColor: color }}
+                              className="flex items-center gap-2 text-white px-4 py-2 rounded-md"
+                              style={{ backgroundColor: color } as any}
                             >
                               <span>See Comparison</span>
                               <ArrowRight className="w-4 h-4" />
@@ -245,15 +240,15 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                           transition={{ duration: 0.2 }}
                         >
                           <div className="mb-4">
-                            <h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
+                            <h4 className="text-lg font-semibold mb-3 text-white">
                               Our Approach vs. Traditional Methods
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-400 mb-4">
+                            <p className="text-gray-400 mb-4">
                               See how our innovative approach compares to traditional methods in the industry.
                             </p>
 
                             <div className="space-y-4 mb-6">
-                              {details.comparison.map((item, index) => (
+                              {(details?.comparison || []).map((item: { traditional: string; ourApproach: string }, index: number) => (
                                 <motion.div
                                   key={index}
                                   initial={{ opacity: 0, y: 10 }}
@@ -261,24 +256,29 @@ export default function ServiceDetailsPopup({ isOpen, onClose, service }: Servic
                                   transition={{ delay: index * 0.1 }}
                                   className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                 >
-                                  <div className="bg-gray-100 dark:bg-[#333333] p-4 rounded-lg">
-                                    <h5 className="font-medium text-gray-700 dark:text-gray-300 mb-2 text-sm">
+                                  <div className="bg-[#2a2a2a] p-4 rounded-lg">
+                                    <h5 className="font-medium text-gray-300 mb-2 text-sm">
                                       Traditional Approach
                                     </h5>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">{item.traditional}</p>
+                                    <p className="text-sm text-gray-400">{item.traditional}</p>
                                   </div>
-                                  <div className="p-4 rounded-lg" style={{ backgroundColor: `${color}15` }}>
+                                  <div className="p-4 rounded-lg" style={{ 
+                                    backgroundColor: title === "AI Strategy & Consultancy" ? "#0c1c2b" : `${color}15`
+                                  }}>
                                     <h5 className="font-medium mb-2 text-sm" style={{ color }}>
                                       Our Approach
                                     </h5>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300">{item.ourApproach}</p>
+                                    <p className="text-sm text-gray-300">{item.ourApproach}</p>
                                   </div>
                                 </motion.div>
                               ))}
                             </div>
                           </div>
                           <div className="flex justify-center">
-                            <Button className="px-6" style={{ backgroundColor: color }}>
+                            <Button 
+                              className="px-6 text-white py-2 rounded-md" 
+                              style={{ backgroundColor: color } as any}
+                            >
                               <span>Get Started Today</span>
                             </Button>
                           </div>

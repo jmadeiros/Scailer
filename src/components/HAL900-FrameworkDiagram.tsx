@@ -750,13 +750,35 @@ const HAL900FrameworkDiagram = () => {
                     "relative",
                     index === 1 || index === 2 || index === 3 || index === 4 ? "mobile-icon-adjust" : ""
                   )}
-                  onClick={() => setActiveFeature(index)}
+                  onClick={() => {
+                    setActiveFeature(index);
+                    // Scroll to the feature element
+                    const featureEl = featureRefs.current[index];
+                    if (featureEl) {
+                      // Scroll with smooth behavior
+                      featureEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      // Open the popup after scrolling
+                      setTimeout(() => {
+                        setActiveModal(index);
+                      }, 800); // Wait a bit for the scroll to complete
+                    }
+                  }}
                   role="button"
                   tabIndex={0}
                   aria-label={`View ${features[index]?.label}`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      setActiveFeature(index)
+                      setActiveFeature(index);
+                      // Scroll to the feature element
+                      const featureEl = featureRefs.current[index];
+                      if (featureEl) {
+                        // Scroll with smooth behavior
+                        featureEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Open the popup after scrolling
+                        setTimeout(() => {
+                          setActiveModal(index);
+                        }, 800); // Wait a bit for the scroll to complete
+                      }
                     }
                   }}
                 >

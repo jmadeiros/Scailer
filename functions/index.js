@@ -1,6 +1,12 @@
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin SDK if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp();
+}
 
 // Email configuration
 const EMAIL_HOST = (functions.config().email && functions.config().email.host) 
@@ -581,4 +587,80 @@ exports.calendar = functions
         details: error.message || "Unknown error"
       });
     }
-  }); 
+  });
+
+// Firebase Function to store audit form submissions in Firestore
+exports.saveAuditData = functions
+  .region('europe-west1')
+  .https.onRequest(async (req, res) => {
+    // Set CORS headers
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Handle preflight OPTIONS request
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('');
+      return;
+    }
+    
+    // Only allow POST requests
+    if (req.method !== 'POST') {
+      res.status(405).send({ error: 'Method Not Allowed' });
+      return;
+    }
+    
+    try {
+      console.log("Starting audit form data storage process...");
+      
+      // Parse request body
+      const data = req.body;
+      
+      // Validate required fields
+      if (!data.name || !data.companyName || !data.email) {
+        console.error("Missing required fields:", { 
+          name: !!data.name, 
+          companyName: !!data.companyName, 
+          email: !!data.email 
+        });
+        res.status(400).json({ error: "Missing required fields" });
+        return;
+      }
+      
+      // Add timestamp and metadata
+      const auditData = {
+        name: data.name,
+        companyName: data.companyName,
+        email: data.email,
+        submittedAt: admin.firestore.FieldValue.serverTimestamp(),
+        status: 'pending',
+        source: data.source || 'direct',
+        ipAddress: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        userAgent: req.headers['user-agent'] || 'unknown'
+      };
+      
+      console.log("Saving audit form data:", {
+        name: auditData.name,
+        companyName: auditData.companyName,
+        email: auditData.email,
+      });
+      
+      // Save to Firestore
+      const docRef = await admin.firestore().collection('auditForms').add(auditData);
+      console.log("Audit form saved with ID:", docRef.id);
+      
+      // Return success response
+      res.status(200).json({ 
+        success: true, 
+        message: "Audit form data saved successfully",
+        id: docRef.id 
+      });
+      
+    } catch (error) {
+      console.error("Error saving audit form data:", error);
+      res.status(500).json({ 
+        error: "Error saving audit form data", 
+        message: error.message 
+      });
+    }
+  });

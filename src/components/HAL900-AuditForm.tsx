@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import { toast } from "sonner"
 
 interface ValidationState {
   isValid: boolean
@@ -247,9 +248,59 @@ export default function HAL900AuditForm() {
     if (validation.name.isValid && validation.companyName.isValid && validation.email.isValid) {
       setLoading(true)
       setAnimationTriggered(true)
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      setLoading(false)
-      // Here you would typically send the form data to your backend
+      
+      try {
+        // Get the Firebase Functions base URL from environment variable or use a default
+        const functionsBaseUrl = process.env.NEXT_PUBLIC_FIREBASE_FUNCTION_URL || 'https://europe-west1-scailertest-37078.cloudfunctions.net'
+        
+        // Call the Firebase function to save the audit data
+        const response = await fetch(`${functionsBaseUrl}/saveAuditData`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            companyName: formData.companyName,
+            email: formData.email,
+            source: typeof window !== 'undefined' ? window.location.href : 'unknown'
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to submit form')
+        }
+
+        console.log('Audit form saved successfully with ID:', data.id)
+        
+        // Show success message
+        toast.success("Thank you! Your information has been submitted successfully.")
+        
+        // Reset the form after submission
+        setFormData({
+          name: "",
+          companyName: "",
+          email: "",
+        })
+        
+        setValidation({
+          name: { isValid: false, message: "" },
+          companyName: { isValid: false, message: "" },
+          email: { isValid: false, message: "" },
+        })
+        
+      } catch (error) {
+        console.error("Error submitting audit form:", error)
+        toast.error("There was an error submitting your information. Please try again.")
+      } finally {
+        setLoading(false)
+        setTimeout(() => setAnimationTriggered(false), 1000)
+      }
+    } else {
+      // Show error for invalid form
+      toast.error("Please fill out all fields correctly before submitting.")
     }
   }
 
@@ -406,7 +457,11 @@ export default function HAL900AuditForm() {
 
           <div className="pt-1 md:pt-2">
             <motion.div
-              animate={animationTriggered ? { height: 0, opacity: 0, marginTop: 0 } : { height: "auto", opacity: 1 }}
+              animate={animationTriggered 
+                ? { height: 0, opacity: 0 } 
+                : { height: "auto", opacity: 1 }
+              }
+              style={animationTriggered ? { marginTop: 0 } as any : {}}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
               <Button

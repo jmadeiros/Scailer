@@ -38,6 +38,21 @@ interface ServiceDetailsPopupProps {
   }
 }
 
+// Function to scroll smoothly to the booking interface
+const scrollToBooking = () => {
+  const element = document.getElementById("booking-interface");
+  if (element) {
+    const offset = 80;
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
+};
+
 export default function ServiceDetailsPopup({
   isOpen,
   onClose,
@@ -74,7 +89,7 @@ export default function ServiceDetailsPopup({
       case "Precision Marketing":
         return "MARKETING OPTIMISATION"
       case "Project Management Systems":
-        return "CUSTOMER RETENTION SYSTEMS"
+        return "PROJECT MANAGEMENT"
       case "Smart Hiring Systems":
         return "SMART HIRING & OPTIMISATION"
       case "Website Design & Optimisation":
@@ -102,6 +117,14 @@ export default function ServiceDetailsPopup({
   }
 
   const buttonColors = getButtonColors();
+
+  // Handle booking button click
+  const handleBookingClick = () => {
+    onClose(); // Close the popup first
+    setTimeout(() => {
+      scrollToBooking(); // Then scroll to booking section
+    }, 300); // Small delay to allow popup to close
+  };
 
   const popupContent = (
     <AnimatePresence>
@@ -318,6 +341,7 @@ export default function ServiceDetailsPopup({
                               backgroundColor: buttonColors.bg,
                               color: buttonColors.text 
                             } as any}
+                            onClick={handleBookingClick}
                           >
                             <span>Get Started Today</span>
                           </Button>

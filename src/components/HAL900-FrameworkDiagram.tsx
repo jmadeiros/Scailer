@@ -66,6 +66,13 @@ const IconArrowRight = (props: SVGProps) => (
   </svg>
 );
 
+const IconArrowLeft = (props: SVGProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="19" y1="12" x2="5" y2="12"></line>
+    <polyline points="12 5 5 12 12 19"></polyline>
+  </svg>
+);
+
 const iconColors = ["#9CA3AF", "#0EA5E9", "#22C55E", "#EF4444", "#EC4899", "#F59E0B", "#8B5CF6", "#ffffff"]
 const timelineColor = "#8B5CF6"
 
@@ -270,7 +277,10 @@ const FeatureBox = ({
           >
             Learn more
             <motion.div animate={isHovered ? { x: isLeft ? -5 : 5 } : { x: 0 }} transition={{ duration: 0.2 }}>
-              <IconArrowRight className={`h-3 w-3 md:h-4 md:h-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
+              {isLeft ? 
+                <IconArrowLeft className={`h-3 w-3 md:h-4 md:h-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} /> : 
+                <IconArrowRight className={`h-3 w-3 md:h-4 md:h-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
+              }
             </motion.div>
             <motion.div
               className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
@@ -432,7 +442,7 @@ const HAL900FrameworkDiagram = () => {
     },
     {
       icon: Users,
-      label: "CUSTOMER RETENTION SYSTEMS",
+      label: "PROJECT MANAGEMENT",
       title: "Project Management Systems",
       description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
       whatYoullGet: [
@@ -531,11 +541,11 @@ const HAL900FrameworkDiagram = () => {
       description: "Build intelligent chatbots and virtual assistants that engage customers and automate support.",
       whatYoullGet: [
         "24/7 automated customer support",
-        "Instant enquiry handling and lead qualification",
-        "AI responders for sales and support emails",
+        "Instant handling of enquiries and lead qualification",
+        "AI-driven email responders for sales and support",
         "Seamless appointment booking and routing",
-        "Consistent customer experience across channels",
-        "Scalable support without adding headcount"
+        "Consistent customer experience across all channels",
+        "Scalable support without increasing headcount"
       ],
       comparison: [
         {
@@ -552,7 +562,7 @@ const HAL900FrameworkDiagram = () => {
         }
       ],
       serviceDetails: {
-        overview: "Our conversational AI solutions create intelligent chatbots and virtual assistants that engage your customers and automate support. We design and implement natural language interfaces that understand user intent, provide helpful responses, and seamlessly handle complex interactions, allowing you to deliver 24/7 support while reducing costs and improving customer satisfaction."
+        overview: "We build and deploy AI-driven assistants—like chatbots, virtual receptionists, and email responders—to handle customer communication at scale. These tools respond instantly, qualify leads, schedule appointments, and manage enquiries—giving you a fully responsive front-line without the overhead."
       }
     },
     {

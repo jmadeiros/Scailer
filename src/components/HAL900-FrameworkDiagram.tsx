@@ -4,8 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { Modal } from "@/components/ui/modal"
-import { BarChart, Settings2, Zap, Users, User, Globe, BotIcon, CircuitBoard } from "lucide-react"
+import ServiceDetailsPopup from "@/components/ServiceDetailsPopup"
+import { BarChart, Settings, Zap, Users, User, Globe, MessageCircle, CircuitBoard } from 'lucide-react'
 
 // Define SVG props interface
 interface SVGProps extends React.SVGProps<SVGSVGElement> {
@@ -137,7 +137,8 @@ const FeatureBox = ({
   icon: Icon,
   title,
   description,
-  details,
+  whatYoullGet,
+  comparison,
   label,
   isActive,
   color,
@@ -145,11 +146,14 @@ const FeatureBox = ({
   isModalOpen,
   setActiveModal,
   featureIndex,
+  portfolio,
+  serviceDetails,
 }: {
   icon: any
   title: string
   description: string
-  details: string[]
+  whatYoullGet: string[]
+  comparison: Array<{ traditional: string; ourApproach: string }>
   label: string
   isActive: boolean
   color: string
@@ -157,6 +161,8 @@ const FeatureBox = ({
   isModalOpen: boolean
   setActiveModal: React.Dispatch<React.SetStateAction<number | null>>
   featureIndex: number
+  portfolio?: string[]
+  serviceDetails?: { overview: string }
 }) => {
   const ref = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
@@ -240,7 +246,7 @@ const FeatureBox = ({
         </motion.h3>
 
         <motion.p
-          className="text-xs md:text-sm text-gray-300 mb-3 md:mb-4 leading-relaxed"
+          className="text-xs md:text-sm text-gray-400 mb-3 md:mb-4 leading-relaxed"
           initial={{ y: 0 }}
           animate={{ y: isHovered ? -1 : 0 }}
           transition={{ duration: 0.2, delay: 0.2 }}
@@ -264,7 +270,7 @@ const FeatureBox = ({
           >
             Learn more
             <motion.div animate={isHovered ? { x: isLeft ? -5 : 5 } : { x: 0 }} transition={{ duration: 0.2 }}>
-              <IconArrowRight className={`h-3 w-3 md:h-4 md:w-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
+              <IconArrowRight className={`h-3 w-3 md:h-4 md:h-4 ${isLeft ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} />
             </motion.div>
             <motion.div
               className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
@@ -278,14 +284,26 @@ const FeatureBox = ({
       </motion.div>
       <div className="h-8 md:h-12" />
       {isModalOpen && (
-        <Modal
+        <ServiceDetailsPopup
           isOpen={isModalOpen}
           onClose={() => setActiveModal(null)}
-          title={title}
-          description={description}
-          details={details}
-          buttonRef={buttonRef}
-          isLeft={isLeft}
+          service={{
+            icon: Icon,
+            title: title,
+            color: color,
+            details: {
+              description: description,
+              benefits: whatYoullGet,
+              howItWorks: [],
+              results: [],
+              integrations: [],
+              comparison: comparison,
+              whatYoullGet: whatYoullGet,
+              serviceDetails: {
+                overview: serviceDetails?.overview || description
+              }
+            }
+          }}
         />
       )}
     </motion.div>
@@ -320,100 +338,253 @@ const HAL900FrameworkDiagram = () => {
 
   const features = [
     {
-      icon: IconBarChart,
-      label: "Data-Driven Lead Acquisition",
+      icon: BarChart,
+      label: "DATA-DRIVEN LEAD ACQUISITION",
       title: "Personalised Lead Generation",
       description: "Uncover high-value leads with advanced data scraping and predictive targeting.",
-      details: [
-        "AI-powered lead scoring and qualification to identify your ideal prospects",
-        "Advanced data enrichment to build comprehensive prospect profiles",
-        "Automated outreach sequence optimization based on engagement metrics",
-        "Real-time market insights and competitor analysis for targeted campaigns"
-      ]
+      whatYoullGet: [
+        "Consistent pipeline of qualified, high-intent leads",
+        "AI-personalised outreach that increases engagement",
+        "Automated follow-ups to boost conversions and reviews",
+        "Focused targeting using behavioural and demographic data",
+        "Seamless CRM integration for efficient lead tracking",
+        "Reduced reliance on paid ads and manual prospecting"
+      ],
+      comparison: [
+        {
+          traditional: "Manual lead research that's time-consuming and often results in low-quality prospects",
+          ourApproach: "AI-powered data scraping and analysis that identifies high-value prospects with precision"
+        },
+        {
+          traditional: "Generic targeting based on broad demographic criteria with high waste",
+          ourApproach: "Predictive targeting using behavioral and intent signals to focus on leads most likely to convert"
+        },
+        {
+          traditional: "Static lead lists that quickly become outdated",
+          ourApproach: "Dynamic lead generation that continuously learns and improves based on conversion data"
+        }
+      ],
+      serviceDetails: {
+        overview: "Our data-driven lead acquisition system uses advanced algorithms to identify and target high-value prospects with precision. We combine data scraping, predictive analytics, and machine learning to generate qualified leads that are most likely to convert, saving you time and resources while maximizing your sales potential."
+      }
     },
     {
-      icon: IconSettings,
-      label: "Process Automation",
+      icon: Settings,
+      label: "PROCESS AUTOMATION",
       title: "Workflow Management Systems",
       description: "Streamline tasks, boost efficiency, and enhance customer interactions with intelligent automation.",
-      details: [
-        "Custom workflow automation tailored to your business processes",
-        "Integration with existing tools and platforms for seamless operations",
-        "Smart task prioritization and resource allocation",
-        "Automated reporting and performance analytics"
-      ]
+      whatYoullGet: [
+        "Automated workflows for key admin and ops tasks",
+        "Faster invoicing and reduced payment delays",
+        "Custom approval and delegation flows",
+        "Smart notifications and reminders",
+        "Integrated with your CRM, email, and project tools",
+        "Increased team productivity and consistency"
+      ],
+      comparison: [
+        {
+          traditional: "Manual handoffs between team members that create delays and information gaps",
+          ourApproach: "Automated workflows with real-time updates and transparent process tracking"
+        },
+        {
+          traditional: "Siloed systems requiring duplicate data entry and manual reconciliation",
+          ourApproach: "Integrated platforms with automated data synchronization across all business systems"
+        },
+        {
+          traditional: "Reactive process management that addresses issues after they occur",
+          ourApproach: "Proactive workflow optimization with predictive analytics to prevent bottlenecks before they happen"
+        }
+      ],
+      serviceDetails: {
+        overview: "Our intelligent workflow automation platform streamlines your business processes, eliminates repetitive tasks, and enhances customer interactions. We build custom solutions that integrate with your existing systems to boost efficiency across your organization, allowing your team to focus on high-value activities rather than manual processes."
+      }
     },
     {
-      icon: IconZap,
-      label: "Marketing Optimisation",
+      icon: Zap,
+      label: "MARKETING OPTIMISATION",
       title: "Precision Marketing",
       description: "Elevate campaigns with data-driven targeting, content creation, and predictive analytics.",
-      details: [
-        "AI-driven content optimization and personalization",
-        "Multi-channel campaign automation and synchronization",
-        "Predictive analytics for campaign performance",
-        "Dynamic audience segmentation and targeting"
-      ]
+      whatYoullGet: [
+        "Targeted campaigns that attract the right audience",
+        "AI-optimised ad performance for better ROI",
+        "Strong social media presence with engaging content",
+        "Improved Google rankings through structured SEO",
+        "Automated review collection to build trust and credibility",
+        "Clear reporting focused on sales and lead growth"
+      ],
+      comparison: [
+        {
+          traditional: "Broad targeting that wastes budget on uninterested audiences",
+          ourApproach: "Precision targeting based on intent signals and behavioral data to reach only the most relevant prospects"
+        },
+        {
+          traditional: "Generic messaging that tries to appeal to everyone but resonates with no one",
+          ourApproach: "Personalized content tailored to specific audience segments based on their unique needs and pain points"
+        },
+        {
+          traditional: "Campaign optimization based on gut feeling and limited data",
+          ourApproach: "Data-driven optimization using AI and machine learning to continuously improve performance"
+        }
+      ],
+      serviceDetails: {
+        overview: "Our precision marketing approach leverages data-driven insights to create highly targeted campaigns that deliver measurable results. We combine advanced targeting, compelling content creation, and predictive analytics to maximize your marketing ROI, ensuring that your message reaches the right audience at the right time with the right message."
+      }
     },
     {
-      icon: IconUsers,
-      label: "Customer Retention Systems",
+      icon: Users,
+      label: "CUSTOMER RETENTION SYSTEMS",
       title: "Project Management Systems",
       description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
-      details: [
-        "Automated project timeline and milestone tracking",
-        "Resource allocation and capacity planning",
-        "Real-time collaboration and communication tools",
-        "Risk assessment and mitigation strategies"
-      ]
+      whatYoullGet: [
+        "AI-powered lead prioritisation and scoring",
+        "Centralised view of your entire sales pipeline",
+        "Automated tasks and reminders for your team",
+        "Real-time visibility into customer activity",
+        "Seamless integrations with existing tools",
+        "Improved sales team efficiency and deal velocity"
+      ],
+      comparison: [
+        {
+          traditional: "Disorganized project tracking with tasks scattered across different tools and platforms",
+          ourApproach: "Unified project management system that organizes all tasks, deadlines, and team responsibilities in one place"
+        },
+        {
+          traditional: "Manual follow-ups that are often forgotten or delayed",
+          ourApproach: "Automated task creation and reminders that ensure consistent follow-up and nothing falls through the cracks"
+        },
+        {
+          traditional: "Limited visibility into project progress and team workloads",
+          ourApproach: "Complete visibility and control over every stage of the project with real-time insights and reporting"
+        }
+      ],
+      serviceDetails: {
+        overview: "We implement smart project management systems that streamline your workflows and keep your team organized. Our solutions integrate with your existing tools, automate repetitive tasks, and provide clear visibility into project progress. By centralizing task management and automating follow-ups, we help you deliver projects on time and keep everything moving forward efficiently."
+      }
     },
     {
-      icon: IconUser,
-      label: "Smart Hiring & Optimisation",
+      icon: User,
+      label: "SMART HIRING & OPTIMISATION",
       title: "Smart Hiring Systems",
       description: "Streamline hiring and workforce management with intelligent sourcing and optimisation.",
-      details: [
-        "AI-powered candidate screening and matching",
-        "Automated interview scheduling and follow-ups",
-        "Skills assessment and cultural fit analysis",
-        "Data-driven hiring decisions and insights"
-      ]
+      whatYoullGet: [
+        "AI-driven candidate sourcing and engagement",
+        "Custom email campaigns tailored to job seekers",
+        "Smart screening using role-specific questionnaires",
+        "Automated scoring to rank and prioritise candidates",
+        "Faster, more efficient hiring decisions",
+        "Reduced recruitment costs and improved candidate quality"
+      ],
+      comparison: [
+        {
+          traditional: "Manual resume screening that's time-consuming and subject to unconscious bias",
+          ourApproach: "AI-powered candidate screening that evaluates skills and fit objectively based on data"
+        },
+        {
+          traditional: "Passive job postings that rely on candidates finding you",
+          ourApproach: "Proactive talent sourcing that identifies and engages qualified candidates even when they're not actively job hunting"
+        },
+        {
+          traditional: "Slow hiring processes that lose top candidates to faster-moving competitors",
+          ourApproach: "Streamlined recruitment workflows that reduce time-to-hire without sacrificing quality"
+        }
+      ],
+      serviceDetails: {
+        overview: "Our recruitment automation system uses proprietary systems to source, assess, and rank job candidates with precision. From personalised outreach to intelligent questionnaires and scoring, we streamline your hiring process and deliver a shortlist of high-quality applicants—using AI to rank candidates and removing guesswork while saving you time and ensuring you find the perfect candidates faster."
+      }
     },
     {
-      icon: IconGlobe,
-      label: "Website Design",
+      icon: Globe,
+      label: "WEBSITE DESIGN",
       title: "Website Design & Optimisation",
       description: "Create high-performance, SEO-friendly sites optimized for conversions and user experience.",
-      details: [
-        "Conversion-focused design and user experience optimization",
-        "Mobile-first responsive development",
-        "Advanced SEO implementation and monitoring",
-        "Performance optimization and analytics integration"
-      ]
+      whatYoullGet: [
+        "Custom design aligned with your brand and goals",
+        "SEO-optimised for increased search visibility",
+        "Built for speed and mobile responsiveness",
+        "Layouts engineered for lead conversion",
+        "Seamless integration with sales and automation tools",
+        "Future-proofed to grow with your business"
+      ],
+      comparison: [
+        {
+          traditional: "Template-based designs that look generic and fail to differentiate your brand",
+          ourApproach: "Custom designs tailored to your unique brand identity and specific business objectives"
+        },
+        {
+          traditional: "Static websites that quickly become outdated and require complete rebuilds",
+          ourApproach: "Scalable, modular websites built on flexible frameworks that can evolve with your business"
+        },
+        {
+          traditional: "Design-first approach that prioritizes aesthetics over results",
+          ourApproach: "Conversion-focused design that balances visual appeal with proven conversion principles"
+        }
+      ],
+      portfolio: ["womensfaithforum.com"],
+      serviceDetails: {
+        overview: "We create high-performance, SEO-friendly websites that are optimized for conversions. Our designs combine visual appeal with strategic functionality to ensure your website becomes your most effective digital asset. Current portfolio: womensfaithforum.com"
+      }
     },
     {
-      icon: BotIcon,
-      label: "Conversational AI",
+      icon: MessageCircle,
+      label: "CONVERSATIONAL AI",
       title: "Conversational AI",
       description: "Build intelligent chatbots and virtual assistants that engage customers and automate support.",
-      details: [
-        "AI-powered chatbot development and deployment",
-        "Natural language processing and understanding",
-        "Automated customer support and engagement",
-        "Integration with existing communication channels"
-      ]
+      whatYoullGet: [
+        "24/7 automated customer support",
+        "Instant enquiry handling and lead qualification",
+        "AI responders for sales and support emails",
+        "Seamless appointment booking and routing",
+        "Consistent customer experience across channels",
+        "Scalable support without adding headcount"
+      ],
+      comparison: [
+        {
+          traditional: "Basic chatbots with rigid scripts that frustrate users when they go off-script",
+          ourApproach: "Intelligent conversational AI that understands context and handles natural language variations"
+        },
+        {
+          traditional: "Siloed support channels that create inconsistent customer experiences",
+          ourApproach: "Unified conversational layer that provides consistent experiences across all channels"
+        },
+        {
+          traditional: "Static FAQ systems that require customers to search for information",
+          ourApproach: "Proactive virtual assistants that guide users and anticipate their needs"
+        }
+      ],
+      serviceDetails: {
+        overview: "Our conversational AI solutions create intelligent chatbots and virtual assistants that engage your customers and automate support. We design and implement natural language interfaces that understand user intent, provide helpful responses, and seamlessly handle complex interactions, allowing you to deliver 24/7 support while reducing costs and improving customer satisfaction."
+      }
     },
     {
       icon: CircuitBoard,
-      label: "AI Strategy & Implementation",
+      label: "AI INTEGRATION",
       title: "AI Strategy & Consultancy",
       description: "Expert guidance on AI strategy, implementation, and integration with your existing systems.",
-      details: [
-        "Comprehensive AI strategy development",
-        "Implementation roadmap and planning",
-        "System integration and optimization",
-        "Performance monitoring and optimization"
-      ]
+      whatYoullGet: [
+        "In-depth operational audit across departments",
+        "Custom AI and automation strategy development",
+        "Review of CRMs, workflows, marketing, and sales processes",
+        "Practical roadmap with step-by-step improvements",
+        "Hands-on support through implementation",
+        "Long-term efficiency, scalability, and cost savings"
+      ],
+      comparison: [
+        {
+          traditional: "Technology-first approach that focuses on AI capabilities rather than business outcomes",
+          ourApproach: "Business-first strategy that aligns AI initiatives with specific organizational objectives"
+        },
+        {
+          traditional: "Siloed AI projects that create technical debt and integration challenges",
+          ourApproach: "Holistic approach that considers your entire technology ecosystem and ensures seamless integration"
+        },
+        {
+          traditional: "One-time AI implementations that quickly become outdated",
+          ourApproach: "Sustainable AI strategy with continuous improvement and adaptation to emerging technologies"
+        }
+      ],
+      serviceDetails: {
+        overview: "Our AI Consultancy provides expert guidance on AI strategy, implementation, and integration with your existing systems. We help you navigate the complex AI landscape, identify high-impact opportunities, and develop a roadmap for successful adoption. Our team of specialists ensures your AI initiatives align with business goals, deliver measurable ROI, and create sustainable competitive advantages."
+      }
     }
   ]
 

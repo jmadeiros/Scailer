@@ -33,4 +33,37 @@ export async function saveAuditFormData(formData: Omit<AuditFormData, 'submitted
     console.error('Error saving audit form data:', error);
     return { success: false, error };
   }
+}
+
+export interface BlogSubscription {
+  email: string;
+  submittedAt: any;
+  status?: string;
+  source?: string;
+  topics?: string[];
+}
+
+/**
+ * Saves blog subscription to Firestore
+ * @param subscription The blog subscription data to save
+ * @returns Promise that resolves with the document reference
+ */
+export async function saveBlogSubscription(subscription: Omit<BlogSubscription, 'submittedAt'>) {
+  try {
+    // Add timestamp and initial status
+    const dataToSave: BlogSubscription = {
+      ...subscription,
+      submittedAt: serverTimestamp(),
+      status: 'active',
+      source: typeof window !== 'undefined' ? window.location.href : 'unknown'
+    };
+    
+    // Add to the blogSubscriptions collection
+    const docRef = await addDoc(collection(db, 'blogSubscriptions'), dataToSave);
+    console.log('Blog subscription saved with ID:', docRef.id);
+    return { success: true, id: docRef.id };
+  } catch (error) {
+    console.error('Error saving blog subscription:', error);
+    return { success: false, error };
+  }
 } 

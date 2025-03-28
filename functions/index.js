@@ -664,3 +664,100 @@ exports.saveAuditData = functions
       });
     }
   });
+
+// Firebase Function to store blog subscriptions in Firestore
+exports.saveBlogSubscription = functions
+  .region('europe-west1')
+  .https.onRequest(async (req, res) => {
+    // Set CORS headers
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Handle preflight OPTIONS request
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('');
+      return;
+    }
+    
+    // Only allow POST requests
+    if (req.method !== 'POST') {
+      res.status(405).send({ error: 'Method Not Allowed' });
+      return;
+    }
+    
+    try {
+      console.log("Starting blog subscription storage process...");
+      
+      // Parse request body
+      const data = req.body;
+      
+      // Validate required fields
+      if (!data.email) {
+        console.error("Missing required email field");
+        res.status(400).json({ error: "Email is required" });
+        return;
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        console.error("Invalid email format:", data.email);
+        res.status(400).json({ error: "Invalid email format" });
+        return;
+      }
+      
+      // Add timestamp and metadata
+      const subscriptionData = {
+        email: data.email,
+        topics: data.topics || ['all'],
+        submittedAt: admin.firestore.FieldValue.serverTimestamp(),
+        status: 'active',
+        source: data.source || 'blog',
+        ipAddress: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        userAgent: req.headers['user-agent'] || 'unknown'
+      };
+      
+      console.log("Saving blog subscription:", {
+        email: subscriptionData.email,
+        topics: subscriptionData.topics,
+      });
+      
+      // Check if email already exists in the collection
+      const existingSubscriptions = await admin.firestore()
+        .collection('blogSubscriptions')
+        .where('email', '==', data.email)
+        .where('status', '==', 'active')
+        .limit(1)
+        .get();
+      
+      if (!existingSubscriptions.empty) {
+        console.log("Email already subscribed:", data.email);
+        res.status(200).json({ 
+          success: true, 
+          message: "Email already subscribed",
+          id: existingSubscriptions.docs[0].id,
+          alreadySubscribed: true
+        });
+        return;
+      }
+      
+      // Save to Firestore
+      const docRef = await admin.firestore().collection('blogSubscriptions').add(subscriptionData);
+      console.log("Blog subscription saved with ID:", docRef.id);
+      
+      // Return success response
+      res.status(200).json({ 
+        success: true, 
+        message: "Blog subscription saved successfully",
+        id: docRef.id 
+      });
+      
+    } catch (error) {
+      console.error("Error saving blog subscription:", error);
+      res.status(500).json({ 
+        error: "Error saving blog subscription", 
+        message: error.message 
+      });
+    }
+  });

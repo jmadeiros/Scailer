@@ -666,7 +666,7 @@ const HAL900FrameworkDiagram = () => {
           className="text-center mb-12 md:mb-24"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-12">
-            <span className="block">The Infrastructure That Scales</span>
+            <span className="block">Infrastructure That Scales</span>
             <span className="block">Your Business Automatically</span>
           </h2>
           <div className="flex flex-col items-center space-y-1 mt-4 md:mt-8">

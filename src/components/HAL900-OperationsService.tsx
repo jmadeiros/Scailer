@@ -358,14 +358,14 @@ export default function HAL900OperationsService() {
               <span className="text-gray-500">stalling</span> isn't effort—it's strategy.
             </h2>
 
-            <p className="text-gray-300 text-xl mb-24 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
+            <p className="text-gray-300 text-xl mb-32 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
               <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential
               growth, but with countless tools available, the path forward often feels overwhelming. You see the
               potential, but without a clear strategy,{" "}
               <span className="text-gray-500 font-bold">opportunity quickly turns into complexity</span>.
             </p>
 
-            <div className="mb-28 max-w-3xl mx-auto text-center">
+            <div className="mb-32 max-w-3xl mx-auto text-center">
               <h3 className="text-white text-3xl font-medium mb-6">That's where we come in.</h3>
               <div className="h-1 w-32 bg-[#25D366] rounded-full mx-auto"></div>
             </div>
@@ -448,7 +448,7 @@ export default function HAL900OperationsService() {
                     <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
                       <span className="text-[#25D366] text-sm font-medium">STRATEGIC GROWTH</span>
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Unlock Your Growth Potential</h3>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Unlock Your Business Potential</h3>
                     <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
                   </motion.div>
 
@@ -462,15 +462,14 @@ export default function HAL900OperationsService() {
                       className="text-center mb-12"
                     >
                       <p className="text-2xl text-white font-medium mb-2">
-                        Our mission is to bridge the gap between where you are now and where you <br />
-                        could be.
+                        Our mission is to bridge the gap between where your business is today and where it's built to go.
                       </p>
                     </motion.div>
 
                     <div className="max-w-3xl mx-auto mb-12">
                       <ul className="space-y-8">
                         {[
-                          "We remove bottlenecks, streamline operations, and implement AI-powered systems that drive growth with speed and precision.",
+                          "We remove bottlenecks, streamline operations, and implement the right AI-powered systems that drive growth with speed and precision.",
                           "We analyse how you work, spot the gaps, and deliver solutions that fit seamlessly into your business.",
                         ].map((item, index) => (
                           <motion.li
@@ -498,7 +497,7 @@ export default function HAL900OperationsService() {
                     >
                       <div className="max-w-3xl mx-auto px-4">
                         <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                          Our job? Spotting the gaps, cutting the waste, and showing you how to win with tech.
+                          Our job? Seeing what you don't. Streamlining what you do. Making AI simple—and scaling what works.
                         </h3>
 
                         {/* Arrow pointing to Operations as a Service - with independent animation and delay */}
@@ -508,6 +507,7 @@ export default function HAL900OperationsService() {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
+                            viewport={{ once: true }}
                           >
                             Discover our approach
                           </motion.p>
@@ -516,6 +516,7 @@ export default function HAL900OperationsService() {
                             initial={{ opacity: 0, x: -10 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ delay: 1.5, duration: 0.7 }}
+                            viewport={{ once: true }}
                             whileHover={{ x: 5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => scrollToSection(opsRef, "ops")}
@@ -540,7 +541,8 @@ export default function HAL900OperationsService() {
                             className="text-gray-400 text-sm mt-2"
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6, duration: 0.5 }}
+                            transition={{ delay: 1.3, duration: 0.5 }}
+                            viewport={{ once: true }}
                           >
                             Operations as a Service
                           </motion.p>
@@ -633,13 +635,35 @@ export default function HAL900OperationsService() {
                       className="text-center py-16"
                     >
                       <div className="max-w-3xl mx-auto px-4">
-                        <p className="text-gray-400 text-lg mb-6">What sets us apart?</p>
+                        <motion.p
+                          className="text-gray-400 text-lg mb-6"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.4, duration: 0.5 }}
+                          viewport={{ once: true }}
+                        >
+                          What sets us apart?
+                        </motion.p>
 
-                        <p className="text-[#25D366] text-2xl font-bold mb-3">
+                        <motion.p
+                          className="text-[#25D366] text-2xl font-bold mb-3"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.7, duration: 0.5 }}
+                          viewport={{ once: true }}
+                        >
                           Thoughtful solutions. Seamless execution.
-                        </p>
+                        </motion.p>
 
-                        <p className="text-white text-2xl font-bold">Building systems that grow with your business.</p>
+                        <motion.p
+                          className="text-white text-2xl font-bold"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.0, duration: 0.5 }}
+                          viewport={{ once: true }}
+                        >
+                          Building systems that grow with your business.
+                        </motion.p>
 
                         {/* Arrow pointing to Rapid Implementation - with independent animation and delay */}
                         <div className="mt-12 flex flex-col items-center">
@@ -648,6 +672,7 @@ export default function HAL900OperationsService() {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
+                            viewport={{ once: true }}
                           >
                             See how we do it
                           </motion.p>
@@ -656,6 +681,7 @@ export default function HAL900OperationsService() {
                             initial={{ opacity: 0, x: -10 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ delay: 1.5, duration: 0.7 }}
+                            viewport={{ once: true }}
                             whileHover={{ x: 5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => scrollToSection(implementationRef, "implementation")}
@@ -680,7 +706,8 @@ export default function HAL900OperationsService() {
                             className="text-gray-400 text-sm mt-2"
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6, duration: 0.5 }}
+                            transition={{ delay: 1.3, duration: 0.5 }}
+                            viewport={{ once: true }}
                           >
                             Rapid Implementation
                           </motion.p>

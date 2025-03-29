@@ -330,6 +330,16 @@ const paths = [
   "M1100 10 C 1100 10, 950 505, 600 505",
 ]
 
+// Mobile-specific paths that start from the Our Services button
+const mobilePaths = [
+  "M100 10 C 100 200, 300 485, 600 485",
+  "M300 10 C 300 200, 400 485, 600 485",
+  "M500 10 C 500 200, 550 485, 600 485",
+  "M700 10 C 700 200, 650 485, 600 485",
+  "M900 10 C 900 200, 800 485, 600 485",
+  "M1100 10 C 1100 200, 900 485, 600 485",
+]
+
 const HAL900FrameworkDiagram = () => {
   const containerRef = useRef(null)
   const timelineRef = useRef(null)
@@ -689,14 +699,24 @@ const HAL900FrameworkDiagram = () => {
             preserveAspectRatio="xMidYMid meet"
           >
             <defs>
+              {/* Desktop paths */}
               {paths.map((d, i) => (
-                <path key={i} id={`path-${i}`} d={d} />
+                <path key={`desktop-${i}`} id={`path-${i}`} d={d} className="hidden md:block" />
+              ))}
+              {/* Mobile paths */}
+              {mobilePaths.map((d, i) => (
+                <path key={`mobile-${i}`} id={`mobile-path-${i}`} d={d} className="md:hidden" />
               ))}
             </defs>
 
-            {/* Curved paths with smooth convergence */}
+            {/* Curved paths with smooth convergence - desktop */}
             {paths.map((d, i) => (
-              <use key={i} href={`#path-${i}`} stroke={iconColors[i]} strokeWidth="3" />
+              <use key={`desktop-path-${i}`} href={`#path-${i}`} stroke={iconColors[i]} strokeWidth="3" className="hidden md:block" />
+            ))}
+            
+            {/* Curved paths with smooth convergence - mobile */}
+            {mobilePaths.map((d, i) => (
+              <use key={`mobile-path-${i}`} href={`#mobile-path-${i}`} stroke={iconColors[i]} strokeWidth="3" className="md:hidden" />
             ))}
 
             {/* Connection circles at the bottom of each icon */}
@@ -704,12 +724,23 @@ const HAL900FrameworkDiagram = () => {
               <circle key={i} cx={cx} cy="10" r="3" fill={iconColors[i]} />
             ))}
 
-            {/* Streaming dots for each path */}
+            {/* Streaming dots for each path - desktop */}
             {paths.map((_, i) =>
               [...Array(3)].map((_, dotIndex) => (
-                <circle key={`${i}-${dotIndex}`} r="4" fill={iconColors[i]}>
+                <circle key={`desktop-dot-${i}-${dotIndex}`} r="4" fill={iconColors[i]} className="hidden md:block">
                   <animateMotion dur="3s" repeatCount="indefinite" begin={`${dotIndex * 1}s`}>
                     <mpath href={`#path-${i}`} />
+                  </animateMotion>
+                </circle>
+              ))
+            )}
+            
+            {/* Streaming dots for each path - mobile */}
+            {mobilePaths.map((_, i) =>
+              [...Array(3)].map((_, dotIndex) => (
+                <circle key={`mobile-dot-${i}-${dotIndex}`} r="4" fill={iconColors[i]} className="md:hidden">
+                  <animateMotion dur="3s" repeatCount="indefinite" begin={`${dotIndex * 1}s`}>
+                    <mpath href={`#mobile-path-${i}`} />
                   </animateMotion>
                 </circle>
               ))
@@ -782,8 +813,8 @@ const HAL900FrameworkDiagram = () => {
                     }
                   }}
                 >
-                  <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-[#1a1a1a] hover:bg-[#252525] shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110">
-                    <Icon className="w-4 h-4 md:w-10 md:h-10" color={iconColors[index]} />
+                  <div className="w-8 h-8 md:w-20 md:h-20 rounded-full bg-[#1a1a1a] hover:bg-[#252525] shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110">
+                    <Icon className="w-5 h-5 md:w-10 md:h-10" color={iconColors[index]} />
                   </div>
                 </div>
               ))}
@@ -795,16 +826,26 @@ const HAL900FrameworkDiagram = () => {
         <div className="relative max-w-5xl mx-auto" style={{ minHeight: "1200px" }}>
           {/* Animated line - adjusted positioning */}
           <div className="relative pt-8" ref={timelineRef}>
+            {/* Desktop vertical line */}
             <motion.div
-              className="absolute left-1/2 w-[1px] h-[1250px] -top-[150px] origin-top"
+              className="absolute left-1/2 w-[1px] h-[1250px] -top-[150px] origin-top hidden md:block"
+              style={{
+                background: "rgba(255, 255, 255, 0.3)",
+                opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 0.4, 0.4, 0.3]),
+              }}
+            />
+            
+            {/* Mobile vertical line - starts at "Our Services" button position */}
+            <motion.div
+              className="absolute left-1/2 w-[1px] h-[1250px] top-[-50px] origin-top md:hidden"
               style={{
                 background: "rgba(255, 255, 255, 0.3)",
                 opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 0.4, 0.4, 0.3]),
               }}
             />
 
-            {/* Streaming purple dots - adjusted positioning */}
-            <div className="absolute left-1/2 -translate-x-[2px] z-[2]">
+            {/* Desktop streaming purple dots */}
+            <div className="absolute left-1/2 -translate-x-[2px] z-[2] hidden md:block">
               {[...Array(2)].map((_, i) => (
                 <div
                   key={i}
@@ -817,6 +858,32 @@ const HAL900FrameworkDiagram = () => {
                     animationDelay: `${i * 3}s`,
                     willChange: "top, opacity",
                     top: "-150px",
+                  }}
+                >
+                  <div
+                    className="w-full h-full rounded-full"
+                    style={{
+                      backgroundColor: timelineColor,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {/* Mobile streaming purple dots - starting from "Our Services" button */}
+            <div className="absolute left-1/2 -translate-x-[2px] z-[2] md:hidden">
+              {[...Array(2)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute"
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    left: "-3px",
+                    animation: `streamDot 2s cubic-bezier(0.4, 0, 1, 1) infinite`,
+                    animationDelay: `${i * 3}s`,
+                    willChange: "top, opacity",
+                    top: "-50px",
                   }}
                 >
                   <div

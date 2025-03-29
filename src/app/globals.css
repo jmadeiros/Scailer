@@ -94,3 +94,42 @@
 .toast-custom[data-sonner-toast] [data-description] {
   @apply text-white/80 text-sm;
 }
+
+/* SVG Display for Framework Diagram */
+@media (max-width: 768px) {
+  .md\\:hidden {
+    display: inline !important;
+  }
+  
+  .hidden.md\\:block {
+    display: none !important;
+  }
+  
+  /* Position adjustment for the mobile vertical line and purple dots */
+  @keyframes streamDot {
+    0% {
+      top: -50px;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 800px;
+      opacity: 0;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .md\\:hidden {
+    display: none !important;
+  }
+  
+  .hidden.md\\:block {
+    display: inline !important;
+  }
+}

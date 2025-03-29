@@ -16,14 +16,14 @@ export default function HAL900ScaleWithPrecision() {
   }, []);
 
   return (
-    <section className="py-0 bg-[#2a2a2a] relative">
+    <section className="pt-0 pb-16 bg-[#2a2a2a] relative">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 1.2, delay: 0.4 }}
-          className="text-center mb-24"
+          className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">Scale with Precision</h2>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">

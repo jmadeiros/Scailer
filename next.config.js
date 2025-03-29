@@ -72,13 +72,13 @@ const nextConfig = {
   ...(process.env.NODE_ENV === 'development' && {
     reactStrictMode: false, // Disabling strict mode to prevent double rendering
     swcMinify: false, // Disable minification in development for faster builds
-    webpackDevMiddleware: config => {
-      config.watchOptions = {
+    experimental: {
+      // Development settings that need to be in experimental
+      watchOptions: {
         poll: 1000,
         aggregateTimeout: 300,
       }
-      return config
-    },
+    }
   })
 }
 

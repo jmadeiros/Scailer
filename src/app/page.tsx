@@ -87,7 +87,7 @@ export default function Home() {
             <HAL900OperationsService />
           </ScrollAnimationWrapper>
         </div>
-        <div className="mt-40 mb-40" id="scale-with-precision">
+        <div className="mt-16 mb-40" id="scale-with-precision">
           <ScrollAnimationWrapper delay={1.8}>
             <HAL900ScaleWithPrecision />
           </ScrollAnimationWrapper>

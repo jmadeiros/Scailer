@@ -133,7 +133,7 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
             transform: translateY(0px);
           }
           50% {
-            transform: translateY(-3px);
+            transform: translateY(-8px);
           }
           100% {
             transform: translateY(0px);
@@ -141,8 +141,8 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
         }
         
         .animate-very-gentle-float {
-          animation: very-gentle-float 12s ease-in-out infinite;
-          animation-delay: 3s;
+          animation: very-gentle-float 6s ease-in-out infinite;
+          animation-delay: 1s;
         }
 
         .calendar-icon {
@@ -151,7 +151,8 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
 
         .calendar-icon:hover {
           filter: drop-shadow(0 0 16px rgba(0, 255, 127, 1));
-          transition: filter 0.5s ease;
+          transform: translateY(-12px);
+          transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
       `}</style>
     </div>

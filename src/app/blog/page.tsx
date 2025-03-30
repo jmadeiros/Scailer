@@ -145,7 +145,7 @@ export default function BlogPage() {
                   />
                   <Button
                     type="submit"
-                    className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white"
+                    className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white py-3 h-12 text-lg font-bold rounded-md"
                     disabled={isLoading || isSubscribed}
                   >
                     {isLoading ? (

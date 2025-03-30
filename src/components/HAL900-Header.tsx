@@ -44,6 +44,14 @@ const LinkedinIcon = () => (
   </svg>
 );
 
+const InstagramIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
 const smoothScroll = (targetPosition: number, duration: number = 1500) => {
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
@@ -298,6 +306,15 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
                     >
                       <LinkedinIcon />
                     </motion.button>
+                    
+                    <motion.button 
+                      onClick={() => window.open('https://instagram.com/scailerAI', '_blank')}
+                      className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#E1306C]/20 hover:text-[#E1306C] flex items-center justify-center transition-all duration-200"
+                      whileHover={{ scale: 1.1, rotate: [-5, 5, 0], y: -2 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <InstagramIcon />
+                    </motion.button>
                   </div>
                 </motion.div>
               </DropdownMenu.Content>
@@ -421,6 +438,16 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
                   className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#0077b5]/20 hover:text-[#0077b5] flex items-center justify-center transition-all duration-200"
                 >
                   <LinkedinIcon />
+                </button>
+                
+                <button 
+                  onClick={() => {
+                    window.open('https://instagram.com/scailerAI', '_blank');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#E1306C]/20 hover:text-[#E1306C] flex items-center justify-center transition-all duration-200"
+                >
+                  <InstagramIcon />
                 </button>
               </div>
             </div>

@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
 import { toast, Toaster } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import PhoneInput from 'react-phone-number-input'
@@ -19,13 +18,12 @@ interface BookingFormProps {
   onSubmit: (formData: BookingFormData) => Promise<void>
 }
 
-export interface BookingFormData {
+interface BookingFormData {
   firstName: string
   lastName: string
   phone: string
   email: string
   additionalInfo: string
-  marketingConsent: boolean
 }
 
 export default function HAL900BookingForm({ selectedDate, selectedTime, onClose }: BookingFormProps) {
@@ -35,7 +33,6 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
     phone: "",
     email: "",
     additionalInfo: "",
-    marketingConsent: false
   })
   const [loading, setLoading] = useState(false)
 
@@ -184,7 +181,6 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
           email: formData.email,
           phone: formData.phone?.substring(0, 3) + "***", // Mask phone for privacy
           hasAdditionalInfo: !!formData.additionalInfo,
-          marketingConsent: formData.marketingConsent
         },
         selectedDate: dateString,
         selectedTime,
@@ -232,6 +228,7 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
       }
 
       console.log('Email notifications sent successfully');
+      console.log('EMAIL DEBUG: Emails sent successfully:', emailResult);
 
       // Reset form
       setFormData({
@@ -240,7 +237,6 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
         email: '',
         phone: '',
         additionalInfo: '',
-        marketingConsent: false,
       });
       
       // Update the loading toast to success
@@ -367,20 +363,6 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
                 "focus:ring-1 focus:ring-scailer-green/50"
               )}
             />
-          </div>
-
-          <div className="flex items-start gap-2">
-            <Checkbox
-              id="marketingConsent"
-              checked={formData.marketingConsent}
-              onCheckedChange={(checked: boolean) => 
-                setFormData(prev => ({ ...prev, marketingConsent: checked }))
-              }
-              className="mt-1"
-            />
-            <label htmlFor="marketingConsent" className="text-sm text-white/80">
-              I confirm that I want to receive content from this company using any contact information I provide.
-            </label>
           </div>
 
           <div className="flex justify-end gap-4">

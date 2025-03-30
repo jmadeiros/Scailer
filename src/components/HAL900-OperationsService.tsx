@@ -352,10 +352,10 @@ export default function HAL900OperationsService() {
             transition={{ duration: 0.5 }}
             className="text-center mb-24"
           >
-            <h2 className="text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-16 leading-tight max-w-4xl mx-auto">
-              The difference between <span className="text-[#25D366]">scaling</span> and{" "}
+            <h2 ref={headingRef} className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-16 leading-tight max-w-4xl mx-auto">
+              The difference between <br className="md:hidden" /><span className="text-[#25D366]">scaling</span> and{" "}
               <br className="hidden md:block" />
-              <span className="text-gray-500">stalling</span> isn't effort—it's strategy.
+              <span className="text-gray-500">stalling</span> <br className="md:hidden" />isn't effort—it's strategy.
             </h2>
 
             <p className="text-gray-300 text-sm md:text-xl mb-32 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">

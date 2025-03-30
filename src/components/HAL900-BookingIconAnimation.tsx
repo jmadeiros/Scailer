@@ -84,7 +84,7 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
       >
         <Calendar
           className={`
-            w-14 h-14 text-[#00FF7F] relative z-10 calendar-icon
+            w-10 h-10 md:w-14 md:h-14 text-[#00FF7F] relative z-10 calendar-icon
             ${isVisible ? "animate-very-gentle-float" : ""}
           `}
           strokeWidth={1.5}
@@ -116,7 +116,7 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
 
           {/* Text content with slower color transition */}
           <span
-            className="relative z-10 block px-4 py-1.5 text-sm font-medium transition-colors duration-700"
+            className="relative z-10 block px-3 md:px-4 py-1 md:py-1.5 text-xs md:text-sm font-medium transition-colors duration-700"
             style={{
               color: fillPercentage > 40 || isClicked ? "#2a2a2a" : "#00FF7F",
             }}

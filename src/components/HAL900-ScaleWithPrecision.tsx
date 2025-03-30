@@ -26,7 +26,7 @@ export default function HAL900ScaleWithPrecision() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">Scale with Precision</h2>
-          <p className="text-sm md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             We'll review how your business runs today and send you a tailored roadmap showing exactly where AI, automation, and smarter systems can unlock growth — all for free.
           </p>
         </motion.div>

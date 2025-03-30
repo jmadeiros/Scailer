@@ -358,7 +358,7 @@ export default function HAL900OperationsService() {
               <span className="text-gray-500">stalling</span> <br className="md:hidden" />isn't effort—it's strategy.
             </h2>
 
-            <p className="text-gray-300 text-sm md:text-xl mb-32 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
+            <p className="text-gray-300 text-base md:text-xl mb-32 max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
               <span className="text-[#25D366] font-bold">AI and automation</span> have the power to drive exponential
               growth, but with countless tools available, the path forward often feels overwhelming. You see the
               potential, but without a clear strategy,{" "}
@@ -366,7 +366,7 @@ export default function HAL900OperationsService() {
             </p>
 
             <div className="mb-32 max-w-3xl mx-auto text-center">
-              <h3 className="text-white text-3xl font-medium mb-6">That's where we come in.</h3>
+              <h3 className="text-white text-2xl md:text-3xl font-medium mb-6">That's where we come in.</h3>
               <div className="h-1 w-32 bg-[#25D366] rounded-full mx-auto"></div>
             </div>
 
@@ -459,15 +459,15 @@ export default function HAL900OperationsService() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
                       transition={{ duration: 0.6, delay: 0.3 }}
-                      className="text-center mb-12"
+                      className="text-center mb-12 md:mb-12"
                     >
-                      <p className="text-lg md:text-2xl text-white font-medium mb-2">
+                      <p className="text-xl md:text-2xl text-white font-medium mb-8 md:mb-2">
                         Our mission is to bridge the gap between where your business is today and where it's built to go.
                       </p>
                     </motion.div>
 
                     <div className="max-w-3xl mx-auto mb-12">
-                      <ul className="space-y-8">
+                      <ul className="space-y-12 md:space-y-8">
                         {[
                           "We remove bottlenecks, streamline operations, and implement the right AI-powered systems that drive growth with speed and precision.",
                           "We analyse how you work, spot the gaps, and deliver solutions that fit seamlessly into your business.",
@@ -480,8 +480,8 @@ export default function HAL900OperationsService() {
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
                           >
-                            <div className="w-10 h-10 rounded-full bg-[#25D366]/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                              <Check className="w-5 h-5 text-[#25D366]" />
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#25D366]/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                              <Check className="w-4 h-4 md:w-5 md:h-5 text-[#25D366]" />
                             </div>
                             <p className="text-gray-300 text-base md:text-lg">{item}</p>
                           </motion.li>

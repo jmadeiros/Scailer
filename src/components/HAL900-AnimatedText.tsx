@@ -192,7 +192,7 @@ export default function HAL900AnimatedText({ startAnimation, onLearnMore }: Anim
           >
             {showButton && (
               <Button
-                className="shimmer-button text-black text-base px-6 py-3 font-medium rounded-lg"
+                className="shimmer-button text-black text-sm md:text-base px-4 md:px-6 py-2 md:py-3 font-medium rounded-lg"
                 onClick={handleClick}
               >
                 Learn more

@@ -144,32 +144,32 @@ export default function ServiceDetailsPopup({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-2xl mx-4 overflow-hidden"
+              className="relative w-[95%] md:w-full max-w-2xl mx-2 md:mx-4 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
               style={{ position: "relative", zIndex: 10000, pointerEvents: 'auto' } as any}
             >
               <div className="bg-[#1a1a1a] rounded-xl overflow-hidden shadow-2xl">
                 {/* Header */}
-                <div className="p-6 flex items-center justify-between" style={{ backgroundColor: title === "AI Strategy & Consultancy" ? "#0c1c2b" : `${color}10` }}>
-                  <div className="flex items-center gap-4">
+                <div className="p-4 md:p-6 flex items-center justify-between" style={{ backgroundColor: title === "AI Strategy & Consultancy" ? "#0c1c2b" : `${color}10` }}>
+                  <div className="flex items-center gap-3 md:gap-4">
                     <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center"
+                      className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: title === "AI Strategy & Consultancy" ? "#0f2942" : `${color}20` }}
                     >
-                      {Icon && <Icon className="w-6 h-6" style={{ color }} />}
+                      {Icon && <Icon className="w-5 h-5 md:w-6 md:h-6" style={{ color }} />}
                     </div>
                     <div>
-                      <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+                      <div className="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-gray-400 mb-0.5 md:mb-1">
                         {getCategoryLabel()}
                       </div>
-                      <h3 className="text-xl font-bold text-white">{title}</h3>
+                      <h3 className="text-base md:text-xl font-bold text-white">{title}</h3>
                     </div>
                   </div>
                   <button
                     onClick={onClose}
-                    className="w-8 h-8 rounded-full flex items-center justify-center bg-[#2a2a2a] hover:bg-[#3a3a3a] transition-colors"
+                    className="w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center bg-[#2a2a2a] hover:bg-[#3a3a3a] transition-colors"
                   >
-                    <X className="w-4 h-4 text-gray-400" />
+                    <X className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400" />
                   </button>
                 </div>
 
@@ -183,13 +183,13 @@ export default function ServiceDetailsPopup({
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id as any)}
-                      className={`px-4 py-3 text-sm font-medium relative flex items-center whitespace-nowrap ${
+                      className={`px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium relative flex items-center whitespace-nowrap ${
                         activeTab === tab.id
                           ? "text-white"
                           : "text-gray-400 hover:text-gray-300"
                       }`}
                     >
-                      <tab.icon className="w-4 h-4 mr-2" color={color} />
+                      <tab.icon className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2" color={color} />
                       {tab.label}
                       {activeTab === tab.id && (
                         <motion.div
@@ -204,7 +204,7 @@ export default function ServiceDetailsPopup({
                 </div>
 
                 {/* Content */}
-                <div className="p-6 overflow-y-auto max-h-[60vh] text-left custom-scrollbar">
+                <div className="p-4 md:p-6 overflow-y-auto max-h-[50vh] md:max-h-[60vh] text-left custom-scrollbar">
                   <style jsx>{`
                     .custom-scrollbar::-webkit-scrollbar {
                       width: 8px;
@@ -229,20 +229,20 @@ export default function ServiceDetailsPopup({
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <p className="text-gray-300 mb-6 leading-relaxed">
+                        <p className="text-sm md:text-base text-gray-300 mb-4 md:mb-6 leading-relaxed">
                           {details?.serviceDetails?.overview || details?.description || ""}
                         </p>
                         <div className="flex justify-end">
                           <Button
                             onClick={() => setActiveTab("benefits")}
-                            className="flex items-center gap-2 text-white px-4 py-2 rounded-md"
+                            className="flex items-center gap-1.5 md:gap-2 text-white text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-md"
                             style={{ 
                               backgroundColor: buttonColors.bg,
                               color: buttonColors.text 
                             } as any}
                           >
                             <span>See What You'll Get</span>
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
                           </Button>
                         </div>
                       </motion.div>
@@ -256,36 +256,36 @@ export default function ServiceDetailsPopup({
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="mb-4">
-                          <h4 className="text-lg font-semibold mb-3 text-white">
+                        <div className="mb-3 md:mb-4">
+                          <h4 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-white">
                             What You'll Get
                           </h4>
-                          <ul className="space-y-3 mb-6">
+                          <ul className="space-y-2 md:space-y-3 mb-4 md:mb-6">
                             {(details?.whatYoullGet || details?.benefits || []).map((benefit: string, index: number) => (
                               <motion.li
                                 key={index}
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="flex items-start gap-3"
+                                className="flex items-start gap-2 md:gap-3"
                               >
-                                <Check className="w-5 h-5 mt-0.5 flex-shrink-0" color={color} />
-                                <span className="text-gray-300 text-[15px] leading-relaxed">{benefit}</span>
+                                <Check className="w-4 h-4 md:w-5 md:h-5 mt-0.5 flex-shrink-0" color={color} />
+                                <span className="text-xs md:text-[15px] text-gray-300 leading-relaxed">{benefit}</span>
                               </motion.li>
                             ))}
                           </ul>
                         </div>
-                        <div className="flex justify-end mt-8">
+                        <div className="flex justify-end mt-6 md:mt-8">
                           <Button
                             onClick={() => setActiveTab("comparison")}
-                            className="flex items-center gap-2 text-white px-4 py-2 rounded-md"
+                            className="flex items-center gap-1.5 md:gap-2 text-white text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-md"
                             style={{ 
                               backgroundColor: buttonColors.bg,
                               color: buttonColors.text 
                             } as any}
                           >
                             <span>See Comparison</span>
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
                           </Button>
                         </div>
                       </motion.div>
@@ -299,36 +299,36 @@ export default function ServiceDetailsPopup({
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="mb-4">
-                          <h4 className="text-lg font-semibold mb-3 text-white">
+                        <div className="mb-3 md:mb-4">
+                          <h4 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-white">
                             Our Approach vs. Traditional Methods
                           </h4>
-                          <p className="text-gray-400 mb-4">
+                          <p className="text-xs md:text-sm text-gray-400 mb-3 md:mb-4">
                             See how our innovative approach compares to traditional methods in the industry.
                           </p>
 
-                          <div className="space-y-4 mb-6">
+                          <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
                             {(details?.comparison || []).map((item: { traditional: string; ourApproach: string }, index: number) => (
                               <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                                className="grid grid-cols-2 gap-2 md:gap-4"
                               >
-                                <div className="bg-[#2a2a2a] p-4 rounded-lg">
-                                  <h5 className="font-medium text-gray-300 mb-2 text-sm">
+                                <div className="bg-[#2a2a2a] p-2 md:p-4 rounded-lg">
+                                  <h5 className="font-medium text-gray-300 mb-1 md:mb-2 text-xs md:text-sm">
                                     Traditional Approach
                                   </h5>
-                                  <p className="text-sm text-gray-400">{item.traditional}</p>
+                                  <p className="text-[10px] md:text-sm text-gray-400 leading-relaxed">{item.traditional}</p>
                                 </div>
-                                <div className="p-4 rounded-lg" style={{ 
+                                <div className="p-2 md:p-4 rounded-lg" style={{ 
                                   backgroundColor: title === "AI Strategy & Consultancy" ? "#0c1c2b" : `${color}15`
                                 }}>
-                                  <h5 className="font-medium mb-2 text-sm" style={{ color }}>
+                                  <h5 className="font-medium mb-1 md:mb-2 text-xs md:text-sm" style={{ color }}>
                                     Our Approach
                                   </h5>
-                                  <p className="text-sm text-gray-300">{item.ourApproach}</p>
+                                  <p className="text-[10px] md:text-sm text-gray-300 leading-relaxed">{item.ourApproach}</p>
                                 </div>
                               </motion.div>
                             ))}
@@ -336,7 +336,7 @@ export default function ServiceDetailsPopup({
                         </div>
                         <div className="flex justify-center">
                           <Button 
-                            className="px-6 text-white py-2 rounded-md" 
+                            className="px-4 md:px-6 text-white text-xs md:text-sm py-1.5 md:py-2 rounded-md" 
                             style={{ 
                               backgroundColor: buttonColors.bg,
                               color: buttonColors.text 

@@ -126,6 +126,13 @@ const mobileStyles = `
     .mobile-icon-adjust:nth-child(5) {
       transform: translateX(-15%);
     }
+    .hiring-label {
+      font-size: 0;
+    }
+    .hiring-label:before {
+      content: "HIRING SYSTEMS";
+      font-size: 8px;
+    }
   }
 `
 
@@ -220,7 +227,14 @@ const FeatureBox = ({
             </motion.div>
           )}
           <div>
-            <span className="text-[10px] md:text-xs font-medium text-gray-400 uppercase tracking-wider">{label}</span>
+            <span className="text-[8px] md:text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+              {label === "SMART HIRING & OPTIMISATION" ? (
+                <>
+                  <span className="md:hidden">HIRING SYSTEMS</span>
+                  <span className="hidden md:inline">SMART HIRING & OPTIMISATION</span>
+                </>
+              ) : label}
+            </span>
           </div>
           {/* Icon right side rendering */}
           {isLeft && (
@@ -244,7 +258,7 @@ const FeatureBox = ({
         </motion.div>
 
         <motion.h3
-          className="text-base md:text-lg font-semibold text-white mb-1 md:mb-2"
+          className="text-sm md:text-lg font-semibold text-white mb-1 md:mb-2"
           initial={{ y: 0 }}
           animate={{ y: isHovered ? -1 : 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
@@ -253,10 +267,10 @@ const FeatureBox = ({
         </motion.h3>
 
         <motion.p
-          className="text-xs md:text-sm text-gray-400 mb-3 md:mb-4 leading-relaxed"
+          className="text-xs md:text-base text-gray-400 leading-relaxed"
           initial={{ y: 0 }}
           animate={{ y: isHovered ? -1 : 0 }}
-          transition={{ duration: 0.2, delay: 0.2 }}
+          transition={{ duration: 0.2, delay: 0.15 }}
         >
           {description}
         </motion.p>
@@ -473,7 +487,7 @@ const HAL900FrameworkDiagram = () => {
     },
     {
       icon: User,
-      label: "SMART HIRING & OPTIMISATION",
+      label: "HIRING SYSTEMS",
       title: "Smart Hiring Systems",
       description: "Streamline hiring and workforce management with intelligent sourcing and optimisation.",
       whatYoullGet: [
@@ -670,11 +684,8 @@ const HAL900FrameworkDiagram = () => {
             <span className="block">Your Business Automatically</span>
           </h2>
           <div className="flex flex-col items-center space-y-1 mt-4 md:mt-8">
-            <p className="text-white/80 text-lg md:text-xl px-4 md:px-0">
-              Leverage our precision-engineered, intelligent automation frameworks to deliver
-            </p>
-            <p className="text-white/80 text-lg md:text-xl px-4 md:px-0">
-              your business at scale, without added infrastructure overhead.
+            <p className="text-base md:text-xl text-gray-300 px-4 md:px-0 max-w-3xl mx-auto leading-relaxed">
+              Leverage our precision-engineered, intelligent automation frameworks to deliver your business at scale, without added infrastructure overhead.
             </p>
           </div>
         </motion.div>

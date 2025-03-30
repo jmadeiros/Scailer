@@ -22,28 +22,63 @@ interface FormData {
 const messages = [
   {
     icon: <TrendingUp className="w-5 h-5" />,
-    text: "Optimize your conversion funnel for a 25% increase in lead generation.",
-    metrics: ["25% Increase", "Lead Gen"],
-  },
-  {
-    icon: <Users className="w-5 h-5" />,
-    text: "Implement personalized customer journeys to boost retention by 40%.",
-    metrics: ["40% Retention", "Personalization"],
+    text: "Eliminate 70% of workflow bottlenecks without hiring.",
+    metrics: ["70% Efficiency Gain", "Workflow Insight"],
   },
   {
     icon: <Target className="w-5 h-5" />,
-    text: "Leverage AI-driven targeting to improve ad spend efficiency by 30%.",
-    metrics: ["30% Efficiency", "AI Targeting"],
+    text: "Reduce cost per lead by 35% with predictive targeting.",
+    metrics: ["35% Lower CPL", "Data-Driven Acquisition"],
   },
   {
-    icon: <Zap className="w-5 h-5" />,
-    text: "Automate key processes to increase team productivity by 50%.",
-    metrics: ["50% Productivity", "Automation"],
+    icon: <Users className="w-5 h-5" />,
+    text: "Recover 60% of missed leads with automated follow-ups.",
+    metrics: ["+60% Lead Recovery", "Smart Automation"],
   },
   {
     icon: <Globe className="w-5 h-5" />,
-    text: "Expand into new markets to drive a 60% growth in customer base.",
-    metrics: ["60% Growth", "Market Expansion"],
+    text: "Increase marketing ROI by 3.5x using intent-driven campaigns.",
+    metrics: ["3.5x ROI", "Precision Marketing"],
+  },
+  {
+    icon: <Zap className="w-5 h-5" />,
+    text: "Cut admin time in half with AI-powered task flows.",
+    metrics: ["50% Time Saved", "Process Automation"],
+  },
+  {
+    icon: <TrendingUp className="w-5 h-5" />,
+    text: "Improve site conversion rates by 42% with UX-driven optimisation.",
+    metrics: ["+42% Conversions", "Website Tune-Up"],
+  },
+  {
+    icon: <Users className="w-5 h-5" />,
+    text: "Automate 80% of support queries with conversational AI.",
+    metrics: ["80% Automation", "AI Assistants"],
+  },
+  {
+    icon: <Target className="w-5 h-5" />,
+    text: "Source top candidates 2x faster with intelligent hiring systems.",
+    metrics: ["2x Speed", "Smart Hiring"],
+  },
+  {
+    icon: <Zap className="w-5 h-5" />,
+    text: "Retain 45% more customers with personalised project journeys.",
+    metrics: ["+45% Retention", "Project Automation"],
+  },
+  {
+    icon: <Globe className="w-5 h-5" />,
+    text: "Unlock hidden revenue streams with data-led lead generation.",
+    metrics: ["Revenue Boost", "Predictive Targeting"],
+  },
+  {
+    icon: <TrendingUp className="w-5 h-5" />,
+    text: "Launch campaigns 4x faster with streamlined marketing ops.",
+    metrics: ["4x Speed", "Marketing Automation"],
+  },
+  {
+    icon: <Users className="w-5 h-5" />,
+    text: "Integrate AI across your stack and scale without scaling your team.",
+    metrics: ["Scalable Growth", "AI Integration"],
   },
 ]
 

@@ -178,128 +178,77 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
 
             <DropdownMenu.Portal>
               <DropdownMenu.Content
-                className="min-w-[280px] bg-[#2a2a2a]/95 backdrop-blur-lg rounded-lg py-3 px-2 shadow-xl"
+                className="min-w-[280px] bg-[#2a2a2a]/95 backdrop-blur-lg rounded-lg py-3 px-2 shadow-xl animate-in slide-in-from-top-5 duration-200"
                 sideOffset={8}
                 align="end"
-                asChild
               >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.85, y: -20, rotateX: 20 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1, 
-                    y: 0, 
-                    rotateX: 0,
-                    transition: {
-                      duration: 0.3,
-                      ease: [0.23, 1.11, 0.29, 1.02], // custom spring physics
-                    }
-                  }}
-                  exit={{ 
-                    opacity: 0, 
-                    scale: 0.85, 
-                    y: -10, 
-                    rotateX: 10,
-                    transition: { 
-                      duration: 0.2, 
-                      ease: "easeInOut" 
-                    } 
-                  }}
-                  style={{ 
-                    transformOrigin: "top center",
-                    boxShadow: "0 10px 30px -10px rgba(0, 255, 127, 0.1)"
-                  }}
+                <div className="px-3 py-2 mb-2">
+                  <h3 className="text-gray-400 text-xs font-medium uppercase tracking-wider">Get in touch</h3>
+                </div>
+                
+                <DropdownMenu.Item 
+                  className="flex items-center gap-3 px-3 py-3 text-sm text-white/90 hover:bg-scailer-green/10 hover:text-scailer-green rounded-md outline-none cursor-pointer transition-all duration-200" 
+                  onClick={handleCopyEmail}
                 >
-                  <div className="px-3 py-2 mb-2">
-                    <h3 className="text-gray-400 text-xs font-medium uppercase tracking-wider">Get in touch</h3>
+                  <div className="w-8 h-8 rounded-full bg-[#2a2a2a]/70 flex items-center justify-center flex-shrink-0">
+                    <MessageSquareIcon />
                   </div>
-                  
-                  <DropdownMenu.Item 
-                    className="flex items-center gap-3 px-3 py-3 text-sm text-white/90 hover:bg-scailer-green/10 hover:text-scailer-green rounded-md outline-none cursor-pointer transition-all duration-200" 
-                    onClick={handleCopyEmail}
-                    asChild
-                  >
+                  <div className="flex-1">
+                    <div className="font-medium">Email us</div>
+                    <div className="text-xs text-gray-400">all@scailer.io</div>
+                  </div>
+                  {hasCopied ? (
                     <motion.div
-                      whileHover={{ scale: 1.02, x: 3 }}
-                      whileTap={{ scale: 0.98 }}
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.2 }}
+                      className="ml-auto"
                     >
-                      <div className="w-8 h-8 rounded-full bg-[#2a2a2a]/70 flex items-center justify-center flex-shrink-0">
-                        <MessageSquareIcon />
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-medium">Email us</div>
-                        <div className="text-xs text-gray-400">all@scailer.io</div>
-                      </div>
-                      {hasCopied ? (
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0, rotate: -90 }}
-                          animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                          transition={{ duration: 0.3, type: "spring" }}
-                          className="ml-auto"
-                        >
-                          <Check className="w-4 h-4 text-scailer-green" />
-                        </motion.div>
-                      ) : (
-                        <motion.div 
-                          className="ml-auto"
-                          whileHover={{ rotate: 15 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <CopyIcon />
-                        </motion.div>
-                      )}
+                      <Check className="w-4 h-4 text-scailer-green" />
                     </motion.div>
-                  </DropdownMenu.Item>
-                  
-                  <DropdownMenu.Separator className="h-px bg-white/10 my-1 mx-3" />
-                  
-                  <DropdownMenu.Item 
-                    className="flex items-center gap-3 px-3 py-3 text-sm text-white/90 hover:bg-scailer-green/10 hover:text-scailer-green rounded-md outline-none cursor-pointer transition-all duration-200"
-                    onClick={handleScheduleCall}
-                    asChild
+                  ) : (
+                    <div className="ml-auto">
+                      <CopyIcon />
+                    </div>
+                  )}
+                </DropdownMenu.Item>
+                
+                <DropdownMenu.Separator className="h-px bg-white/10 my-1 mx-3" />
+                
+                <DropdownMenu.Item 
+                  className="flex items-center gap-3 px-3 py-3 text-sm text-white/90 hover:bg-scailer-green/10 hover:text-scailer-green rounded-md outline-none cursor-pointer transition-all duration-200"
+                  onClick={handleScheduleCall}
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#2a2a2a]/70 flex items-center justify-center flex-shrink-0">
+                    <CalendarIcon />
+                  </div>
+                  <div>
+                    <div className="font-medium">Schedule a Call</div>
+                    <div className="text-xs text-gray-400">Book a free consultation</div>
+                  </div>
+                </DropdownMenu.Item>
+                
+                <DropdownMenu.Separator className="h-px bg-white/10 my-1 mx-3" />
+                
+                <div className="px-3 py-2 mt-1">
+                  <h3 className="text-gray-400 text-xs font-medium uppercase tracking-wider">Follow us</h3>
+                </div>
+                
+                <div className="flex px-3 py-2 gap-2">
+                  <button 
+                    onClick={() => window.open('https://twitter.com/scailerAI', '_blank')}
+                    className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#1d9bf0]/20 hover:text-[#1d9bf0] flex items-center justify-center transition-all duration-200"
                   >
-                    <motion.div
-                      whileHover={{ scale: 1.02, x: 3 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="w-8 h-8 rounded-full bg-[#2a2a2a]/70 flex items-center justify-center flex-shrink-0">
-                        <CalendarIcon />
-                      </div>
-                      <div>
-                        <div className="font-medium">Schedule a Call</div>
-                        <div className="text-xs text-gray-400">Book a free consultation</div>
-                      </div>
-                    </motion.div>
-                  </DropdownMenu.Item>
+                    <TwitterIcon />
+                  </button>
                   
-                  <DropdownMenu.Separator className="h-px bg-white/10 my-1 mx-3" />
-                  
-                  <div className="px-3 py-2 mt-1">
-                    <h3 className="text-gray-400 text-xs font-medium uppercase tracking-wider">Follow us</h3>
-                  </div>
-                  
-                  <div className="flex px-3 py-2 gap-2">
-                    <motion.button 
-                      onClick={() => window.open('https://twitter.com/scailerAI', '_blank')}
-                      className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#1d9bf0]/20 hover:text-[#1d9bf0] flex items-center justify-center transition-all duration-200"
-                      whileHover={{ scale: 1.1, rotate: [-5, 5, 0], y: -2 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <TwitterIcon />
-                    </motion.button>
-                    
-                    <motion.button 
-                      onClick={() => window.open('https://linkedin.com/company/scailer', '_blank')}
-                      className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#0077b5]/20 hover:text-[#0077b5] flex items-center justify-center transition-all duration-200"
-                      whileHover={{ scale: 1.1, rotate: [-5, 5, 0], y: -2 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <LinkedinIcon />
-                    </motion.button>
-                  </div>
-                </motion.div>
+                  <button 
+                    onClick={() => window.open('https://linkedin.com/company/scailer', '_blank')}
+                    className="w-9 h-9 rounded-full bg-[#2a2a2a]/70 hover:bg-[#0077b5]/20 hover:text-[#0077b5] flex items-center justify-center transition-all duration-200"
+                  >
+                    <LinkedinIcon />
+                  </button>
+                </div>
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>

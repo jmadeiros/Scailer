@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import ServiceDetailsPopup from "@/components/ServiceDetailsPopup"
-import { BarChart, Settings, Zap, Users, User, Globe, MessageCircle, CircuitBoard } from 'lucide-react'
+import { BarChart, Settings, Zap, Users, User, Globe, MessageSquare, CircuitBoard } from 'lucide-react'
 
 // Define SVG props interface
 interface SVGProps extends React.SVGProps<SVGSVGElement> {
@@ -181,6 +181,28 @@ const mobileStyles = `
     .framework-connection {
       r: 4.5 !important;
     }
+    .mobile-text-xs {
+      font-size: 0.65rem !important;
+    }
+    .mobile-text-sm {
+      font-size: 0.75rem !important;
+    }
+    .mobile-text-base {
+      font-size: 0.825rem !important;
+    }
+    .mobile-leading-tight {
+      line-height: 1.2 !important;
+    }
+    .mobile-description {
+      font-size: 0.7rem !important;
+      line-height: 1.3 !important;
+    }
+    .mobile-title-heading {
+      font-size: 1.75rem !important;
+    }
+    .mobile-subheading {
+      font-size: 0.85rem !important;
+    }
   }
 `
 
@@ -275,7 +297,7 @@ const FeatureBox = ({
             </motion.div>
           )}
           <div>
-            <span className="text-[8px] md:text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+            <span className="text-[8px] md:text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap mobile-text-xs">
               {label === "SMART HIRING & OPTIMISATION" ? (
                 <>
                   <span className="md:hidden">HIRING SYSTEMS</span>
@@ -306,7 +328,7 @@ const FeatureBox = ({
         </motion.div>
 
         <motion.h3
-          className="text-sm md:text-lg font-semibold text-white mb-1 md:mb-2"
+          className="text-sm md:text-lg font-semibold text-white mb-1 md:mb-2 mobile-text-sm"
           initial={{ y: 0 }}
           animate={{ y: isHovered ? -1 : 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
@@ -315,7 +337,7 @@ const FeatureBox = ({
         </motion.h3>
 
         <motion.p
-          className="text-xs md:text-base text-gray-400 leading-relaxed"
+          className="text-xs md:text-base text-gray-400 leading-relaxed mobile-description"
           initial={{ y: 0 }}
           animate={{ y: isHovered ? -1 : 0 }}
           transition={{ duration: 0.2, delay: 0.15 }}
@@ -332,7 +354,7 @@ const FeatureBox = ({
           <button
             ref={buttonRef}
             onClick={handleLearnMoreClick}
-            className={`inline-flex items-center text-xs md:text-sm font-medium transition-colors relative group ${
+            className={`inline-flex items-center text-xs md:text-sm font-medium transition-colors relative group mobile-text-xs ${
               isLeft ? "flex-row-reverse" : ""
             }`}
             style={{ color: isHovered ? color : "#6B7280" }}
@@ -597,7 +619,7 @@ const HAL900FrameworkDiagram = () => {
       }
     },
     {
-      icon: MessageCircle,
+      icon: MessageSquare,
       label: "CONVERSATIONAL AI",
       title: "Conversational AI",
       description: "Build intelligent chatbots and virtual assistants that engage customers and automate support.",
@@ -727,12 +749,12 @@ const HAL900FrameworkDiagram = () => {
           viewport={{ once: true }}
           className="text-center mb-12 md:mb-24"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-12 mobile-title-heading">
             <span className="block">Infrastructure That Scales</span>
             <span className="block">Your Business Automatically</span>
           </h2>
           <div className="flex flex-col items-center space-y-1 mt-4 md:mt-8">
-            <p className="text-base md:text-xl text-gray-300 px-4 md:px-0 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base md:text-xl text-gray-300 px-4 md:px-0 max-w-3xl mx-auto leading-relaxed mobile-subheading mobile-leading-tight">
               Leverage our precision-engineered, intelligent automation frameworks to deliver your business at scale, without added infrastructure overhead.
             </p>
           </div>

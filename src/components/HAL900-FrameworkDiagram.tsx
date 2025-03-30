@@ -118,10 +118,10 @@ const mobileStyles = `
       transform: translateX(5%);
     }
     .mobile-icon-adjust:nth-child(3) {
-      transform: translateX(15%);
+      transform: translateX(5%);
     }
     .mobile-icon-adjust:nth-child(4) {
-      transform: translateX(-5%);
+      transform: translateX(2%);
     }
     .mobile-icon-adjust:nth-child(5) {
       transform: translateX(5%);

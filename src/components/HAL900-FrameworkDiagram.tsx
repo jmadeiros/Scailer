@@ -94,6 +94,42 @@ const purpleDotKeyframes = `
       opacity: 0;
     }
   }
+
+  @keyframes streamDotMobile {
+    0% {
+      top: -50px;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 800px;
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    @keyframes streamDot {
+      0% {
+        top: -50px;
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        top: 800px;
+        opacity: 0;
+      }
+    }
+  }
 `
 
 const mobileStyles = `
@@ -132,6 +168,9 @@ const mobileStyles = `
     .hiring-label:before {
       content: "HIRING SYSTEMS";
       font-size: 8px;
+    }
+    .timeline-line {
+      top: -50px !important;
     }
   }
 `
@@ -807,7 +846,7 @@ const HAL900FrameworkDiagram = () => {
           {/* Animated line - adjusted positioning */}
           <div className="relative pt-8" ref={timelineRef}>
             <motion.div
-              className="absolute left-1/2 w-[1px] h-[1250px] -top-[150px] origin-top"
+              className="absolute left-1/2 w-[1px] h-[1250px] -top-[150px] origin-top timeline-line"
               style={{
                 background: "rgba(255, 255, 255, 0.3)",
                 opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 0.4, 0.4, 0.3]),
@@ -815,7 +854,7 @@ const HAL900FrameworkDiagram = () => {
             />
 
             {/* Streaming purple dots - adjusted positioning */}
-            <div className="absolute left-1/2 -translate-x-[2px] z-[2]">
+            <div className="absolute left-1/2 -translate-x-[2px] z-[2] hidden md:block">
               {[...Array(2)].map((_, i) => (
                 <div
                   key={i}
@@ -827,7 +866,32 @@ const HAL900FrameworkDiagram = () => {
                     animation: `streamDot 2s cubic-bezier(0.4, 0, 1, 1) infinite`,
                     animationDelay: `${i * 3}s`,
                     willChange: "top, opacity",
-                    top: "-150px",
+                  }}
+                >
+                  <div
+                    className="w-full h-full rounded-full"
+                    style={{
+                      backgroundColor: timelineColor,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {/* Mobile version of streaming dots */}
+            <div className="absolute left-1/2 -translate-x-[2px] z-[2] md:hidden">
+              {[...Array(2)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute"
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    left: "-3px",
+                    top: `-50px`,
+                    animation: `streamDotMobile 2s cubic-bezier(0.4, 0, 1, 1) infinite`,
+                    animationDelay: `${i * 3}s`,
+                    willChange: "top, opacity",
                   }}
                 >
                   <div

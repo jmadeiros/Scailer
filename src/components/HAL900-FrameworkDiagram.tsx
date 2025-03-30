@@ -115,7 +115,7 @@ const mobileStyles = `
       transition: transform 0.3s ease-in-out;
     }
     .mobile-icon-adjust:nth-child(2) {
-      transform: translateX(25%);
+      transform: translateX(5%);
     }
     .mobile-icon-adjust:nth-child(3) {
       transform: translateX(15%);

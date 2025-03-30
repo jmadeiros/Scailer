@@ -128,7 +128,7 @@ const TimelineStep = ({
         >
           <div className="px-3 pt-3 pb-2 bg-[#3a3a3a]/50 rounded-lg shadow-sm">
             <div className="flex items-start gap-2 mb-2">
-              <span className="font-bold text-[#25D366] text-sm">{step.step}</span>
+              <span className="font-bold text-[#25D366] text-sm hidden md:inline">{step.step}</span>
               <h3 className="text-base font-semibold text-white">{step.title}</h3>
             </div>
             <p className="text-gray-300 text-sm mb-2">{step.description}</p>

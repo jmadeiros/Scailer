@@ -131,11 +131,11 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
               </div>
               <div className="flex-1 min-w-0 flex flex-col justify-center">
                 <p className="text-[10px] md:text-[13px] text-white mb-1 md:mb-1.5 leading-[1.2] md:leading-[1.4]">{messages[currentIndex].text}</p>
-                <div className="flex gap-1 md:gap-1.5 flex-wrap">
+                <div className="hidden md:flex gap-1.5 flex-wrap">
                   {messages[currentIndex].metrics.map((metric) => (
                     <span
                       key={metric}
-                      className="inline-flex items-center px-1 md:px-2 py-0.5 rounded-full text-[9px] md:text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
                     >
                       {metric}
                     </span>

@@ -95,8 +95,8 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   return (
     <>
       <motion.div
-        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden"
-        animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "90px", opacity: 1 }}
+        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden h-[70px] md:h-[90px]"
+        animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "auto", opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <AnimatePresence mode="wait">
@@ -109,10 +109,10 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
               duration: 0.5,
               ease: [0.32, 0.72, 0, 1],
             }}
-            className="p-2 h-full flex items-center"
+            className="p-1 md:p-2 h-full flex items-center"
           >
             <motion.div
-              className="flex gap-2 w-full"
+              className="flex gap-1 md:gap-2 w-full"
               animate={
                 animationTriggered
                   ? {
@@ -124,18 +124,18 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
               }
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <div className="w-6 h-6 rounded-lg bg-scailer-green/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-5 h-5 md:w-6 md:h-6 rounded-lg bg-scailer-green/20 flex items-center justify-center flex-shrink-0">
                 {React.cloneElement(messages[currentIndex].icon as React.ReactElement, {
-                  className: "w-3 h-3 text-scailer-green"
+                  className: "w-2.5 h-2.5 md:w-3 md:h-3 text-scailer-green"
                 })}
               </div>
               <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <p className="text-[13px] text-white mb-1.5 leading-[1.4]">{messages[currentIndex].text}</p>
-                <div className="flex gap-1.5 flex-wrap">
+                <p className="text-[10px] md:text-[13px] text-white mb-1 md:mb-1.5 leading-[1.2] md:leading-[1.4]">{messages[currentIndex].text}</p>
+                <div className="flex gap-1 md:gap-1.5 flex-wrap">
                   {messages[currentIndex].metrics.map((metric) => (
                     <span
                       key={metric}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
+                      className="inline-flex items-center px-1 md:px-2 py-0.5 rounded-full text-[9px] md:text-[11px] bg-scailer-green/20 text-scailer-green font-medium whitespace-nowrap"
                     >
                       {metric}
                     </span>

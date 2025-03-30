@@ -182,7 +182,7 @@ const AnimatedHeading = () => {
       return (
         <span className="text-white">
           {text}
-          <div className="scroll-words text-5xl md:text-5xl lg:text-6xl ml-3 inline-flex items-baseline">
+          <div className="scroll-words text-4xl md:text-5xl lg:text-6xl ml-3 inline-flex items-baseline">
             <div className="scroll-words-inner">
               <span>build</span>
               <span>grow</span>
@@ -198,9 +198,9 @@ const AnimatedHeading = () => {
   return (
     <div className="text-center my-4 md:my-6 lg:my-12 px-4">
       <div ref={containerRef} className="inline-flex items-center justify-center">
-        <h1 className="text-5xl sm:text-5xl md:text-7xl lg:text-8xl flex items-center tracking-tight text-white font-medium whitespace-pre-wrap sm:whitespace-nowrap">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl flex items-center tracking-tight text-white font-medium whitespace-pre-wrap sm:whitespace-nowrap">
           <span
-            className="font-normal text-scailer-green text-6xl sm:text-6xl md:text-8xl lg:text-9xl mr-2 md:mr-4 flex items-center"
+            className="font-normal text-scailer-green text-5xl sm:text-6xl md:text-8xl lg:text-9xl mr-2 md:mr-4 flex items-center"
             style={{ ...leftBracketStyle, transformStyle: "preserve-3d" }}
           >
             {"{"}
@@ -209,7 +209,7 @@ const AnimatedHeading = () => {
             <span
               className={`flex-shrink-0 transition-all duration-300 ${
                 displayText.startsWith("a better way")
-                  ? "text-4xl sm:text-3xl md:text-5xl lg:text-6xl"
+                  ? "text-3xl sm:text-3xl md:text-5xl lg:text-6xl"
                   : "text-5xl sm:text-5xl md:text-7xl lg:text-8xl"
               }`}
             >
@@ -217,7 +217,7 @@ const AnimatedHeading = () => {
             </span>
           </div>
           <span
-            className="font-normal text-scailer-green text-6xl sm:text-6xl md:text-8xl lg:text-9xl ml-2 md:ml-4 flex items-center"
+            className="font-normal text-scailer-green text-5xl sm:text-6xl md:text-8xl lg:text-9xl ml-2 md:ml-4 flex items-center"
             style={{ ...rightBracketStyle, transformStyle: "preserve-3d" }}
           >
             {"}"}

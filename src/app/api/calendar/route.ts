@@ -79,7 +79,7 @@ Strategy Session with ${formData.firstName} ${formData.lastName}
 
 CLIENT DETAILS:
 - Name: ${formData.firstName} ${formData.lastName}
-- Phone: ${formData.phone}
+- Phone: ${formData.phone || "Not provided"}
 - Email: ${formData.email}
 
 ADDITIONAL INFORMATION:

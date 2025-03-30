@@ -96,12 +96,40 @@ async function createTestAccount() {
 async function sendClientConfirmationEmail(formData: any, selectedDate: string, selectedTime: string, calendarLink?: string) {
   const emailTransporter = await initializeTransporter();
   
-  const formattedDate = new Date(selectedDate).toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  // DEBUGGING: Log the exact environment and date received
+  console.log("DEEP DATE DEBUG: Environment and full date info", {
+    environment: process.env.NODE_ENV,
+    rawSelectedDate: selectedDate,
+    timeString: selectedTime,
+    serverTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    currentServerTime: new Date().toISOString(),
+    currentLocalTime: new Date().toString()
   });
+  
+  let formattedDate;
+  try {
+    // Get date parts from the date string (YYYY-MM-DD format)
+    const [year, month, day] = selectedDate.split('-').map(num => parseInt(num, 10));
+    
+    // Create a date object using the parsed components
+    // This avoids any timezone issues since we're just using the date parts
+    const dateObj = new Date(year, month - 1, day);
+    
+    // Format the date in British format
+    formattedDate = new Intl.DateTimeFormat('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(dateObj);
+    
+    console.log(`Date formatted as: ${formattedDate}`);
+  } catch (error) {
+    console.error(`Error formatting date from ${selectedDate}:`, error);
+    // Simple fallback using direct string formatting
+    formattedDate = selectedDate;
+    console.log(`Using raw date string as fallback: ${formattedDate}`);
+  }
 
   const emailContent = {
     from: `"Scailer Booking" <${EMAIL_FROM}>`,
@@ -172,12 +200,30 @@ async function sendClientConfirmationEmail(formData: any, selectedDate: string, 
 async function sendAdminNotificationEmail(formData: any, selectedDate: string, selectedTime: string) {
   const emailTransporter = await initializeTransporter();
   
-  const formattedDate = new Date(selectedDate).toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  let formattedDate;
+  try {
+    // Get date parts from the date string (YYYY-MM-DD format)
+    const [year, month, day] = selectedDate.split('-').map(num => parseInt(num, 10));
+    
+    // Create a date object using the parsed components
+    // This avoids any timezone issues since we're just using the date parts
+    const dateObj = new Date(year, month - 1, day);
+    
+    // Format the date in British format
+    formattedDate = new Intl.DateTimeFormat('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(dateObj);
+    
+    console.log(`Admin email: Date formatted as: ${formattedDate}`);
+  } catch (error) {
+    console.error(`Error formatting date for admin email from ${selectedDate}:`, error);
+    // Simple fallback using direct string formatting 
+    formattedDate = selectedDate;
+    console.log(`Admin email: Using raw date string as fallback: ${formattedDate}`);
+  }
 
   const emailContent = {
     from: `"Scailer Booking System" <${EMAIL_FROM}>`,
@@ -188,7 +234,7 @@ async function sendAdminNotificationEmail(formData: any, selectedDate: string, s
 
       Client: ${formData.firstName} ${formData.lastName}
       Email: ${formData.email}
-      Phone: ${formData.phone}
+      Phone: ${formData.phone || "Not provided"}
       
       Date: ${formattedDate}
       Time: ${selectedTime}
@@ -209,7 +255,7 @@ async function sendAdminNotificationEmail(formData: any, selectedDate: string, s
           
           <p><strong>Name:</strong> ${formData.firstName} ${formData.lastName}</p>
           <p><strong>Email:</strong> ${formData.email}</p>
-          <p><strong>Phone:</strong> ${formData.phone}</p>
+          <p><strong>Phone:</strong> ${formData.phone || "Not provided"}</p>
           
           <h2 style="color: #25D366; margin-top: 20px;">Session Details</h2>
           
@@ -263,6 +309,22 @@ export async function POST(req: NextRequest) {
     
     const { formData, selectedDate, selectedTime, calendarLink } = body;
 
+    // Add detailed logging for received date
+    console.log("DATE DEBUG: Received date information:", {
+      selectedDate,
+      selectedDateType: typeof selectedDate,
+      selectedTime,
+      selectedTimeType: typeof selectedTime,
+      sample: selectedDate ? {
+        dateObject: new Date(selectedDate),
+        dateObjectToString: new Date(selectedDate).toString(),
+        dateObjectToLocaleString: new Date(selectedDate).toLocaleString(),
+        dateObjectToLocaleDateString: new Date(selectedDate).toLocaleDateString(),
+        dateObjectUTC: new Date(selectedDate).toUTCString(),
+        simpleExtraction: selectedDate.split('T')[0]
+      } : null
+    });
+
     // Validate required fields
     if (!formData || !selectedDate || !selectedTime) {
       console.error("Missing required fields:", { 
@@ -284,7 +346,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate formData structure
-    const requiredFormFields = ['firstName', 'lastName', 'email', 'phone'];
+    const requiredFormFields = ['firstName', 'lastName', 'email'];
     const missingFields = requiredFormFields.filter(field => !formData[field]);
     
     if (missingFields.length > 0) {

@@ -94,3 +94,74 @@
 .toast-custom[data-sonner-toast] [data-description] {
   @apply text-white/80 text-sm;
 }
+
+/* International Phone Input Styles */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  background-color: #2a2a2a;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  height: 40px;
+}
+
+.PhoneInputCountry {
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.PhoneInputInput {
+  background-color: transparent !important;
+  border: none;
+  color: white !important;
+  flex: 1;
+  padding: 0;
+  outline: none;
+  font-size: 0.875rem;
+}
+
+.PhoneInputInput:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.PhoneInputCountryIcon {
+  width: 1.5rem;
+  height: 1rem;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.PhoneInputCountrySelectArrow {
+  border-color: #888 transparent transparent;
+  margin-left: 0.25rem;
+}
+
+.PhoneInputCountrySelect {
+  background-color: #2a2a2a;
+  color: white;
+}
+
+/* Fix for autocomplete/autofill background color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+.PhoneInputInput:-webkit-autofill,
+.PhoneInputInput:-webkit-autofill:hover,
+.PhoneInputInput:-webkit-autofill:focus,
+.PhoneInputInput:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  -webkit-box-shadow: 0 0 0 30px #2a2a2a inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  background-color: #2a2a2a !important;
+  caret-color: white;
+}
+
+/* Additional targeting for the background in the dropdown */
+.PhoneInputCountrySelect option {
+  background-color: #2a2a2a;
+  color: white;
+}

@@ -506,7 +506,7 @@ export default function HAL900AuditForm() {
           </div>
         </form>
 
-        <div className="hidden md:block">
+        <div>
           <MessageFeed animationTriggered={animationTriggered} />
         </div>
       </motion.div>

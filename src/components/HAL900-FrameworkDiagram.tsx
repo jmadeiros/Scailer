@@ -172,6 +172,15 @@ const mobileStyles = `
     .timeline-line {
       top: -50px !important;
     }
+    .framework-path {
+      stroke-width: 5 !important;
+    }
+    .framework-dot {
+      r: 6 !important;
+    }
+    .framework-connection {
+      r: 4.5 !important;
+    }
   }
 `
 
@@ -746,18 +755,18 @@ const HAL900FrameworkDiagram = () => {
 
             {/* Curved paths with smooth convergence */}
             {paths.map((d, i) => (
-              <use key={i} href={`#path-${i}`} stroke={iconColors[i]} strokeWidth="3" />
+              <use key={i} href={`#path-${i}`} stroke={iconColors[i]} strokeWidth="3" className="framework-path" />
             ))}
 
             {/* Connection circles at the bottom of each icon */}
             {[100, 300, 500, 700, 900, 1100].map((cx, i) => (
-              <circle key={i} cx={cx} cy="10" r="3" fill={iconColors[i]} />
+              <circle key={i} cx={cx} cy="10" r="3" fill={iconColors[i]} className="framework-connection" />
             ))}
 
             {/* Streaming dots for each path */}
             {paths.map((_, i) =>
               [...Array(3)].map((_, dotIndex) => (
-                <circle key={`${i}-${dotIndex}`} r="4" fill={iconColors[i]}>
+                <circle key={`${i}-${dotIndex}`} r="4" fill={iconColors[i]} className="framework-dot">
                   <animateMotion dur="3s" repeatCount="indefinite" begin={`${dotIndex * 1}s`}>
                     <mpath href={`#path-${i}`} />
                   </animateMotion>

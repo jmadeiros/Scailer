@@ -86,6 +86,9 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
         setShowSuccessMessage(true)
       }, 2000)
       return () => clearTimeout(timer)
+    } else {
+      // Reset success message when animation is no longer triggered
+      setShowSuccessMessage(false)
     }
   }, [animationTriggered])
 
@@ -291,12 +294,18 @@ export default function HAL900AuditForm() {
           email: { isValid: false, message: "" },
         })
         
+        // Keep animation triggered permanently so the success message stays visible
+        // and the form doesn't reappear
+        
       } catch (error) {
         console.error("Error submitting audit form:", error)
         toast.error("There was an error submitting your information. Please try again.")
-      } finally {
+        // Only reset animation state if there was an error
         setLoading(false)
         setTimeout(() => setAnimationTriggered(false), 1000)
+      } finally {
+        setLoading(false)
+        // No longer resetting animationTriggered to keep success message visible
       }
     } else {
       // Show error for invalid form

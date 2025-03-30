@@ -461,7 +461,7 @@ export default function HAL900OperationsService() {
                       transition={{ duration: 0.6, delay: 0.3 }}
                       className="text-center mb-12"
                     >
-                      <p className="text-2xl text-white font-medium mb-2">
+                      <p className="text-lg md:text-2xl text-white font-medium mb-2">
                         Our mission is to bridge the gap between where your business is today and where it's built to go.
                       </p>
                     </motion.div>
@@ -483,7 +483,7 @@ export default function HAL900OperationsService() {
                             <div className="w-10 h-10 rounded-full bg-[#25D366]/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
                               <Check className="w-5 h-5 text-[#25D366]" />
                             </div>
-                            <p className="text-gray-300 text-lg">{item}</p>
+                            <p className="text-gray-300 text-base md:text-lg">{item}</p>
                           </motion.li>
                         ))}
                       </ul>

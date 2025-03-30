@@ -124,7 +124,7 @@ const mobileStyles = `
       transform: translateX(-5%);
     }
     .mobile-icon-adjust:nth-child(5) {
-      transform: translateX(-15%);
+      transform: translateX(5%);
     }
     .hiring-label {
       font-size: 0;

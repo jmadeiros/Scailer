@@ -98,17 +98,17 @@ const purpleDotKeyframes = `
 
 const mobileStyles = `
   @media (max-width: 768px) {
+    .w-10 {
+      width: 2.5rem;
+    }
+    .h-10 {
+      height: 2.5rem;
+    }
     .w-6 {
       width: 1.5rem;
     }
     .h-6 {
       height: 1.5rem;
-    }
-    .w-4 {
-      width: 1rem;
-    }
-    .h-4 {
-      height: 1rem;
     }
     .mobile-icon-adjust {
       transform: translateX(0);
@@ -793,8 +793,8 @@ const HAL900FrameworkDiagram = () => {
                     }
                   }}
                 >
-                  <div className="w-6 h-6 md:w-20 md:h-20 rounded-full bg-[#1a1a1a] hover:bg-[#252525] shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110">
-                    <Icon className="w-4 h-4 md:w-10 md:h-10" color={iconColors[index]} />
+                  <div className="w-10 h-10 md:w-20 md:h-20 rounded-full bg-[#1a1a1a] hover:bg-[#252525] shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110">
+                    <Icon className="w-6 h-6 md:w-10 md:h-10" color={iconColors[index]} />
                   </div>
                 </div>
               ))}

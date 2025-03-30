@@ -580,16 +580,16 @@ export default function HAL900OperationsService() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
                       transition={{ duration: 0.6 }}
-                      className="text-center mb-16"
+                      className="text-center mb-10 md:mb-16"
                     >
-                      <p className="text-gray-300 text-xl max-w-2xl mx-auto mb-6">
+                      <p className="text-gray-300 text-base md:text-xl max-w-2xl mx-auto mb-4 md:mb-6">
                         Traditional hiring can be slow, costly, and demands significant upfront commitment. Our approach
                         is different:
                       </p>
                     </motion.div>
 
                     {/* Three column feature layout */}
-                    <div className="max-w-4xl mx-auto mb-20 grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div className="max-w-4xl mx-auto mb-12 md:mb-20 grid grid-cols-3 gap-1 md:gap-10 px-0 md:px-4 -mx-1 md:mx-0">
                       {[
                         {
                           title: "On-demand automation expertise",
@@ -618,11 +618,11 @@ export default function HAL900OperationsService() {
                           viewport={{ once: true, amount: 0.2 }}
                           transition={{ duration: 0.6, delay: 0.2 + index * 0.15 }}
                         >
-                          <div className="w-16 h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center mb-6">
-                            <item.icon className="w-7 h-7 text-[#25D366]" />
+                          <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center mb-2 md:mb-6">
+                            <item.icon className="w-4 h-4 md:w-7 md:h-7 text-[#25D366]" />
                           </div>
-                          <h4 className="text-xl font-medium text-white mb-4">{item.title}</h4>
-                          <p className="text-gray-400 text-base max-w-xs mx-auto">{item.description}</p>
+                          <h4 className="text-sm md:text-xl font-medium text-white mb-1 md:mb-4">{item.title}</h4>
+                          <p className="text-xs md:text-base text-gray-400 max-w-xs mx-auto leading-tight md:leading-normal">{item.description}</p>
                         </motion.div>
                       ))}
                     </div>

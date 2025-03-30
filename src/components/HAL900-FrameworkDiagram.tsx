@@ -97,7 +97,7 @@ const purpleDotKeyframes = `
 
   @keyframes streamDotMobile {
     0% {
-      top: -50px;
+      top: -65px;
       opacity: 0;
     }
     10% {
@@ -885,10 +885,10 @@ const HAL900FrameworkDiagram = () => {
                   key={i}
                   className="absolute"
                   style={{
-                    width: "10px",
-                    height: "10px",
-                    left: "-3px",
-                    top: `-50px`,
+                    width: "8px",
+                    height: "8px",
+                    left: "-2px",
+                    top: `-65px`,
                     animation: `streamDotMobile 2s cubic-bezier(0.4, 0, 1, 1) infinite`,
                     animationDelay: `${i * 3}s`,
                     willChange: "top, opacity",

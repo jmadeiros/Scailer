@@ -313,33 +313,9 @@ export default function HAL900AuditForm() {
 
         console.log('Audit form saved successfully with ID:', data.id)
         
-        // Send confirmation emails
-        try {
-          const emailResponse = await fetch('/api/send-audit-emails', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              formData: {
-                name: formData.name,
-                companyName: formData.companyName,
-                email: formData.email
-              }
-            }),
-          })
-          
-          const emailResult = await emailResponse.json()
-          
-          if (!emailResponse.ok) {
-            console.error('EMAIL DEBUG: Failed to send emails:', emailResult)
-          } else {
-            console.log('EMAIL DEBUG: Emails sent successfully:', emailResult)
-          }
-        } catch (emailError) {
-          console.error('EMAIL DEBUG: Error sending emails:', emailError)
-          // Don't throw here - we want to show success even if emails fail
-        }
+        // No need to call the API route anymore since the Firebase function now sends emails
+        // The saveAuditData function handles both database storage and email sending
+        console.log('Emails are handled by the Firebase function')
         
         // Show success message
         toast.success("Thank you! Your information has been submitted successfully.")

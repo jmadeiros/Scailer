@@ -5,6 +5,7 @@ const nextConfig = {
   output: 'export',  // Enable static export
   images: {
     unoptimized: true,  // Required for static export
+    domains: ['images.unsplash.com'],
   },
   reactStrictMode: false,
   typescript: {

@@ -15,7 +15,6 @@ interface BookingFormProps {
   selectedDate: Date
   selectedTime: string
   onClose: () => void
-  onSubmit: (formData: BookingFormData) => Promise<void>
 }
 
 interface BookingFormData {
@@ -54,56 +53,32 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
       
       console.log('Using Firebase Functions base URL:', functionsBaseUrl);
       
-      // Create calendar event via Firebase Function
-      console.log('Creating calendar event...');
-      console.log('Current environment:', process.env.NODE_ENV);
-      console.log('Current URL:', window.location.href);
-      console.log('API endpoint:', `${functionsBaseUrl}/calendar`);
+      // Create calendar event via Firebase Function - use our new precise function
+      console.log('Creating calendar event using precise function...');
       
-      // First, check if the API endpoint exists by making a HEAD request
-      try {
-        const checkResponse = await fetch(`${functionsBaseUrl}/calendar`, { 
-          method: 'HEAD',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        console.log('API endpoint check result:', {
-          status: checkResponse.status,
-          statusText: checkResponse.statusText,
-          headers: Object.fromEntries([...checkResponse.headers.entries()])
-        });
-      } catch (checkError) {
-        console.error('API endpoint check failed:', checkError);
-      }
+      // Format the date as YYYY-MM-DD for sending to the API
+      const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
       
-      const calendarResponse = await fetch(`${functionsBaseUrl}/calendar`, {
+      console.log('Date string being sent to calendarPrecise:', formattedDate);
+      console.log('Time string being sent to calendarPrecise:', selectedTime);
+      
+      const calendarResponse = await fetch(`${functionsBaseUrl}/calendarPrecise`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           formData,
-          selectedDate: selectedDate.toISOString(),
+          selectedDate: formattedDate,
           selectedTime,
         }),
       });
 
       console.log('Calendar response status:', calendarResponse.status, calendarResponse.statusText);
-      console.log('Calendar response headers:', Object.fromEntries([...calendarResponse.headers.entries()]));
       
       // Get the raw response text first
       const rawCalendarResponseText = await calendarResponse.text();
       console.log('Raw calendar response (first 200 chars):', rawCalendarResponseText.substring(0, 200));
-      
-      // Check if the response is HTML (which would indicate routing to index.html)
-      const isCalendarHtmlResponse = rawCalendarResponseText.trim().startsWith('<!DOCTYPE') || 
-                            rawCalendarResponseText.trim().startsWith('<html');
-      
-      if (isCalendarHtmlResponse) {
-        console.error('Received HTML response instead of JSON. This indicates the Firebase Function is not available.');
-        throw new Error('Calendar Firebase Function is not available. Please check your Firebase Functions deployment.');
-      }
       
       let calendarResult;
       try {
@@ -111,7 +86,6 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
         calendarResult = rawCalendarResponseText ? JSON.parse(rawCalendarResponseText) : null;
       } catch (parseError) {
         console.error('Failed to parse calendar response as JSON:', parseError);
-        console.error('Response was not valid JSON:', rawCalendarResponseText.substring(0, 500));
         throw new Error('Failed to parse calendar service response');
       }
 
@@ -128,48 +102,11 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
       console.log(`Sending email notifications using Firebase Function...`);
       console.log('Email endpoint:', functionUrl);
       
-      // Enhanced logging for email payload
-      console.log('DATE DEBUG: Email payload preparation', {
-        selectedDateOriginal: selectedDate,
-        selectedDateISOString: selectedDate.toISOString(),
-        selectedDateComponents: {
-          year: selectedDate.getFullYear(),
-          month: selectedDate.getMonth() + 1,
-          day: selectedDate.getDate(),
-          hours: selectedDate.getHours(),
-          minutes: selectedDate.getMinutes(),
-          timezoneOffset: selectedDate.getTimezoneOffset()
-        },
-        selectedTime,
-      });
-      
-      // DEEP DEBUGGING: Test different date representations
-      console.log('DEEP DATE CLIENT DEBUG: Multiple date representations', {
-        dateObject: selectedDate,
-        dateObjectCopy: new Date(selectedDate),
-        dateObjectFromISOString: new Date(selectedDate.toISOString()),
-        clientTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        dateUTC: new Date(Date.UTC(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          selectedDate.getDate()
-        )),
-        timeString: selectedTime,
-        dateWithMidnightTime: new Date(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          selectedDate.getDate(),
-          0, 0, 0
-        ).toISOString(),
-        dateWithoutTime: `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`
-      });
-      
       // Create a date string without time component to avoid timezone issues
-      const dateString = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-      
+      // This is specifically for the email API
       const emailPayload = {
         formData,
-        selectedDate: dateString, // Send just the date without time component
+        selectedDate: formattedDate,
         selectedTime,
         calendarLink: calendarResult.htmlLink,
       };
@@ -182,7 +119,7 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
           phone: formData.phone?.substring(0, 3) + "***", // Mask phone for privacy
           hasAdditionalInfo: !!formData.additionalInfo,
         },
-        selectedDate: dateString,
+        selectedDate: formattedDate,
         selectedTime,
         hasCalendarLink: !!calendarResult.htmlLink
       }));
@@ -196,20 +133,10 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
       });
 
       console.log('Email response status:', emailResponse.status, emailResponse.statusText);
-      console.log('Email response headers:', Object.fromEntries([...emailResponse.headers.entries()]));
       
       // Get the raw response text first
       const rawResponseText = await emailResponse.text();
       console.log('Raw email response (first 200 chars):', rawResponseText.substring(0, 200));
-      
-      // Check if the response is HTML (which would indicate routing to index.html)
-      const isHtmlResponse = rawResponseText.trim().startsWith('<!DOCTYPE') || 
-                            rawResponseText.trim().startsWith('<html');
-      
-      if (isHtmlResponse) {
-        console.error('Received HTML response instead of JSON. This indicates the Firebase Function is not available.');
-        throw new Error('Email Firebase Function is not available. Please check your Firebase Functions deployment.');
-      }
       
       let emailResult;
       try {
@@ -218,7 +145,6 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
         console.log('Parsed email result:', emailResult);
       } catch (parseError) {
         console.error('Failed to parse email response as JSON:', parseError);
-        console.error('Response was not valid JSON:', rawResponseText.substring(0, 500));
         throw new Error('Failed to parse email service response');
       }
 
@@ -306,9 +232,7 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
                 )}
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label htmlFor="phone" className="text-sm text-white/80">
                 Phone

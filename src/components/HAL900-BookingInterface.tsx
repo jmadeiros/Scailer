@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import type { BookingFormData } from "./HAL900-BookingForm";
 
 const timeSlots = [
   "09:00 AM",
@@ -58,9 +59,15 @@ const HAL900BookingInterface = () => {
   };
 
   const handleMonthChange = (increment: number) => {
-    const newMonth = new Date(currentMonth);
-    newMonth.setMonth(newMonth.getMonth() + increment);
-    setCurrentMonth(newMonth);
+    setCurrentMonth(prevMonth => {
+      // Create a new date object with the same values to avoid any reference issues
+      const newMonth = new Date(
+        prevMonth.getFullYear(),
+        prevMonth.getMonth() + increment,
+        1  // Set to first day of month to avoid any day-of-month issues
+      );
+      return newMonth;
+    });
   };
 
   const handleBooking = async () => {
@@ -68,15 +75,6 @@ const HAL900BookingInterface = () => {
       setIsBooking(true);
       setBookingSuccess(false);
       try {
-        const formData = {
-          firstName: "",
-          lastName: "",
-          phone: "",
-          email: "",
-          additionalInfo: "",
-          marketingConsent: false
-        };
-
         // Show the booking form
         const bookingForm = document.createElement('div');
         bookingForm.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
@@ -84,7 +82,7 @@ const HAL900BookingInterface = () => {
         document.body.appendChild(bookingForm);
 
         // Handle form submission
-        const handleSubmit = async (formData: any) => {
+        const handleSubmit = async (formData: BookingFormData) => {
           try {
             const convertedTime = convertTo24Hour(selectedTime);
             console.log('Time conversion:', {
@@ -126,9 +124,7 @@ const HAL900BookingInterface = () => {
             console.log('Booking successful:', data);
           } catch (error) {
             console.error('Booking error:', error);
-            alert(error instanceof Error ? error.message : 'Failed to book session');
-          } finally {
-            setIsBooking(false);
+            throw error;
           }
         };
 

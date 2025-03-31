@@ -15,9 +15,10 @@ interface BookingFormProps {
   selectedDate: Date
   selectedTime: string
   onClose: () => void
+  onSubmit: (formData: BookingFormData) => Promise<void>
 }
 
-interface BookingFormData {
+export interface BookingFormData {
   firstName: string
   lastName: string
   phone: string
@@ -25,7 +26,7 @@ interface BookingFormData {
   additionalInfo: string
 }
 
-export default function HAL900BookingForm({ selectedDate, selectedTime, onClose }: BookingFormProps) {
+export default function HAL900BookingForm({ selectedDate, selectedTime, onClose, onSubmit }: BookingFormProps) {
   const [formData, setFormData] = useState<BookingFormData>({
     firstName: "",
     lastName: "",
@@ -43,119 +44,8 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose 
     const toastId = toast.loading("Scheduling your strategy session...");
     
     try {
-      console.log('Starting booking submission process...');
+      await onSubmit(formData);
       
-      // Get the Firebase Functions base URL
-      const isProduction = process.env.NODE_ENV === 'production';
-      const functionsBaseUrl = isProduction 
-        ? 'https://europe-west1-scailertest-37078.cloudfunctions.net'
-        : 'http://localhost:5001/scailertest-37078/europe-west1';
-      
-      console.log('Using Firebase Functions base URL:', functionsBaseUrl);
-      
-      // Create calendar event via Firebase Function - use our new precise function
-      console.log('Creating calendar event using precise function...');
-      
-      // Format the date as YYYY-MM-DD for sending to the API
-      const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-      
-      console.log('Date string being sent to calendarPrecise:', formattedDate);
-      console.log('Time string being sent to calendarPrecise:', selectedTime);
-      
-      const calendarResponse = await fetch(`${functionsBaseUrl}/calendarPrecise`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          formData,
-          selectedDate: formattedDate,
-          selectedTime,
-        }),
-      });
-
-      console.log('Calendar response status:', calendarResponse.status, calendarResponse.statusText);
-      
-      // Get the raw response text first
-      const rawCalendarResponseText = await calendarResponse.text();
-      console.log('Raw calendar response (first 200 chars):', rawCalendarResponseText.substring(0, 200));
-      
-      let calendarResult;
-      try {
-        // Try to parse the response as JSON
-        calendarResult = rawCalendarResponseText ? JSON.parse(rawCalendarResponseText) : null;
-      } catch (parseError) {
-        console.error('Failed to parse calendar response as JSON:', parseError);
-        throw new Error('Failed to parse calendar service response');
-      }
-
-      if (!calendarResponse.ok) {
-        console.error('Calendar API error:', calendarResult);
-        throw new Error(calendarResult?.error || 'Failed to create calendar event');
-      }
-
-      console.log('Calendar event created successfully');
-
-      // Send email notifications via Firebase Function
-      const functionUrl = `${functionsBaseUrl}/sendBookingEmails`;
-      
-      console.log(`Sending email notifications using Firebase Function...`);
-      console.log('Email endpoint:', functionUrl);
-      
-      // Create a date string without time component to avoid timezone issues
-      // This is specifically for the email API
-      const emailPayload = {
-        formData,
-        selectedDate: formattedDate,
-        selectedTime,
-        calendarLink: calendarResult.htmlLink,
-      };
-      
-      console.log('Email payload:', JSON.stringify({
-        formData: {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone?.substring(0, 3) + "***", // Mask phone for privacy
-          hasAdditionalInfo: !!formData.additionalInfo,
-        },
-        selectedDate: formattedDate,
-        selectedTime,
-        hasCalendarLink: !!calendarResult.htmlLink
-      }));
-      
-      const emailResponse = await fetch(functionUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(emailPayload),
-      });
-
-      console.log('Email response status:', emailResponse.status, emailResponse.statusText);
-      
-      // Get the raw response text first
-      const rawResponseText = await emailResponse.text();
-      console.log('Raw email response (first 200 chars):', rawResponseText.substring(0, 200));
-      
-      let emailResult;
-      try {
-        // Try to parse the response as JSON
-        emailResult = rawResponseText ? JSON.parse(rawResponseText) : null;
-        console.log('Parsed email result:', emailResult);
-      } catch (parseError) {
-        console.error('Failed to parse email response as JSON:', parseError);
-        throw new Error('Failed to parse email service response');
-      }
-
-      if (!emailResponse.ok) {
-        console.error('Email API error:', emailResult);
-        throw new Error(`Failed to send email notifications: ${emailResult?.error || 'Unknown error'}`);
-      }
-
-      console.log('Email notifications sent successfully');
-      console.log('EMAIL DEBUG: Emails sent successfully:', emailResult);
-
       // Reset form
       setFormData({
         firstName: '',

@@ -23,7 +23,7 @@ debug('Font configuration complete:', {
 });
 
 export const metadata: Metadata = {
-  title: "Your AI-chitect 🧭",
+  title: "Your New Growth Partner 🚀",
   description: "Automate and scale your business operations with AI-powered solutions.",
 };
 

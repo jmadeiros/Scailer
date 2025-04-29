@@ -16,6 +16,10 @@ const HAL900OperationsService = dynamic(() => import("@/components/HAL900-Operat
   ssr: true,
 });
 
+const MeetTheTeam = dynamic(() => import("@/components/MeetTheTeam"), {
+  ssr: true,
+});
+
 const HAL900ScaleWithPrecision = dynamic(
   () => import("@/components/HAL900-ScaleWithPrecision"),
   { ssr: true }
@@ -95,6 +99,11 @@ export default function Home() {
         <div id="framework-diagram">
           <ScrollAnimationWrapper delay={0.4}>
             <HAL900FrameworkDiagram />
+          </ScrollAnimationWrapper>
+        </div>
+        <div>
+          <ScrollAnimationWrapper delay={0.6}>
+            <MeetTheTeam />
           </ScrollAnimationWrapper>
         </div>
         <div id="booking-interface">

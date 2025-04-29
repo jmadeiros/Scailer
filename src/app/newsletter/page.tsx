@@ -108,7 +108,7 @@ export default function BlogPage() {
           transition={{ duration: 0.5 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Blog</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Newsletter</h1>
           <p className="text-xl text-gray-300 mb-12">
             Stay updated with our latest insights on AI, automation, and business scaling.
           </p>
@@ -120,7 +120,7 @@ export default function BlogPage() {
               className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full"
             >
               <MailIcon />
-              <span>Subscribe to Blog</span>
+              <span>Subscribe</span>
             </Button>
 
             {isPopoverOpen && (
@@ -132,7 +132,7 @@ export default function BlogPage() {
               >
                 <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
                   <p className="text-white text-sm mb-2">
-                    Get the latest articles and insights directly to your inbox.
+                    Get the latest updates and insights directly to your inbox.
                   </p>
                   <Input
                     type="email"
@@ -167,19 +167,19 @@ export default function BlogPage() {
             )}
           </div>
 
-          {/* Placeholder for blog posts */}
+          {/* Placeholder for newsletter content */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
             <div className="bg-[#222] p-6 rounded-lg border border-[#333]">
               <h2 className="text-xl font-bold text-white mb-3">Coming Soon</h2>
               <p className="text-gray-300">
-                We're preparing insightful articles on AI implementation, business automation, and scaling strategies.
-                Subscribe to be notified when our blog launches.
+                We're preparing insightful content on AI implementation, business automation, and scaling strategies.
+                Subscribe to be notified when our newsletter launches.
               </p>
             </div>
             <div className="bg-[#222] p-6 rounded-lg border border-[#333]">
               <h2 className="text-xl font-bold text-white mb-3">Have a Topic in Mind?</h2>
               <p className="text-gray-300">
-                Is there something specific you'd like us to cover? Let us know by emailing us at{' '}
+                Is there something specific you'd like to see in the newsletter? Let us know by emailing us at{' '}
                 <a href="mailto:all@scailer.io" className="text-purple-400 hover:text-purple-300">
                   all@scailer.io
                 </a>

@@ -51,7 +51,7 @@ interface AnimatedTextProps {
 export default function HAL900AnimatedText({ startAnimation, onLearnMore }: AnimatedTextProps) {
   const [showButton, setShowButton] = useState(false)
 
-  // Group words into three sections with their respective delays
+  // Group words into sections with delays
   const sections = [
     // Section 1: "We Build AI-Powered"
     [

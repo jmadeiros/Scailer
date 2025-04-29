@@ -374,7 +374,7 @@ export default function HAL900OperationsService() {
             <div className="flex flex-wrap justify-center gap-4 mt-20">
               <motion.button
                 onClick={() => scrollToSection(strategicRef, "strategic")}
-                className={`flex items-center gap-2 px-5 py-3 rounded-full ${
+                className={`flex items-center gap-2 px-5 py-3 rounded-full w-[280px] justify-center ${
                   activeSection === "strategic"
                     ? "bg-[#25D366] text-white"
                     : "bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20"
@@ -391,7 +391,7 @@ export default function HAL900OperationsService() {
 
               <motion.button
                 onClick={() => scrollToSection(opsRef, "ops")}
-                className={`flex items-center gap-2 px-5 py-3 rounded-full ${
+                className={`flex items-center gap-2 px-5 py-3 rounded-full w-[280px] justify-center ${
                   activeSection === "ops"
                     ? "bg-[#25D366] text-white"
                     : "bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20"
@@ -408,7 +408,7 @@ export default function HAL900OperationsService() {
 
               <motion.button
                 onClick={() => scrollToSection(implementationRef, "implementation")}
-                className={`flex items-center gap-2 px-5 py-3 rounded-full ${
+                className={`flex items-center gap-2 px-5 py-3 rounded-full w-[280px] justify-center ${
                   activeSection === "implementation"
                     ? "bg-[#25D366] text-white"
                     : "bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20"
@@ -427,7 +427,7 @@ export default function HAL900OperationsService() {
 
           {/* Content container with dynamic height */}
           <div 
-            className="relative overflow-hidden transition-all duration-300"
+            className="relative overflow-hidden transition-all duration-300 w-[150%] -ml-[25%]"
             ref={containerRef}
             style={{ minHeight: contentHeight }}
           >
@@ -441,114 +441,116 @@ export default function HAL900OperationsService() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  className="w-full"
+                  className="w-full flex justify-center"
                 >
-                  {/* Header that slides in with the section */}
-                  <motion.div className="text-center mb-12">
-                    <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
-                      <span className="text-[#25D366] text-sm font-medium">STRATEGIC GROWTH</span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Unlock Your Business Potential</h3>
-                    <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
-                  </motion.div>
-
-                  {/* Content that animates on scroll */}
-                  <div ref={strategicContentRef} className="pb-16">
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.6, delay: 0.3 }}
-                      className="text-center mb-12 md:mb-12"
-                    >
-                      <p className="text-xl md:text-2xl text-white font-medium mb-8 md:mb-2">
-                        Our mission is to bridge the gap between where your business is today and where it's built to go.
-                      </p>
-                    </motion.div>
-
-                    <div className="max-w-3xl mx-auto mb-12">
-                      <ul className="space-y-12 md:space-y-8">
-                        {[
-                          "We remove bottlenecks, streamline operations, and implement the right AI-powered systems that drive growth with speed and precision.",
-                          "We analyse how you work, spot the gaps, and deliver solutions that fit seamlessly into your business.",
-                        ].map((item, index) => (
-                          <motion.li
-                            key={index}
-                            className="flex items-start"
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.2 }}
-                            transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                          >
-                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#25D366]/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                              <Check className="w-4 h-4 md:w-5 md:h-5 text-[#25D366]" />
-                            </div>
-                            <p className="text-gray-300 text-base md:text-lg">{item}</p>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.6, delay: 0.6 }}
-                      className="text-center py-16"
-                    >
-                      <div className="max-w-3xl mx-auto px-4">
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                          Our job? Seeing what you don't. Streamlining what you do. Making AI simple—and scaling what works.
-                        </h3>
-
-                        {/* Arrow pointing to Operations as a Service - with independent animation and delay */}
-                        <div className="mt-12 flex flex-col items-center">
-                          <motion.p
-                            className="text-[#25D366] mb-2 font-medium"
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.5 }}
-                            viewport={{ once: true }}
-                          >
-                            Discover our approach
-                          </motion.p>
-                          <motion.div
-                            className="flex items-center justify-center cursor-pointer"
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 1.5, duration: 0.7 }}
-                            viewport={{ once: true }}
-                            whileHover={{ x: 5 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => scrollToSection(opsRef, "ops")}
-                          >
-                            <svg
-                              width="40"
-                              height="40"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4 12H20M20 12L14 6M20 12L14 18"
-                                stroke="#25D366"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </motion.div>
-                          <motion.p
-                            className="text-gray-400 text-sm mt-2"
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1.3, duration: 0.5 }}
-                            viewport={{ once: true }}
-                          >
-                            Operations as a Service
-                          </motion.p>
-                        </div>
+                  <div className="w-[66.666%]">
+                    {/* Header that slides in with the section */}
+                    <motion.div className="text-center mb-12">
+                      <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
+                        <span className="text-[#25D366] text-sm font-medium">STRATEGIC GROWTH</span>
                       </div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Unlock Your Business Potential</h3>
+                      <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
                     </motion.div>
+
+                    {/* Content that animates on scroll */}
+                    <div ref={strategicContentRef} className="pb-16">
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        className="text-center mb-12 md:mb-12"
+                      >
+                        <p className="text-xl md:text-2xl text-white font-medium mb-8 md:mb-2">
+                          Our mission is to bridge the gap between where your business is today and where it's built to go.
+                        </p>
+                      </motion.div>
+
+                      <div className="max-w-3xl mx-auto mb-12">
+                        <ul className="space-y-12 md:space-y-8">
+                          {[
+                            "We remove bottlenecks, streamline operations, and implement the right AI-powered systems that drive growth with speed and precision.",
+                            "We analyse how you work, spot the gaps, and deliver solutions that fit seamlessly into your business.",
+                          ].map((item, index) => (
+                            <motion.li
+                              key={index}
+                              className="flex items-start"
+                              initial={{ opacity: 0, y: 50 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: 0.2 }}
+                              transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                            >
+                              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#25D366]/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                <Check className="w-4 h-4 md:w-5 md:h-5 text-[#25D366]" />
+                              </div>
+                              <p className="text-gray-300 text-base md:text-lg">{item}</p>
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                        className="text-center py-16"
+                      >
+                        <div className="max-w-3xl mx-auto px-4">
+                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
+                            Our job? Seeing what you don't. Streamlining what you do. Making AI simple—and scaling what works.
+                          </h3>
+
+                          {/* Arrow pointing to Operations as a Service - with independent animation and delay */}
+                          <div className="mt-12 flex flex-col items-center">
+                            <motion.p
+                              className="text-[#25D366] mb-2 font-medium"
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.4, duration: 0.5 }}
+                              viewport={{ once: true }}
+                            >
+                              Discover our approach
+                            </motion.p>
+                            <motion.div
+                              className="flex items-center justify-center cursor-pointer"
+                              initial={{ opacity: 0, x: -10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 1.5, duration: 0.7 }}
+                              viewport={{ once: true }}
+                              whileHover={{ x: 5 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => scrollToSection(opsRef, "ops")}
+                            >
+                              <svg
+                                width="40"
+                                height="40"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M4 12H20M20 12L14 6M20 12L14 18"
+                                  stroke="#25D366"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </motion.div>
+                            <motion.p
+                              className="text-gray-400 text-sm mt-2"
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 1.3, duration: 0.5 }}
+                              viewport={{ once: true }}
+                            >
+                              Operations as a Service
+                            </motion.p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -562,158 +564,160 @@ export default function HAL900OperationsService() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  className="w-full"
+                  className="w-full flex justify-center"
                 >
-                  {/* Header that slides in with the section */}
-                  <motion.div className="text-center mb-12">
-                    <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
-                      <span className="text-[#25D366] text-sm font-medium">OPERATIONS AS A SERVICE</span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">A better way to build ops</h3>
-                    <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
-                  </motion.div>
-
-                  {/* Content that animates on scroll */}
-                  <div ref={opsContentRef} className="pb-16">
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-center mb-10 md:mb-16"
-                    >
-                      <p className="text-gray-300 text-base md:text-xl max-w-2xl mx-auto mb-4 md:mb-6">
-                        Traditional hiring can be slow, costly, and demands significant upfront commitment. Our approach
-                        is different:
-                      </p>
+                  <div className="w-[66.666%]">
+                    {/* Header that slides in with the section */}
+                    <motion.div className="text-center mb-12">
+                      <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
+                        <span className="text-[#25D366] text-sm font-medium">OPERATIONS AS A SERVICE</span>
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">A better way to build ops</h3>
+                      <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
                     </motion.div>
 
-                    {/* Three column feature layout */}
-                    <div className="max-w-5xl mx-auto mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-4">
-                      {[
-                        {
-                          title: "On-demand automation expertise",
-                          description:
-                            "Access specialized skills exactly when you need them, without the overhead of full-time hires.",
-                          icon: Zap,
-                        },
-                        {
-                          title: "Simple implementation process",
-                          description:
-                            "Clear, straightforward steps from onboarding to execution, with no unnecessary complexity.",
-                          icon: Target,
-                        },
-                        {
-                          title: "Systems you need at an affordable rate",
-                          description:
-                            "Flexible pricing that scales with your needs, delivering enterprise-level solutions at startup-friendly prices.",
-                          icon: User,
-                        },
-                      ].map((item, index) => (
-                        <motion.div
-                          key={index}
-                          className="flex flex-col items-center text-center p-6 rounded-lg"
-                          initial={{ opacity: 0, y: 50 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, amount: 0.2 }}
-                          transition={{ duration: 0.6, delay: 0.2 + index * 0.15 }}
-                        >
-                          <div className="w-16 h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center mb-6">
-                            <item.icon className="w-7 h-7 text-[#25D366]" />
-                          </div>
-                          <h4 className="text-xl font-medium text-white mb-4">{item.title}</h4>
-                          <p className="text-base text-gray-400 max-w-xs mx-auto leading-relaxed">{item.description}</p>
-                        </motion.div>
-                      ))}
-                    </div>
+                    {/* Content that animates on scroll */}
+                    <div ref={opsContentRef} className="pb-16">
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-10 md:mb-16"
+                      >
+                        <p className="text-gray-300 text-base md:text-xl max-w-2xl mx-auto mb-4 md:mb-6">
+                          Traditional hiring can be slow, costly, and demands significant upfront commitment. Our approach
+                          is different:
+                        </p>
+                      </motion.div>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.6, delay: 0.6 }}
-                      className="text-center py-16"
-                    >
-                      <div className="max-w-3xl mx-auto px-4">
-                        <motion.p
-                          className="text-gray-400 text-lg mb-6"
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.4, duration: 0.5 }}
-                          viewport={{ once: true }}
-                        >
-                          What sets us apart?
-                        </motion.p>
+                      {/* Three column feature layout */}
+                      <div className="max-w-5xl mx-auto mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-4">
+                        {[
+                          {
+                            title: "On-demand automation expertise",
+                            description:
+                              "Access specialized skills exactly when you need them, without the overhead of full-time hires.",
+                            icon: Zap,
+                          },
+                          {
+                            title: "Simple implementation process",
+                            description:
+                              "Clear, straightforward steps from onboarding to execution, with no unnecessary complexity.",
+                            icon: Target,
+                          },
+                          {
+                            title: "Systems you need at an affordable rate",
+                            description:
+                              "Flexible pricing that scales with your needs, delivering enterprise-level solutions at startup-friendly prices.",
+                            icon: User,
+                          },
+                        ].map((item, index) => (
+                          <motion.div
+                            key={index}
+                            className="flex flex-col items-center text-center p-6 rounded-lg"
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            transition={{ duration: 0.6, delay: 0.2 + index * 0.15 }}
+                          >
+                            <div className="w-16 h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center mb-6">
+                              <item.icon className="w-7 h-7 text-[#25D366]" />
+                            </div>
+                            <h4 className="text-xl font-medium text-white mb-4">{item.title}</h4>
+                            <p className="text-base text-gray-400 max-w-xs mx-auto leading-relaxed">{item.description}</p>
+                          </motion.div>
+                        ))}
+                      </div>
 
-                        <motion.p
-                          className="text-[#25D366] text-2xl font-bold mb-3"
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.7, duration: 0.5 }}
-                          viewport={{ once: true }}
-                        >
-                          Thoughtful solutions. Seamless execution.
-                        </motion.p>
-
-                        <motion.p
-                          className="text-white text-2xl font-bold"
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 1.0, duration: 0.5 }}
-                          viewport={{ once: true }}
-                        >
-                          Building systems that grow with your business.
-                        </motion.p>
-
-                        {/* Arrow pointing to Rapid Implementation - with independent animation and delay */}
-                        <div className="mt-12 flex flex-col items-center">
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                        className="text-center py-16"
+                      >
+                        <div className="max-w-3xl mx-auto px-4">
                           <motion.p
-                            className="text-[#25D366] mb-2 font-medium"
+                            className="text-gray-400 text-lg mb-6"
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
                             viewport={{ once: true }}
                           >
-                            See how we do it
+                            What sets us apart?
                           </motion.p>
-                          <motion.div
-                            className="flex items-center justify-center cursor-pointer"
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 1.5, duration: 0.7 }}
-                            viewport={{ once: true }}
-                            whileHover={{ x: 5 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => scrollToSection(implementationRef, "implementation")}
-                          >
-                            <svg
-                              width="40"
-                              height="40"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4 12H20M20 12L14 6M20 12L14 18"
-                                stroke="#25D366"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </motion.div>
+
                           <motion.p
-                            className="text-gray-400 text-sm mt-2"
+                            className="text-[#25D366] text-2xl font-bold mb-3"
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1.3, duration: 0.5 }}
+                            transition={{ delay: 0.7, duration: 0.5 }}
                             viewport={{ once: true }}
                           >
-                            Rapid Implementation
+                            Thoughtful solutions. Seamless execution.
                           </motion.p>
+
+                          <motion.p
+                            className="text-white text-2xl font-bold"
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.0, duration: 0.5 }}
+                            viewport={{ once: true }}
+                          >
+                            Building systems that grow with your business.
+                          </motion.p>
+
+                          {/* Arrow pointing to Rapid Implementation - with independent animation and delay */}
+                          <div className="mt-12 flex flex-col items-center">
+                            <motion.p
+                              className="text-[#25D366] mb-2 font-medium"
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.4, duration: 0.5 }}
+                              viewport={{ once: true }}
+                            >
+                              See how we do it
+                            </motion.p>
+                            <motion.div
+                              className="flex items-center justify-center cursor-pointer"
+                              initial={{ opacity: 0, x: -10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 1.5, duration: 0.7 }}
+                              viewport={{ once: true }}
+                              whileHover={{ x: 5 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => scrollToSection(implementationRef, "implementation")}
+                            >
+                              <svg
+                                width="40"
+                                height="40"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M4 12H20M20 12L14 6M20 12L14 18"
+                                  stroke="#25D366"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </motion.div>
+                            <motion.p
+                              className="text-gray-400 text-sm mt-2"
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 1.3, duration: 0.5 }}
+                              viewport={{ once: true }}
+                            >
+                              Rapid Implementation
+                            </motion.p>
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
+                      </motion.div>
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -727,99 +731,101 @@ export default function HAL900OperationsService() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  className="w-full"
+                  className="w-full flex justify-center"
                 >
-                  {/* Header that slides in with the section */}
-                  <motion.div className="text-center mb-12">
-                    <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
-                      <span className="text-[#25D366] text-sm font-medium">RAPID IMPLEMENTATION</span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Why Speed Matters</h3>
-                    <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
-                  </motion.div>
-
-                  {/* Content that animates on scroll */}
-                  <div ref={implementationContentRef} className="pb-16">
-                    {/* Why Speed Matters section - moved above the timeline */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                      className="text-center mb-16"
-                    >
-                      <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-                        In today's fast-paced business environment, the ability to quickly implement and iterate on
-                        solutions is a competitive advantage.
-                      </p>
-                      <p className="text-[#25D366] text-xl font-bold mb-2">
-                        "We achieved in 2 weeks what would have taken us 3 months internally."
-                      </p>
-                      <p className="text-white text-sm mb-12">— Nima S, Women's Faith Forum</p>
-                    </motion.div>
-
-                    {/* What sets us apart section */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                      className="text-center mb-12"
-                    >
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Our Approach</h3>
-                      <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                        A proven process that delivers results twice as fast.
-                      </p>
-                    </motion.div>
-
-                    {/* New Timeline Implementation */}
-                    <div className="relative py-2 mb-8" ref={timelineRef}>
-                      {/* Vertical line */}
-                      <motion.div
-                        className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-[#25D366]/20"
-                        style={{ scaleY: scaleX }}
-                      />
-
-                      {/* Process icon - removed as it's not in the reference image */}
-
-                      <div className="py-4">
-                        {implementationSteps.map((step, index) => (
-                          <TimelineStep
-                            key={index}
-                            step={step}
-                            index={index}
-                            isExpanded={expandedStep === index}
-                            onToggle={() => setExpandedStep(expandedStep === index ? null : index)}
-                          />
-                        ))}
+                  <div className="w-[66.666%]">
+                    {/* Header that slides in with the section */}
+                    <motion.div className="text-center mb-12">
+                      <div className="inline-block bg-[#25D366]/10 px-3 py-1 rounded-full mb-4">
+                        <span className="text-[#25D366] text-sm font-medium">RAPID IMPLEMENTATION</span>
                       </div>
-                    </div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Why Speed Matters</h3>
+                      <div className="h-1 w-24 bg-[#25D366] mx-auto rounded-full mb-10"></div>
+                    </motion.div>
 
-                    {/* Implementation Button */}
-                    <div className="text-center mb-16 mt-8">
-                      <p className="text-[#25D366] text-3xl font-bold mb-12 tracking-tight">
-                        Still hiring people? Let's automate that.
-                      </p>
-                      <motion.div 
-                        whileHover={{ scale: 1.05 }} 
-                        whileTap={{ scale: 0.95 }} 
-                        className="inline-block"
+                    {/* Content that animates on scroll */}
+                    <div ref={implementationContentRef} className="pb-16">
+                      {/* Why Speed Matters section - moved above the timeline */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-center mb-16"
                       >
-                        <Button 
-                          className="bg-[#25D366] hover:bg-[#128C7E] text-black font-bold text-lg px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-[#25D366]/20"
-                          onClick={() => {
-                            const element = document.getElementById("booking-interface");
-                            if (element) {
-                              const offset = 80;
-                              const elementPosition = element.offsetTop;
-                              smoothScrollTo(elementPosition - offset);
-                            }
-                          }}
-                        >
-                          Start Your Implementation
-                          <ArrowRight className="w-5 h-5" />
-                        </Button>
+                        <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+                          In today's fast-paced business environment, the ability to quickly implement and iterate on
+                          solutions is a competitive advantage.
+                        </p>
+                        <p className="text-[#25D366] text-xl font-bold mb-2">
+                          "We achieved in 2 weeks what would have taken us 3 months internally."
+                        </p>
+                        <p className="text-white text-sm mb-12">— Nima S, Women's Faith Forum</p>
                       </motion.div>
+
+                      {/* What sets us apart section */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-center mb-12"
+                      >
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Our Approach</h3>
+                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                          A proven process that delivers results twice as fast.
+                        </p>
+                      </motion.div>
+
+                      {/* New Timeline Implementation */}
+                      <div className="relative py-2 mb-8" ref={timelineRef}>
+                        {/* Vertical line */}
+                        <motion.div
+                          className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-[#25D366]/20"
+                          style={{ scaleY: scaleX }}
+                        />
+
+                        {/* Process icon - removed as it's not in the reference image */}
+
+                        <div className="py-4">
+                          {implementationSteps.map((step, index) => (
+                            <TimelineStep
+                              key={index}
+                              step={step}
+                              index={index}
+                              isExpanded={expandedStep === index}
+                              onToggle={() => setExpandedStep(expandedStep === index ? null : index)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Implementation Button */}
+                      <div className="text-center mb-16 mt-8">
+                        <p className="text-[#25D366] text-3xl font-bold mb-12 tracking-tight">
+                          Still hiring people? Let's automate that.
+                        </p>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }} 
+                          whileTap={{ scale: 0.95 }} 
+                          className="inline-block"
+                        >
+                          <Button 
+                            className="bg-[#25D366] hover:bg-[#128C7E] text-black font-bold text-lg px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-[#25D366]/20"
+                            onClick={() => {
+                              const element = document.getElementById("booking-interface");
+                              if (element) {
+                                const offset = 80;
+                                const elementPosition = element.offsetTop;
+                                smoothScrollTo(elementPosition - offset);
+                              }
+                            }}
+                          >
+                            Start Your Implementation
+                            <ArrowRight className="w-5 h-5" />
+                          </Button>
+                        </motion.div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>

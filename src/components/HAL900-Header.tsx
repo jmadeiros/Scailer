@@ -171,8 +171,8 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-scailer-green group-hover:w-full transition-all duration-300"></span>
           </button>
           
-          <Link href="/blog" className="text-white/80 hover:text-white transition-colors relative group">
-            Blog
+          <Link href="/newsletter" className="text-white/80 hover:text-white transition-colors relative group">
+            Newsletter
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-scailer-green group-hover:w-full transition-all duration-300"></span>
           </Link>
           
@@ -370,8 +370,8 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
               About
             </button>
             
-            <Link href="/blog" className="text-white/80 hover:text-white transition-colors py-2">
-              Blog
+            <Link href="/newsletter" className="text-white/80 hover:text-white transition-colors py-2">
+              Newsletter
             </Link>
             
             <div className="py-2">

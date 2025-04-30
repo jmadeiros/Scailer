@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import type { BookingFormData } from "./HAL900-BookingForm";
+import { toast, Toaster } from 'sonner';
 
 const timeSlots = [
   "09:00 AM",
@@ -41,7 +42,6 @@ const HAL900BookingInterface = () => {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [isBooking, setIsBooking] = useState(false);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -70,89 +70,159 @@ const HAL900BookingInterface = () => {
     });
   };
 
-  const handleBooking = async () => {
-    if (selectedDate && selectedTime) {
-      setIsBooking(true);
-      setBookingSuccess(false);
-      try {
-        // Show the booking form
-        const bookingForm = document.createElement('div');
-        bookingForm.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-        bookingForm.innerHTML = `<div id="booking-form-container"></div>`;
-        document.body.appendChild(bookingForm);
+  const handleBookingFlow = async () => {
+    if (!selectedDate || !selectedTime) {
+      toast.error("Please select a date and time slot.");
+      return;
+    }
 
-        // Handle form submission
-        const handleSubmit = async (formData: BookingFormData) => {
-          try {
-            const convertedTime = convertTo24Hour(selectedTime);
-            console.log('Time conversion:', {
-              original: selectedTime,
-              converted: convertedTime
-            });
-            
-            const response = await fetch('/api/book-session', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                formData,
-                selectedDate,
-                selectedTime: convertedTime,
-              }),
-            });
+    setIsBooking(true);
 
-            const data = await response.json();
-            if (!response.ok) {
-              console.error('API error response:', data);
-              throw new Error(data.error || 'Failed to book session');
-            }
+    try {
+      // Dynamic import for BookingForm to avoid initial load cost
+      const BookingFormComponent = (await import('./HAL900-BookingForm')).default;
+      const ReactDOM = (await import('react-dom/client')).default;
 
-            // Remove the form
-            document.body.removeChild(bookingForm);
-            
-            // Show success message
-            setBookingSuccess(true);
-            
-            // Reset selection after a delay
-            setTimeout(() => {
-              setSelectedDate(new Date());
-              setSelectedTime("");
-              setBookingSuccess(false);
-            }, 5000);
-            
-            console.log('Booking successful:', data);
-          } catch (error) {
-            console.error('Booking error:', error);
-            throw error;
-          }
-        };
+      const bookingFormContainer = document.createElement('div');
+      bookingFormContainer.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+      const formRootElement = document.createElement('div');
+      bookingFormContainer.appendChild(formRootElement);
+      document.body.appendChild(bookingFormContainer);
 
-        // Render the booking form
-        const BookingFormComponent = (await import('./HAL900-BookingForm')).default;
-        const root = document.getElementById('booking-form-container');
-        if (root) {
-          const form = <BookingFormComponent 
-            selectedDate={selectedDate}
-            selectedTime={selectedTime}
-            onClose={() => document.body.removeChild(bookingForm)}
-            onSubmit={handleSubmit}
-          />;
-          // Use ReactDOM to render the form
-          const ReactDOM = (await import('react-dom/client')).default;
-          const formRoot = ReactDOM.createRoot(root);
-          formRoot.render(form);
+      const closeForm = () => {
+        if (document.body.contains(bookingFormContainer)) {
+          document.body.removeChild(bookingFormContainer);
         }
-      } catch (error) {
-        console.error('Error:', error);
-      } finally {
         setIsBooking(false);
-      }
+      };
+
+      // This function will be called by the form's onSubmit
+      const submitBooking = async (formData: BookingFormData) => {
+        setIsBooking(true);
+        let calendarResult = null;
+        let emailResult = null;
+
+        try {
+          // --- Date Formatting Logic (from removed API route) ---
+          let formattedDate = '';
+          if (selectedDate instanceof Date) {
+            formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+          } else {
+            console.error("Selected date is not a Date object:", selectedDate);
+            toast.error("Invalid date selected. Please try again.");
+            closeForm();
+            return;
+          }
+          const convertedTime = convertTo24Hour(selectedTime);
+          console.log('Formatted Date:', formattedDate, 'Converted Time:', convertedTime);
+          // --- End Date Formatting ---
+
+          // --- Firebase Function Base URL ---
+          const isProduction = process.env.NODE_ENV === 'production';
+          const functionsBaseUrl = process.env.NEXT_PUBLIC_FIREBASE_FUNCTION_URL || (isProduction
+            ? 'https://europe-west1-scailertest-37078.cloudfunctions.net' // Default production URL
+            : 'http://localhost:5001/scailertest-37078/europe-west1'); // Default local URL
+          console.log("Using Firebase Functions base URL:", functionsBaseUrl);
+          // --- End Base URL ---
+
+          // --- Call calendarPrecise Firebase Function ---
+          console.log("Calling calendarPrecise function...");
+          const calendarResponse = await fetch(`${functionsBaseUrl}/calendarPrecise`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              formData,
+              selectedDate: formattedDate,
+              selectedTime: convertedTime,
+            }),
+          });
+
+          const rawCalendarResponse = await calendarResponse.text();
+          console.log("Raw calendar response:", { status: calendarResponse.status, text: rawCalendarResponse.substring(0, 200) });
+
+          if (!calendarResponse.ok) {
+            throw new Error(`Calendar function failed: ${calendarResponse.status} - ${rawCalendarResponse.substring(0, 100)}`);
+          }
+          try {
+            calendarResult = JSON.parse(rawCalendarResponse);
+            console.log("Calendar function success:", calendarResult);
+          } catch (e) {
+            throw new Error("Invalid JSON from calendar function");
+          }
+          // --- End Calendar Call ---
+
+          // --- Call sendBookingEmails Firebase Function ---
+          if (calendarResult?.htmlLink) {
+            console.log("Calling sendBookingEmails function...");
+            const emailPayload = {
+              formData,
+              selectedDate: formattedDate,
+              selectedTime: convertedTime,
+              calendarLink: calendarResult.htmlLink,
+            };
+            const emailResponse = await fetch(`${functionsBaseUrl}/sendBookingEmails`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(emailPayload),
+            });
+
+            const rawEmailResponse = await emailResponse.text();
+            console.log("Raw email response:", { status: emailResponse.status, text: rawEmailResponse.substring(0, 200) });
+
+            if (!emailResponse.ok) {
+              console.error(`Email function failed: ${emailResponse.status} - ${rawEmailResponse.substring(0, 100)}`);
+              toast.error("Booking scheduled, but failed to send confirmation email.");
+            } else {
+              try {
+                emailResult = JSON.parse(rawEmailResponse);
+                console.log("Email function success:", emailResult);
+                toast.success("Booking successful! Check your calendar and email.");
+              } catch (e) {
+                console.error("Invalid JSON from email function");
+                toast.warning("Booking scheduled, but confirmation email response was invalid.");
+              }
+            }
+          } else {
+            toast.error("Booking failed: Calendar link missing.");
+          }
+          // --- End Email Call ---
+
+          // Only reset if both calls were at least attempted (calendar link was present)
+          if (calendarResult?.htmlLink) {
+            // Reset UI state after success
+            setSelectedDate(new Date());
+            setSelectedTime("");
+            closeForm();
+          }
+
+        } catch (error: any) {
+          console.error('Error during booking submission:', error);
+          toast.error(`Booking failed: ${error.message || 'Please try again.'}`);
+          closeForm();
+        }
+      };
+
+      // Render the form dynamically
+      const formRoot = ReactDOM.createRoot(formRootElement);
+      formRoot.render(
+        <BookingFormComponent
+          selectedDate={selectedDate}
+          selectedTime={selectedTime}
+          onClose={closeForm}
+          onSubmit={submitBooking}
+        />
+      );
+
+    } catch (error) {
+      console.error('Error dynamically loading or rendering booking form:', error);
+      toast.error("Failed to load booking form. Please refresh and try again.");
+      setIsBooking(false);
     }
   };
 
   return (
-    <section className="py-20 bg-scailer-darker">
+    <section id="booking-interface" className="py-20 bg-scailer-darker">
+      <Toaster position="top-center" richColors />
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -165,19 +235,6 @@ const HAL900BookingInterface = () => {
             Schedule a one-on-one consultation with our scaling experts.
           </p>
         </motion.div>
-
-        {bookingSuccess && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-2xl mx-auto bg-scailer-green/20 border border-scailer-green p-6 rounded-xl text-center mb-8"
-          >
-            <h3 className="text-2xl font-bold text-scailer-green mb-2">Booking Successful!</h3>
-            <p className="text-white mb-4">
-              Your strategy session has been scheduled. Check your calendar for details.
-            </p>
-          </motion.div>
-        )}
 
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
           {/* Calendar */}
@@ -257,50 +314,41 @@ const HAL900BookingInterface = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-scailer-light p-6 rounded-xl"
+            className="bg-scailer-light p-6 rounded-xl flex flex-col"
           >
-            <h3 className="text-lg font-medium mb-4">Available Times</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {timeSlots.map((time, index) => (
+            <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-scailer-green" />
+              Select a Time
+            </h3>
+            <div className="grid grid-cols-2 gap-3 flex-grow mb-6">
+              {timeSlots.map((time) => (
                 <motion.button
                   key={time}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedTime(time)}
-                  className={`p-3 rounded-lg flex items-center justify-center ${
+                  className={`p-3 rounded-lg text-center transition-colors ${
                     selectedTime === time
                       ? "bg-scailer-green text-white"
                       : "bg-scailer-dark hover:bg-scailer-dark/70"
                   }`}
                 >
-                  <Clock className="w-4 h-4 mr-2" />
                   {time}
                 </motion.button>
               ))}
             </div>
-
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleBooking}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleBookingFlow}
               disabled={!selectedDate || !selectedTime || isBooking}
-              className={`w-full mt-6 bg-scailer-green text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 ${
-                (!selectedDate || !selectedTime) && "opacity-70 cursor-not-allowed"
+              className={`w-full mt-auto p-4 rounded-lg text-lg font-bold transition-all ${
+                !selectedDate || !selectedTime || isBooking
+                  ? "bg-gray-600 text-gray-400 cursor-not-allowed"
+                  : "bg-scailer-green text-white hover:bg-scailer-green/90"
               }`}
             >
-              {isBooking ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
-                />
-              ) : (
-                <>
-                  <Calendar className="w-5 h-5" />
-                  <span>Book Session</span>
-                </>
-              )}
+              {isBooking ? "Processing..." : "Confirm Booking"}
             </motion.button>
           </motion.div>
         </div>

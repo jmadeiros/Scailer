@@ -84,14 +84,14 @@ export default function ServiceDetailsPopup({
     switch (title) {
       case "Personalised Lead Generation":
         return "DATA-DRIVEN LEAD ACQUISITION"
-      case "Workflow Management Systems":
+      case "Workflow Automation":
         return "PROCESS AUTOMATION"
       case "Precision Marketing":
         return "MARKETING OPTIMISATION"
       case "Project Management Systems":
         return "PROJECT MANAGEMENT"
-      case "Smart Hiring Systems":
-        return "SMART HIRING & OPTIMISATION"
+      case "Sales Systems":
+        return "SALES SYSTEMS"
       case "Website Design & Optimisation":
         return "WEBSITE DESIGN"
       case "AI Strategy & Consultancy":

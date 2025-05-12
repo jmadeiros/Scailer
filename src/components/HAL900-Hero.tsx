@@ -182,7 +182,7 @@ const AnimatedHeading = () => {
       return (
         <span className="text-white">
           {text}
-          <div className="scroll-words text-4xl md:text-5xl lg:text-6xl ml-3 inline-flex items-baseline">
+          <div className="scroll-words text-3xl sm:text-4xl md:text-5xl lg:text-6xl ml-2 sm:ml-3 inline-flex items-baseline">
             <div className="scroll-words-inner">
               <span>build</span>
               <span>grow</span>
@@ -200,7 +200,7 @@ const AnimatedHeading = () => {
       <div ref={containerRef} className="inline-flex items-center justify-center">
         <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl flex items-center tracking-tight text-white font-medium whitespace-pre-wrap sm:whitespace-nowrap">
           <span
-            className="font-normal text-scailer-green text-6xl sm:text-6xl md:text-8xl lg:text-9xl mr-2 md:mr-4 flex items-center"
+            className="font-normal text-scailer-green text-5xl sm:text-6xl md:text-8xl lg:text-9xl mr-1 sm:mr-2 md:mr-4 flex items-center"
             style={{ ...leftBracketStyle, transformStyle: "preserve-3d" }}
           >
             {"{"}
@@ -217,7 +217,7 @@ const AnimatedHeading = () => {
             </span>
           </div>
           <span
-            className="font-normal text-scailer-green text-6xl sm:text-6xl md:text-8xl lg:text-9xl ml-2 md:ml-4 flex items-center"
+            className="font-normal text-scailer-green text-5xl sm:text-6xl md:text-8xl lg:text-9xl ml-1 sm:ml-2 md:ml-4 flex items-center"
             style={{ ...rightBracketStyle, transformStyle: "preserve-3d" }}
           >
             {"}"}

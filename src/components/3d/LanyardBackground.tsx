@@ -39,8 +39,8 @@ export default function LanyardBackground({
   transparent = true,
   showDebug = false,
   cardSettings = {
-    position1: [-4, 0.5, 0],
-    position2: [4, 0.5, 0]
+    position1: [-4.5, 0.5, 0],
+    position2: [4.5, 0.5, 0]
   },
   isVisible // Destructure isVisible prop
 }: LanyardBackgroundProps) {

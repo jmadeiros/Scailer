@@ -35,6 +35,9 @@ export default function RootLayout({
   debug('Rendering RootLayout');
   return (
     <html lang="en" className={cn("antialiased", inter.variable)}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </head>
       <body className={cn(
         inter.className,
         "min-h-screen bg-[#2a2a2a] text-white",

@@ -76,7 +76,7 @@ const HAL900BookingInterface = () => {
       return;
     }
 
-    setIsBooking(true);
+      setIsBooking(true);
 
     try {
       // Dynamic import for BookingForm to avoid initial load cost
@@ -113,7 +113,7 @@ const HAL900BookingInterface = () => {
             closeForm();
             return;
           }
-          const convertedTime = convertTo24Hour(selectedTime);
+            const convertedTime = convertTo24Hour(selectedTime);
           console.log('Formatted Date:', formattedDate, 'Converted Time:', convertedTime);
           // --- End Date Formatting ---
 
@@ -128,14 +128,14 @@ const HAL900BookingInterface = () => {
           // --- Call calendarPrecise Firebase Function ---
           console.log("Calling calendarPrecise function...");
           const calendarResponse = await fetch(`${functionsBaseUrl}/calendarPrecise`, {
-            method: 'POST',
+              method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              formData,
+              body: JSON.stringify({
+                formData,
               selectedDate: formattedDate,
-              selectedTime: convertedTime,
-            }),
-          });
+                selectedTime: convertedTime,
+              }),
+            });
 
           const rawCalendarResponse = await calendarResponse.text();
           console.log("Raw calendar response:", { status: calendarResponse.status, text: rawCalendarResponse.substring(0, 200) });
@@ -190,8 +190,8 @@ const HAL900BookingInterface = () => {
           // Only reset if both calls were at least attempted (calendar link was present)
           if (calendarResult?.htmlLink) {
             // Reset UI state after success
-            setSelectedDate(new Date());
-            setSelectedTime("");
+              setSelectedDate(new Date());
+              setSelectedTime("");
             closeForm();
           }
 
@@ -199,24 +199,24 @@ const HAL900BookingInterface = () => {
           console.error('Error during booking submission:', error);
           toast.error(`Booking failed: ${error.message || 'Please try again.'}`);
           closeForm();
-        }
-      };
+          }
+        };
 
       // Render the form dynamically
       const formRoot = ReactDOM.createRoot(formRootElement);
       formRoot.render(
         <BookingFormComponent
-          selectedDate={selectedDate}
-          selectedTime={selectedTime}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
           onClose={closeForm}
           onSubmit={submitBooking}
         />
       );
 
-    } catch (error) {
+      } catch (error) {
       console.error('Error dynamically loading or rendering booking form:', error);
       toast.error("Failed to load booking form. Please refresh and try again.");
-      setIsBooking(false);
+        setIsBooking(false);
     }
   };
 

@@ -166,7 +166,7 @@ const mobileStyles = `
       font-size: 0;
     }
     .hiring-label:before {
-      content: "HIRING SYSTEMS";
+      content: "SALES SYSTEMS";
       font-size: 8px;
     }
     .timeline-line {
@@ -459,13 +459,13 @@ const HAL900FrameworkDiagram = () => {
         }
       ],
       serviceDetails: {
-        overview: "Our data-driven lead acquisition system uses advanced algorithms to identify and target high-value prospects with precision. We combine data scraping, predictive analytics, and machine learning to generate qualified leads that are most likely to convert, saving you time and resources while maximizing your sales potential."
+        overview: "Our data-driven lead acquisition system uses advanced algorithms to identify and target high-value prospects with precision. We combine data scraping, predictive analytics, and machine learning to generate qualified leads that are most likely to convert, saving you time and resources while maximising your sales potential."
       }
     },
     {
       icon: Settings,
       label: "PROCESS AUTOMATION",
-      title: "Workflow Management Systems",
+      title: "Workflow Automation",
       description: "Streamline tasks, boost efficiency, and enhance customer interactions with intelligent automation.",
       whatYoullGet: [
         "Automated workflows for key admin and ops tasks",
@@ -490,7 +490,7 @@ const HAL900FrameworkDiagram = () => {
         }
       ],
       serviceDetails: {
-        overview: "Our intelligent workflow automation platform streamlines your business processes, eliminates repetitive tasks, and enhances customer interactions. We build custom solutions that integrate with your existing systems to boost efficiency across your organization, allowing your team to focus on high-value activities rather than manual processes."
+        overview: "Our intelligent workflow automation platform streamlines your business processes, eliminates repetitive tasks, and enhances customer interactions. We build custom solutions that integrate with your existing systems to boost efficiency across your organisation, allowing your team to focus on high-value activities rather than manual processes."
       }
     },
     {
@@ -521,14 +521,14 @@ const HAL900FrameworkDiagram = () => {
         }
       ],
       serviceDetails: {
-        overview: "Our precision marketing approach leverages data-driven insights to create highly targeted campaigns that deliver measurable results. We combine advanced targeting, compelling content creation, and predictive analytics to maximize your marketing ROI, ensuring that your message reaches the right audience at the right time with the right message."
+        overview: "Our precision marketing approach leverages data-driven insights to create highly targeted campaigns that deliver measurable results. We combine advanced targeting, compelling content creation, and predictive analytics to maximise your marketing ROI, ensuring that your message reaches the right audience at the right time with the right message."
       }
     },
     {
       icon: Users,
       label: "PROJECT MANAGEMENT",
       title: "Project Management Systems",
-      description: "Keep customers engaged with personalized experiences and automated re-engagement strategies.",
+      description: "Keep customers engaged with personalised experiences and automated re-engagement strategies.",
       whatYoullGet: [
         "AI-powered lead prioritisation and scoring",
         "Centralised view of your entire sales pipeline",
@@ -552,13 +552,13 @@ const HAL900FrameworkDiagram = () => {
         }
       ],
       serviceDetails: {
-        overview: "We implement smart project management systems that streamline your workflows and keep your team organized. Our solutions integrate with your existing tools, automate repetitive tasks, and provide clear visibility into project progress. By centralizing task management and automating follow-ups, we help you deliver projects on time and keep everything moving forward efficiently."
+        overview: "We implement smart project management systems that streamline your workflows and keep your team organised. Our solutions integrate with your existing tools, automate repetitive tasks, and provide clear visibility into project progress. By centralising task management and automating follow-ups, we help you deliver projects on time and keep everything moving forward efficiently."
       }
     },
     {
       icon: User,
-      label: "HIRING SYSTEMS",
-      title: "Smart Hiring Systems",
+      label: "SALES SYSTEMS",
+      title: "Sales Systems",
       description: "Streamline hiring and workforce management with intelligent sourcing and optimisation.",
       whatYoullGet: [
         "AI-driven candidate sourcing and engagement",
@@ -590,7 +590,7 @@ const HAL900FrameworkDiagram = () => {
       icon: Globe,
       label: "WEBSITE DESIGN",
       title: "Website Design & Optimisation",
-      description: "Create high-performance, SEO-friendly sites optimized for conversions and user experience.",
+      description: "Create high-performance, SEO-friendly sites optimised for conversions and user experience.",
       whatYoullGet: [
         "Custom design aligned with your brand and goals",
         "SEO-optimised for increased search visibility",
@@ -615,7 +615,7 @@ const HAL900FrameworkDiagram = () => {
       ],
       portfolio: ["womensfaithforum.com"],
       serviceDetails: {
-        overview: "We create high-performance, SEO-friendly websites that are optimized for conversions. Our designs combine visual appeal with strategic functionality to ensure your website becomes your most effective digital asset. Current portfolio: womensfaithforum.com"
+        overview: "We create high-performance, SEO-friendly websites that are optimised for conversions. Our designs combine visual appeal with strategic functionality to ensure your website becomes your most effective digital asset. Current portfolio: womensfaithforum.com"
       }
     },
     {

@@ -77,8 +77,8 @@ export default function LanyardCard({
       cardTexture.rotation = Math.PI
       cardTexture.center.set(0.5, 0.5)
       if (frontImage.includes('WhatsApp') || frontImage.includes('george')) {
-        cardTexture.repeat.set(1.0, 1.0)
-        cardTexture.offset.set(-0.3, -0.15)
+        cardTexture.repeat.set(1.2, 1.2)
+        cardTexture.offset.set(-0.27, -0.15)
       } else {
         cardTexture.repeat.set(0.95, 0.95)
         cardTexture.offset.set(-0.2, 0.05)
@@ -241,7 +241,7 @@ export default function LanyardCard({
           >
             <group ref={cardGroup}>
               <mesh ref={cardFrontRef} geometry={nodes.card.geometry} renderOrder={0}>
-                <meshPhysicalMaterial map={cardTexture} map-anisotropy={16} clearcoat={1} clearcoatRoughness={0.15} roughness={0.3} metalness={0.5} />
+                <meshPhysicalMaterial map={cardTexture} map-anisotropy={16} clearcoat={0.5} clearcoatRoughness={0.15} roughness={0.5} metalness={0.5} />
               </mesh>
               <mesh ref={cardBackRef} geometry={nodes.card.geometry} renderOrder={0}>
                 <meshPhysicalMaterial map={cardBackTexture} map-anisotropy={32} clearcoat={0.5} clearcoatRoughness={0.1} roughness={0.2} metalness={0.6} />

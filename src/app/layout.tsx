@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 // Debug logging
 const debug = (...args: any[]) => console.log('[Font Debug]', ...args);
@@ -36,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("antialiased", inter.variable)}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={cn(
         inter.className,

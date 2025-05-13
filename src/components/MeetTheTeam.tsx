@@ -87,7 +87,7 @@ export default function MeetTheTeam() {
       name: "Josh",
       role: "Tech Builder",
       icon: <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-      bio: "Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done."
+      bio: "Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done—reducing friction in day-to-day operations and making work simpler for the teams using them."
     },
     {
       name: "George",
@@ -178,7 +178,7 @@ export default function MeetTheTeam() {
                 </div>
                 {/* Restored text size */}
                 <p className="text-gray-300 mb-6 text-center text-lg">
-                  Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done.
+                  Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done—reducing friction in day-to-day operations and making work simpler for the teams using them.
                 </p>
                 <div className="flex justify-center mt-auto">
                   <a href="#" className="mx-2 text-gray-400 hover:text-white transition-colors"><Globe className="w-5 h-5" /></a>

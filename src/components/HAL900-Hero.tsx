@@ -5,31 +5,36 @@ import { motion } from "framer-motion";
 import HAL900AnimatedText from "./HAL900-AnimatedText";
 import HAL900BookingIconAnimation from "./HAL900-BookingIconAnimation";
 
-const smoothScrollTo = (targetPosition: number, duration: number = 2500) => {
+const smoothScrollTo = (targetPosition: number, duration: number = 2000) => {
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
   let startTime: number | null = null;
 
-  const animation = (currentTime: number) => {
+  // Ensure document is scrollable
+  if (document.documentElement.scrollHeight <= window.innerHeight) {
+    document.body.style.minHeight = `${targetPosition + window.innerHeight}px`;
+    void document.body.offsetHeight; // Force reflow
+  }
+
+  const animateScroll = (currentTime: number) => {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
     const progress = Math.min(timeElapsed / duration, 1);
 
-    // Easing function for smoother acceleration and deceleration
-    const ease = (t: number) => {
-      return t < 0.5
-        ? 4 * t * t * t
-        : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    // Standard ease-in-out quadratic easing function
+    const easeInOutQuad = (t: number) => {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     };
 
-    window.scrollTo(0, startPosition + distance * ease(progress));
+    const newPosition = startPosition + distance * easeInOutQuad(progress);
+    window.scrollTo(0, newPosition);
 
     if (progress < 1) {
-      requestAnimationFrame(animation);
+      requestAnimationFrame(animateScroll);
     }
   };
 
-  requestAnimationFrame(animation);
+  requestAnimationFrame(animateScroll);
 };
 
 const AnimatedHeading = () => {
@@ -71,7 +76,7 @@ const AnimatedHeading = () => {
       if (containerRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         const moveDistance = containerWidth / 2;
-        const widthAdjustment = 17;
+        const widthAdjustment = 12;
 
         setLeftBracketStyle({
           transform: `translateX(${moveDistance + widthAdjustment}px) rotateY(180deg)`,
@@ -250,16 +255,16 @@ const HAL900Hero = ({ onLearnMore, onBookMeeting }: HAL900HeroProps) => {
   }, []);
 
   const handleBookMeeting = () => {
-    // Add delay before scrolling
-    setTimeout(() => {
-      // Scroll to booking calendar
-      const element = document.getElementById("booking-interface");
-      if (element) {
-        const offset = 80;
-        const elementPosition = element.offsetTop;
-        smoothScrollTo(elementPosition - offset);
-      }
-    }, 300); // 300ms delay
+    console.log("Book Meeting button clicked");
+    // Scroll to booking calendar
+    const element = document.getElementById("booking-interface");
+    if (element) {
+      // Use native scrollIntoView with smooth behavior
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
   };
 
   return (

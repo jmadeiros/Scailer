@@ -147,31 +147,112 @@ const TimelineStep = ({
   )
 }
 
-const smoothScrollTo = (targetPosition: number, duration: number = 2500) => {
+// Add a unique ID to this instance for tracking
+const COMPONENT_ID = "ops_" + Math.random().toString(36).substr(2, 9);
+
+const smoothScrollTo = (targetPosition: number, duration: number = 2000) => {
+  console.log(`[${COMPONENT_ID}] smoothScrollTo called with target:`, targetPosition);
+  
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
   let startTime: number | null = null;
+  let lastPos = 0;
 
-  const animation = (currentTime: number) => {
-    if (startTime === null) startTime = currentTime;
+  // Ensure document is scrollable
+  if (document.documentElement.scrollHeight <= window.innerHeight) {
+    document.body.style.minHeight = `${targetPosition + window.innerHeight}px`;
+    void document.body.offsetHeight; // Force reflow
+  }
+
+  const animateScroll = (currentTime: number) => {
+    if (startTime === null) {
+      startTime = currentTime;
+      console.log(`[${COMPONENT_ID}] Animation started`);
+    }
+    
     const timeElapsed = currentTime - startTime;
     const progress = Math.min(timeElapsed / duration, 1);
-
-    // Easing function for smoother acceleration and deceleration
-    const ease = (t: number) => {
+    
+    // Enhanced cubic easing function for more dramatic smooth scrolling
+    const easeInOutCubic = (t: number) => {
       return t < 0.5
         ? 4 * t * t * t
-        : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
     };
 
-    window.scrollTo(0, startPosition + distance * ease(progress));
+    const newPosition = startPosition + distance * easeInOutCubic(progress);
+    window.scrollTo(0, newPosition);
 
     if (progress < 1) {
-      requestAnimationFrame(animation);
+      // Continue animation
+      requestAnimationFrame(animateScroll);
+    } else {
+      console.log(`[${COMPONENT_ID}] Animation complete`);
     }
   };
 
-  requestAnimationFrame(animation);
+  // Start the animation
+  requestAnimationFrame(animateScroll);
+};
+
+const MobileFeatures = ({ features }: { features: Array<{title: string, description: string, icon: any}> }) => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  
+  return (
+    <div className="md:hidden flex flex-col gap-6 items-center">
+      {/* Small indicator text */}
+      <p className="text-xs text-[#25D366]/70 mb-1 text-center">Tap icons to learn more</p>
+      
+      {features.map((feature, index) => (
+        <div key={index} className="flex flex-col items-center">
+          <motion.button
+            className={`relative w-20 h-20 rounded-full flex items-center justify-center shadow-lg ${
+              activeIndex === index 
+                ? "bg-[#25D366] text-white shadow-[#25D366]/30" 
+                : "bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20"
+            } transition-all duration-300`}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+          >
+            <feature.icon className={`w-8 h-8 ${activeIndex === index ? "text-white" : "text-[#25D366]"}`} />
+            
+            {/* Ripple effect on active state */}
+            {activeIndex === index && (
+              <motion.div
+                className="absolute inset-0 rounded-full border-2 border-[#25D366] z-0"
+                initial={{ opacity: 0.8, scale: 1 }}
+                animate={{ 
+                  opacity: 0,
+                  scale: 1.2,
+                }}
+                transition={{ 
+                  repeat: Infinity,
+                  duration: 1.5,
+                  ease: "easeOut"
+                }}
+              />
+            )}
+          </motion.button>
+          
+          <AnimatePresence>
+            {activeIndex === index && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0, y: -10 }}
+                animate={{ opacity: 1, height: "auto", y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="text-center mt-4 px-5 py-4 overflow-hidden"
+              >
+                <h4 className="text-xl font-medium text-white mb-3">{feature.title}</h4>
+                <p className="text-base text-gray-400 max-w-xs mx-auto leading-relaxed">{feature.description}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default function HAL900OperationsService() {
@@ -267,7 +348,17 @@ export default function HAL900OperationsService() {
     setPrevSection(activeSection)
     setActiveSection(section)
     setResetScroll(true)
-    // No automatic scrolling
+    
+    // If needed, scroll the section into view
+    if (ref.current) {
+      setTimeout(() => {
+        // Give time for state changes to apply before scrolling
+        ref.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 50);
+    }
   }
 
   // Update content height when section changes
@@ -427,7 +518,7 @@ export default function HAL900OperationsService() {
 
           {/* Content container with dynamic height */}
           <div 
-            className="relative overflow-hidden transition-all duration-300 w-[150%] -ml-[25%]"
+            className="relative overflow-visible transition-all duration-300 w-[150%] -ml-[25%]"
             ref={containerRef}
             style={{ minHeight: contentHeight }}
           >
@@ -592,42 +683,69 @@ export default function HAL900OperationsService() {
                       </motion.div>
 
                       {/* Three column feature layout */}
-                      <div className="max-w-5xl mx-auto mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-4">
-                        {[
-                          {
-                            title: "On-demand automation expertise",
-                            description:
-                              "Access specialized skills exactly when you need them, without the overhead of full-time hires.",
-                            icon: Zap,
-                          },
-                          {
-                            title: "Simple implementation process",
-                            description:
-                              "Clear, straightforward steps from onboarding to execution, with no unnecessary complexity.",
-                            icon: Target,
-                          },
-                          {
-                            title: "Systems you need at an affordable rate",
-                            description:
-                              "Flexible pricing that scales with your needs, delivering enterprise-level solutions at startup-friendly prices.",
-                            icon: User,
-                          },
-                        ].map((item, index) => (
-                          <motion.div
-                            key={index}
-                            className="flex flex-col items-center text-center p-6 rounded-lg"
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.2 }}
-                            transition={{ duration: 0.6, delay: 0.2 + index * 0.15 }}
-                          >
-                            <div className="w-16 h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center mb-6">
-                              <item.icon className="w-7 h-7 text-[#25D366]" />
-                            </div>
-                            <h4 className="text-xl font-medium text-white mb-4">{item.title}</h4>
-                            <p className="text-base text-gray-400 max-w-xs mx-auto leading-relaxed">{item.description}</p>
-                          </motion.div>
-                        ))}
+                      <div className="max-w-5xl mx-auto mb-12 md:mb-20 px-4">
+                        {/* Desktop layout - unchanged */}
+                        <div className="hidden md:grid md:grid-cols-3 gap-8 md:gap-12">
+                          {[
+                            {
+                              title: "On-demand automation expertise",
+                              description:
+                                "Access specialized skills exactly when you need them, without the overhead of full-time hires.",
+                              icon: Zap,
+                            },
+                            {
+                              title: "Simple implementation process",
+                              description:
+                                "Clear, straightforward steps from onboarding to execution, with no unnecessary complexity.",
+                              icon: Target,
+                            },
+                            {
+                              title: "Systems you need at an affordable rate",
+                              description:
+                                "Flexible pricing that scales with your needs, delivering enterprise-level solutions at startup-friendly prices.",
+                              icon: User,
+                            },
+                          ].map((item, index) => (
+                            <motion.div
+                              key={index}
+                              className="flex flex-col items-center text-center p-6 rounded-lg"
+                              initial={{ opacity: 0, y: 50 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: 0.2 }}
+                              transition={{ duration: 0.6, delay: 0.2 + index * 0.15 }}
+                            >
+                              <div className="w-16 h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center mb-6">
+                                <item.icon className="w-7 h-7 text-[#25D366]" />
+                              </div>
+                              <h4 className="text-xl font-medium text-white mb-4">{item.title}</h4>
+                              <p className="text-base text-gray-400 max-w-xs mx-auto leading-relaxed">{item.description}</p>
+                            </motion.div>
+                          ))}
+                        </div>
+                        
+                        {/* Mobile layout - vertical icons with expandable content */}
+                        <MobileFeatures 
+                          features={[
+                            {
+                              title: "On-demand automation expertise",
+                              description:
+                                "Access specialized skills exactly when you need them, without the overhead of full-time hires.",
+                              icon: Zap,
+                            },
+                            {
+                              title: "Simple implementation process",
+                              description:
+                                "Clear, straightforward steps from onboarding to execution, with no unnecessary complexity.",
+                              icon: Target,
+                            },
+                            {
+                              title: "Systems you need at an affordable rate",
+                              description:
+                                "Flexible pricing that scales with your needs, delivering enterprise-level solutions at startup-friendly prices.",
+                              icon: User,
+                            },
+                          ]}
+                        />
                       </div>
 
                       <motion.div
@@ -813,11 +931,14 @@ export default function HAL900OperationsService() {
                           <Button 
                             className="bg-[#25D366] hover:bg-[#128C7E] text-black font-bold text-lg px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-[#25D366]/20"
                             onClick={() => {
+                              console.log("Implementation button clicked");
                               const element = document.getElementById("booking-interface");
                               if (element) {
-                                const offset = 80;
-                                const elementPosition = element.offsetTop;
-                                smoothScrollTo(elementPosition - offset);
+                                // Use native scrollIntoView with smooth behavior
+                                element.scrollIntoView({ 
+                                  behavior: 'smooth', 
+                                  block: 'start' 
+                                });
                               }
                             }}
                           >

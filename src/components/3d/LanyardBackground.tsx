@@ -99,13 +99,13 @@ export default function LanyardBackground({
             {/* Pass STARTING positions here */}
             <LanyardCard 
               position={startPos1} // <<< Use starting position
-              frontImage="/assets/josh.jpg"
+              frontImage="/assets/joshnew2.jpg"
               backImage="/assets/Screenshot 2025-04-25 200507.png"
             />
             <LanyardCard 
               position={startPos2} // <<< Use starting position
               frontImage="/assets/WhatsApp Image 2025-04-25 at 16.17.59_8c138974.jpg"
-              backImage="/assets/Screenshot 2025-04-25 200507.png"
+              backImage="/assets/03fb0590-bd58-411f-842b-b0896b93e88c.png"
             />
           </Physics>
           <Environment preset="city" blur={0.5}> 

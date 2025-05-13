@@ -166,7 +166,7 @@ const mobileStyles = `
       font-size: 0;
     }
     .hiring-label:before {
-      content: "SALES SYSTEMS";
+      content: "HIRING SYSTEMS";
       font-size: 8px;
     }
     .timeline-line {
@@ -297,13 +297,21 @@ const FeatureBox = ({
             </motion.div>
           )}
           <div>
-            <span className="text-[8px] md:text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap mobile-text-xs">
-              {label === "SMART HIRING & OPTIMISATION" ? (
-                <>
-                  <span className="md:hidden">HIRING SYSTEMS</span>
-                  <span className="hidden md:inline">SMART HIRING & OPTIMISATION</span>
-                </>
-              ) : label}
+            <span className="text-[8px] md:text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap mobile-text-xs hidden md:inline">
+              {label}
+            </span>
+            <span className="text-[8px] font-medium text-gray-400 tracking-wider whitespace-nowrap mobile-text-xs md:hidden">
+              {/* Check for exact label matches */}
+              {label === "HIRING SYSTEMS" && "HIRING"}
+              {label === "SMART HIRING & OPTIMISATION" && "HIRING"}
+              {label === "PROJECT MANAGEMENT" && "PROJECT MGMT"}
+              {label === "WORKFLOW MANAGEMENT SYSTEMS" && "WORKFLOW"}
+              {label === "PROCESS AUTOMATION" && "WORKFLOW"}
+              {label === "MARKETING OPTIMISATION" && "MARKETING"}
+              {label === "DATA-DRIVEN LEAD ACQUISITION" && "LEAD GEN"}
+              {label === "WEBSITE DESIGN" && "WEBSITE"}
+              {label === "CONVERSATIONAL AI" && "AI CHAT"}
+              {label === "AI INTEGRATION" && "AI STRATEGY"}
             </span>
           </div>
           {/* Icon right side rendering */}
@@ -557,8 +565,8 @@ const HAL900FrameworkDiagram = () => {
     },
     {
       icon: User,
-      label: "SALES SYSTEMS",
-      title: "Sales Systems",
+      label: "HIRING SYSTEMS",
+      title: "Hiring Systems",
       description: "Streamline hiring and workforce management with intelligent sourcing and optimisation.",
       whatYoullGet: [
         "AI-driven candidate sourcing and engagement",

@@ -1,3 +1,5 @@
+"use client";
+
 import { Globe, User } from "lucide-react";
 import { motion } from "framer-motion";
 import dynamic from 'next/dynamic';
@@ -13,6 +15,29 @@ export default function MeetTheTeam() {
   // const sectionRef = useRef<HTMLElement>(null); 
   const headingRef = useRef<HTMLHeadingElement>(null); // <<< New Ref for the heading
   const [isSectionVisible, setIsSectionVisible] = useState(false);
+  const [activeMember, setActiveMember] = useState(0); // 0 for Josh, 1 for George
+
+  // Track touch start position for swipe detection
+  const touchStartX = useRef(0);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    
+    // If swipe distance is significant enough (more than 50px)
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swiped left, go to next (George)
+        setActiveMember(1);
+      } else {
+        // Swiped right, go to previous (Josh)
+        setActiveMember(0);
+      }
+    }
+  };
 
   // Log component rendering and current state
   console.log(`[MeetTheTeam] Rendering. isSectionVisible: ${isSectionVisible}`);
@@ -56,6 +81,22 @@ export default function MeetTheTeam() {
     };
   }, []);
 
+  // Team member data array for easier management
+  const teamMembers = [
+    {
+      name: "Josh",
+      role: "Tech Builder",
+      icon: <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+      bio: "Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done."
+    },
+    {
+      name: "George",
+      role: "Growth Strategist",
+      icon: <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/></svg>,
+      bio: "George has experience helping companies across a range of industries stay ahead of the curve by implementing AI systems. Drawing on his background in construction, he understands the challenges of scaling without the right systems in place. He now delivers solutions that bring structure, improve visibility, and support smarter, more sustainable growth."
+    }
+  ];
+
   return (
     // Remove ref from section if no longer needed
     <section /* ref={sectionRef} */ className="py-10 md:py-20 bg-[#1a1a1a] relative overflow-hidden min-h-screen">
@@ -72,13 +113,13 @@ export default function MeetTheTeam() {
           viewport={{ once: true }} // <<< Restore animation
           transition={{ duration: 0.6 }} // <<< Restore animation
         >
-          <h2 ref={headingRef} className="text-2xl md:text-3xl lg:text-5xl font-bold text-white inline-block relative">
+          <h2 ref={headingRef} className="text-2xl md:text-3xl lg:text-5xl font-bold text-white inline-block relative mobile-title-heading">
             Meet the Team
           </h2>
         </motion.div>
         
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-16 md:mb-24" // Adjusted margin for mobile
+          className="text-center max-w-3xl mx-auto mb-10 md:mb-24" // Adjusted margin for mobile
           initial={{ opacity: 0, y: 30 }} // <<< Restore animation
           whileInView={{ opacity: 1, y: 0 }} // <<< Restore animation
           viewport={{ once: true }} // <<< Restore animation
@@ -105,71 +146,116 @@ export default function MeetTheTeam() {
               <span>Hold to drag</span>
             </motion.div>
 
-           {/* Mobile-only drag hint (centered) */}
-           <motion.div 
-              className="flex md:hidden w-full justify-center items-center text-gray-400 text-sm mb-4" 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isSectionVisible ? 1 : 0 }} 
-              transition={{ duration: 0.5, delay: 1.2 }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 w-5 h-5">
-                 <path d="M5 9 L 12 16 L 19 9"></path>  
-              </svg>
-              <span>Hold and drag cards</span>
-            </motion.div>
+           {/* Mobile-only dots navigation and swipe */}
+           <div className="flex md:hidden w-full justify-center items-center mb-2">
+              <button 
+                onClick={() => setActiveMember(0)} 
+                className={`w-2.5 h-2.5 rounded-full mx-1 ${activeMember === 0 ? 'bg-[#25D366]' : 'bg-gray-500'}`}
+                aria-label="View Josh's profile"
+              />
+              <button 
+                onClick={() => setActiveMember(1)} 
+                className={`w-2.5 h-2.5 rounded-full mx-1 ${activeMember === 1 ? 'bg-[#25D366]' : 'bg-gray-500'}`}
+                aria-label="View George's profile"
+              />
+           </div>
 
-           {/* --- The Actual Grid --- */}
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 w-full"> 
+           {/* --- The Desktop Grid --- */}
+           <div className="hidden md:grid grid-cols-2 gap-12 w-full"> 
               {/* Josh */}
               <motion.div 
-                className="flex flex-col h-full items-center bg-black/20 rounded-xl p-6 shadow-lg md:bg-transparent md:p-0 md:shadow-none" 
+                className="flex flex-col h-full items-center" 
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 text-center">Josh</h3>
-                <div className="flex items-center justify-center text-[#25D366] mb-3 md:mb-4">
+                <h3 className="text-3xl font-bold text-white mb-2 text-center">Josh</h3>
+                <div className="flex items-center justify-center text-[#25D366] mb-4">
                   {/* SVG Icon */}
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  <span className="font-medium text-sm md:text-base">Tech Builder</span>
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span className="font-medium">Tech Builder</span>
                 </div>
-                {/* Adjusted text size for mobile */}
-                <p className="text-gray-300 mb-5 md:mb-6 text-center text-base md:text-lg">
+                {/* Restored text size */}
+                <p className="text-gray-300 mb-6 text-center text-lg">
                   Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done.
                 </p>
                 <div className="flex justify-center mt-auto">
                   <a href="#" className="mx-2 text-gray-400 hover:text-white transition-colors"><Globe className="w-5 h-5" /></a>
-                  <a href="#" className="mx-2 text-gray-400 hover:text-white transition-colors"><User className="w-5 h-5" /></a>
+                  <a href="https://www.linkedin.com/in/joshua-madeiros-63aa26158/" target="_blank" rel="noopener noreferrer" className="mx-2 text-gray-400 hover:text-white transition-colors"><User className="w-5 h-5" /></a>
                 </div>
               </motion.div>
               
               {/* George */}
               <motion.div 
-                className="flex flex-col h-full items-center bg-black/20 rounded-xl p-6 shadow-lg md:bg-transparent md:p-0 md:shadow-none" 
+                className="flex flex-col h-full items-center" 
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 text-center">George</h3>
-                <div className="flex items-center justify-center text-[#25D366] mb-3 md:mb-4">
+                <h3 className="text-3xl font-bold text-white mb-2 text-center">George</h3>
+                <div className="flex items-center justify-center text-[#25D366] mb-4">
                   {/* SVG Icon */}
-                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/></svg>
-                  <span className="font-medium text-sm md:text-base">Growth Strategist</span>
+                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/></svg>
+                  <span className="font-medium">Growth Strategist</span>
                 </div>
-                 {/* Adjusted text size for mobile */}
-                <p className="text-gray-300 mb-5 md:mb-6 text-center text-base md:text-lg">
-                  George has worked with companies across a mix of industries, helping them bring AI into the fold. He focuses on sectors where it's still early days, building systems that simplify work, save time, and help them get ahead of the curve.
+                 {/* Restored text size */}
+                <p className="text-gray-300 mb-6 text-center text-lg">
+                  George has experience helping companies across a range of industries stay ahead of the curve by implementing AI systems. Drawing on his background in construction, he understands the challenges of scaling without the right systems in place. He now delivers solutions that bring structure, improve visibility, and support smarter, more sustainable growth.
                 </p>
                 <div className="flex justify-center mt-auto">
                   <a href="#" className="mx-2 text-gray-400 hover:text-white transition-colors"><Globe className="w-5 h-5" /></a>
-                  <a href="#" className="mx-2 text-gray-400 hover:text-white transition-colors"><User className="w-5 h-5" /></a>
+                  <a href="https://www.linkedin.com/in/george-reynolds-67728580/" target="_blank" rel="noopener noreferrer" className="mx-2 text-gray-400 hover:text-white transition-colors"><User className="w-5 h-5" /></a>
                 </div>
               </motion.div>
             </div>
+            
+            {/* Mobile swipeable cards */}
+            <div 
+              className="md:hidden w-full" 
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div className="relative overflow-hidden">
+                <div 
+                  className="flex transition-transform duration-300 ease-in-out" 
+                  style={{ transform: `translateX(-${activeMember * 100}%)` }}
+                >
+                  {teamMembers.map((member, index) => (
+                    <div key={index} className="w-full flex-shrink-0">
+                      <motion.div 
+                        className="flex flex-col items-center px-4 py-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <h3 className="text-2xl font-bold text-white mb-3 text-center">{member.name}</h3>
+                        <div className="flex items-center justify-center text-[#25D366] mb-4">
+                          {member.icon}
+                          <span className="font-medium text-sm">{member.role}</span>
+                        </div>
+                        <p className="text-gray-300 mb-6 text-center text-base leading-relaxed">
+                          {member.bio}
+                        </p>
+                        <div className="flex justify-center mt-2">
+                          <a href="#" className="mx-3 text-gray-400 hover:text-white transition-colors"><Globe className="w-5 h-5" /></a>
+                          <a 
+                            href={member.name === "Josh" ? "https://www.linkedin.com/in/joshua-madeiros-63aa26158/" : "https://www.linkedin.com/in/george-reynolds-67728580/"} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="mx-3 text-gray-400 hover:text-white transition-colors"
+                          >
+                            <User className="w-5 h-5" />
+                          </a>
+                        </div>
+                      </motion.div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
         </div>
-
       </div>
     </section>
   );

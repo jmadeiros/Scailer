@@ -48,7 +48,7 @@ export default function LanyardCard({
   const ang = new THREE.Vector3()
   const rot = new THREE.Vector3()
   const dir = new THREE.Vector3()
-  const segmentProps: Partial<RigidBodyProps> = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 }
+  const segmentProps: Partial<RigidBodyProps> = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 0.5, linearDamping: 0.5 }
 
   const { nodes, materials } = useGLTF('https://assets.vercel.com/image/upload/contentful/image/e5382hct74si/5huRVDzcoDwnbgrKUo1Lzs/53b6dd7d6b4ffcdbd338fa60265949e1/tag.glb') as any
   const texture = useTexture(lanyardTexture)
@@ -80,8 +80,8 @@ export default function LanyardCard({
         cardTexture.repeat.set(1.2, 1.2)
         cardTexture.offset.set(-0.27, -0.15)
       } else {
-        cardTexture.repeat.set(0.95, 0.95)
-        cardTexture.offset.set(-0.2, 0.05)
+        cardTexture.repeat.set(1.25, 0.92)
+        cardTexture.offset.set(-0.17, -0.05)
       }
     }
   }, [cardTexture, frontImage])
@@ -241,7 +241,15 @@ export default function LanyardCard({
           >
             <group ref={cardGroup}>
               <mesh ref={cardFrontRef} geometry={nodes.card.geometry} renderOrder={0}>
-                <meshPhysicalMaterial map={cardTexture} map-anisotropy={16} clearcoat={0.5} clearcoatRoughness={0.15} roughness={0.5} metalness={0.5} />
+                <meshPhysicalMaterial 
+                  map={cardTexture} 
+                  color={frontImage.includes('joshnew2.jpg') ? 0xC0C0C0 : 0xffffff}
+                  map-anisotropy={16} 
+                  clearcoat={0.5} 
+                  clearcoatRoughness={0.15} 
+                  roughness={0.5} 
+                  metalness={0.5} 
+                />
               </mesh>
               <mesh ref={cardBackRef} geometry={nodes.card.geometry} renderOrder={0}>
                 <meshPhysicalMaterial map={cardBackTexture} map-anisotropy={32} clearcoat={0.5} clearcoatRoughness={0.1} roughness={0.2} metalness={0.6} />

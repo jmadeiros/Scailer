@@ -52,31 +52,65 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const smoothScroll = (targetPosition: number, duration: number = 1500) => {
+// Add a unique ID to this instance for tracking
+const COMPONENT_ID = "header_" + Math.random().toString(36).substr(2, 9);
+
+const smoothScroll = (targetPosition: number, duration: number = 2000) => {
+  // Debug to confirm this function is being called
+  console.log(`[${COMPONENT_ID}] smoothScroll ENTRY: target=${targetPosition}, duration=${duration}`);
+  
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
   let startTime: number | null = null;
+  let lastPos = 0;
 
-  const animation = (currentTime: number) => {
-    if (startTime === null) startTime = currentTime;
+  // Ensure document is scrollable
+  if (document.documentElement.scrollHeight <= window.innerHeight) {
+    document.body.style.minHeight = `${targetPosition + window.innerHeight}px`;
+    void document.body.offsetHeight; // Force reflow
+  }
+
+  const animateScroll = (currentTime: number) => {
+    if (startTime === null) {
+      startTime = currentTime;
+      console.log(`[${COMPONENT_ID}] animateScroll START: time=${currentTime}`);
+    }
+    
     const timeElapsed = currentTime - startTime;
     const progress = Math.min(timeElapsed / duration, 1);
+    
+    // Only log at specific intervals and only if position changed significantly
+    if (Math.round(progress * 10) % 2 === 0) {
+      const currentPos = window.pageYOffset;
+      if (Math.abs(currentPos - lastPos) > 10) {
+        console.log(`[${COMPONENT_ID}] animateScroll PROGRESS: ${(progress * 100).toFixed(0)}%, pos=${currentPos}`);
+        lastPos = currentPos;
+      }
+    }
 
-    // Easing function for smoother acceleration and deceleration
-    const ease = (t: number) => {
+    // Enhanced cubic easing function for more dramatic smooth scrolling
+    // This ease-in-out cubic is more pronounced than the quadratic one
+    const easeInOutCubic = (t: number) => {
       return t < 0.5
         ? 4 * t * t * t
-        : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
     };
 
-    window.scrollTo(0, startPosition + distance * ease(progress));
+    const newPosition = startPosition + distance * easeInOutCubic(progress);
+    
+    // Use a tiny step size for smoother animation
+    window.scrollTo(0, newPosition);
 
     if (progress < 1) {
-      requestAnimationFrame(animation);
+      // Request next animation frame
+      requestAnimationFrame(animateScroll);
+    } else {
+      console.log(`[${COMPONENT_ID}] Animation complete, final position:`, window.pageYOffset);
     }
   };
 
-  requestAnimationFrame(animation);
+  // Start the animation
+  requestAnimationFrame(animateScroll);
 };
 
 interface HAL900HeaderProps {
@@ -88,11 +122,25 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
   const [hasCopied, setHasCopied] = useState(false);
 
   const scrollToElement = useCallback((elementId: string) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop;
-      smoothScroll(elementPosition - offset);
+    console.log(`[${COMPONENT_ID}] scrollToElement called for:`, elementId);
+    
+    try {
+      const element = document.getElementById(elementId);
+      console.log(`[${COMPONENT_ID}] Element found:`, !!element);
+      
+      if (element) {
+        // Use browser's native scrollIntoView with smooth behavior
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start' 
+        });
+        
+        console.log(`[${COMPONENT_ID}] Used native scrollIntoView`);
+      } else {
+        console.error(`[${COMPONENT_ID}] Element not found: ${elementId}`);
+      }
+    } catch (error) {
+      console.error(`[${COMPONENT_ID}] Error in scrollToElement:`, error);
     }
   }, []);
 
@@ -108,7 +156,15 @@ const HAL900Header = ({ onTryForFree }: HAL900HeaderProps) => {
 
   const handleTryForFree = () => {
     // Use the same smooth scrolling for Try For Free button
-    scrollToElement("scale-with-precision");
+    const element = document.getElementById("scale-with-precision");
+    if (element) {
+      // Use modern scrollIntoView with smooth behavior
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+    
     // Close mobile menu if open
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);

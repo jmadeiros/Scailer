@@ -2,12 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
-  overflow-x: hidden;
-  width: 100%;
+html {
+  --scroll-behavior: smooth !important;
+  scroll-behavior: smooth !important;
   height: 100%;
+  overflow-y: visible; /* Changed from auto to visible to prevent double scrollbar */
+  
+  /* Add enhanced scroll behavior for smoother scrolling */
+  scroll-timeline: --documentScroll block;
+  scroll-timeline-axis: block;
+  overflow-anchor: auto;
+}
+
+/* Enhance scrolling with a proper scroll curve */
+@keyframes scroll-animation {
+  from { scroll-margin-top: 0; }
+  to { scroll-margin-top: 0; }
+}
+
+/* Apply smooth movement to all scrollable elements */
+:target {
+  scroll-margin-top: 80px; /* Account for header height */
+  animation: scroll-animation 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto !important; /* Keep only body scrollable */
+  width: 100%;
   margin: 0;
   padding: 0;
+  
+  /* Smooth scrolling for browsers that support it */
+  -webkit-overflow-scrolling: touch;
+}
+
+main {
+  min-height: 300vh; /* Ensure page is scrollable */
+  overflow-y: visible !important; /* Ensure content can be scrolled */
+}
+
+/* Ensure container elements don't block scrolling */
+.container {
+  overflow: visible !important;
+}
+
+/* Override any overflow hidden classes on container elements */
+div[class*="container"] {
+  overflow: visible !important;
 }
 
 @layer base {

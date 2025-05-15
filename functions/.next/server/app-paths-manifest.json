@@ -1,0 +1,11 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/page": "app/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/test-audit/page": "app/test-audit/page.js",
+  "/newsletter/page": "app/newsletter/page.js",
+  "/api/calendar/route": "app/api/calendar/route.js",
+  "/api/send-booking-emails/route": "app/api/send-booking-emails/route.js",
+  "/api/calendar/test/route": "app/api/calendar/test/route.js",
+  "/api/book-session/route": "app/api/book-session/route.js"
+}

@@ -1,0 +1,52 @@
+{
+  "pages": {
+    "/not-found": [
+      "static/chunks/webpack-1f2bda0a26ecba2e.js",
+      "static/chunks/fd9d1056-ef4f33b6252956fd.js",
+      "static/chunks/596-2c1e71b668623423.js",
+      "static/chunks/main-app-9819e532beea10ab.js",
+      "static/chunks/app/not-found-556d996a816d2eb7.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-1f2bda0a26ecba2e.js",
+      "static/chunks/fd9d1056-ef4f33b6252956fd.js",
+      "static/chunks/596-2c1e71b668623423.js",
+      "static/chunks/main-app-9819e532beea10ab.js",
+      "static/chunks/424-2046043a0ce6d658.js",
+      "static/css/6157f0d9ae5fd892.css",
+      "static/css/0dcbb2e2341acf5b.css",
+      "static/chunks/app/layout-ca1d050e092682b8.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-1f2bda0a26ecba2e.js",
+      "static/chunks/fd9d1056-ef4f33b6252956fd.js",
+      "static/chunks/596-2c1e71b668623423.js",
+      "static/chunks/main-app-9819e532beea10ab.js",
+      "static/chunks/120-fd2a9cc94893d2be.js",
+      "static/chunks/app/page-6f4bbf4a5d5fb00b.js"
+    ],
+    "/test-audit/page": [
+      "static/chunks/webpack-1f2bda0a26ecba2e.js",
+      "static/chunks/fd9d1056-ef4f33b6252956fd.js",
+      "static/chunks/596-2c1e71b668623423.js",
+      "static/chunks/main-app-9819e532beea10ab.js",
+      "static/chunks/107-460e17645a7df82f.js",
+      "static/chunks/424-2046043a0ce6d658.js",
+      "static/chunks/120-fd2a9cc94893d2be.js",
+      "static/chunks/878-c84e806e24abed8d.js",
+      "static/chunks/933-b442d69c7db7ddbb.js",
+      "static/chunks/app/test-audit/page-195c408e989bfb4f.js"
+    ],
+    "/newsletter/page": [
+      "static/chunks/webpack-1f2bda0a26ecba2e.js",
+      "static/chunks/fd9d1056-ef4f33b6252956fd.js",
+      "static/chunks/596-2c1e71b668623423.js",
+      "static/chunks/main-app-9819e532beea10ab.js",
+      "static/chunks/107-460e17645a7df82f.js",
+      "static/chunks/424-2046043a0ce6d658.js",
+      "static/chunks/120-fd2a9cc94893d2be.js",
+      "static/chunks/585-6b7dec6eb53c5340.js",
+      "static/chunks/app/newsletter/page-db5fb0ea6d1779d0.js"
+    ]
+  }
+}

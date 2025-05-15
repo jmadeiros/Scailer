@@ -130,7 +130,7 @@ function MessageFeed({ animationTriggered }: { animationTriggered: boolean }) {
   return (
     <>
       <motion.div
-        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden h-[70px] md:h-[90px]"
+        className="bg-[#2a2a2a] rounded-lg mt-4 overflow-hidden h-[100px] md:h-[90px]"
         animate={animationTriggered ? { height: 0, opacity: 0 } : { height: "auto", opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
@@ -355,12 +355,12 @@ export default function HAL900AuditForm() {
   const isFormValid = validation.name.isValid && validation.companyName.isValid && validation.email.isValid
 
   return (
-    <div className="w-full max-w-sm mx-auto">
+    <div className="w-full max-w-[280px] sm:max-w-sm mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="bg-scailer-light rounded-xl p-3 md:p-6 border border-scailer-light/20"
+        className="bg-scailer-light rounded-xl p-3 sm:p-3 md:p-6 border border-scailer-light/20 min-h-[380px] sm:min-h-0 flex flex-col"
       >
         <div className="flex items-center gap-1.5 md:gap-3 mb-1 md:mb-2">
           <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-scailer-green/10 flex items-center justify-center">
@@ -383,8 +383,8 @@ export default function HAL900AuditForm() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-2 md:space-y-4">
-          <div className="space-y-2 md:space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6 flex-grow flex flex-col sm:justify-between sm:space-y-2 md:space-y-4">
+          <div className="space-y-3 sm:space-y-2 md:space-y-4">
             <div className="relative">
               <Input
                 type="text"
@@ -398,7 +398,7 @@ export default function HAL900AuditForm() {
                   }
                 }}
                 className={cn(
-                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-1 md:py-2 text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-3 sm:py-1 md:py-2 text-sm sm:text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200",
                   "[&:-webkit-autofill]:bg-[#2a2a2a]",
@@ -437,7 +437,7 @@ export default function HAL900AuditForm() {
                   }
                 }}
                 className={cn(
-                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-1 md:py-2 text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-3 sm:py-1 md:py-2 text-sm sm:text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200",
                   "[&:-webkit-autofill]:bg-[#2a2a2a]",
@@ -476,7 +476,7 @@ export default function HAL900AuditForm() {
                   }
                 }}
                 className={cn(
-                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-1 md:py-2 text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
+                  "w-full pl-2 md:pl-3 pr-7 md:pr-9 py-3 sm:py-1 md:py-2 text-sm sm:text-[11px] md:text-sm bg-[#2a2a2a] border-0 text-white placeholder:text-gray-500",
                   "focus:ring-1 focus:ring-scailer-green/50",
                   "rounded-lg transition-all duration-200",
                   "[&:-webkit-autofill]:bg-[#2a2a2a]",
@@ -516,7 +516,7 @@ export default function HAL900AuditForm() {
                 type="submit"
                 disabled={!isFormValid || loading}
                 className={cn(
-                  "w-full py-1 md:py-2 text-[11px] md:text-sm text-white font-medium",
+                  "w-full py-3 sm:py-1 md:py-2 text-base sm:text-[11px] md:text-sm text-white font-medium",
                   isFormValid ? "bg-scailer-green hover:bg-[#128C7E]" : "bg-[#2a2a2a]",
                   "disabled:text-white/30 disabled:cursor-not-allowed transition-all duration-200 rounded-lg"
                 )}

@@ -38,9 +38,17 @@ const convertTo24Hour = (time12h: string) => {
 };
 
 const HAL900BookingInterface = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize to start of day
+    return today;
+  });
   const [selectedTime, setSelectedTime] = useState<string>("");
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const [currentMonth, setCurrentMonth] = useState<Date>(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+  });
   const [isBooking, setIsBooking] = useState(false);
 
   const getDaysInMonth = (date: Date) => {
@@ -55,18 +63,27 @@ const HAL900BookingInterface = () => {
 
   const handleDateClick = (day: number) => {
     const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    newDate.setHours(0, 0, 0, 0); // Normalize to start of day
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize today to start of day
+
+    if (newDate < today) {
+      toast.error("Cannot select a past date.");
+      return;
+    }
     setSelectedDate(newDate);
   };
 
   const handleMonthChange = (increment: number) => {
     setCurrentMonth(prevMonth => {
-      // Create a new date object with the same values to avoid any reference issues
-      const newMonth = new Date(
+      const newMonthDate = new Date(
         prevMonth.getFullYear(),
         prevMonth.getMonth() + increment,
-        1  // Set to first day of month to avoid any day-of-month issues
+        1
       );
-      return newMonth;
+      newMonthDate.setHours(0,0,0,0);
+      return newMonthDate;
     });
   };
 
@@ -248,6 +265,7 @@ const HAL900BookingInterface = () => {
               <button
                 onClick={() => handleMonthChange(-1)}
                 className="p-2 hover:bg-scailer-dark rounded-lg transition-colors"
+                disabled={currentMonth <= new Date(new Date().getFullYear(), new Date().getMonth(), 1) && currentMonth.getFullYear() === new Date().getFullYear() && currentMonth.getMonth() === new Date().getMonth()}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -279,26 +297,39 @@ const HAL900BookingInterface = () => {
               ))}
               {Array.from({ length: daysInMonth }).map((_, index) => {
                 const day = index + 1;
+                const dateOfThisDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+                dateOfThisDay.setHours(0, 0, 0, 0);
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const isPastDate = dateOfThisDay < today;
+                
                 const isSelected =
+                  selectedDate && // Ensure selectedDate is not null
                   selectedDate.getDate() === day &&
                   selectedDate.getMonth() === currentMonth.getMonth() &&
                   selectedDate.getFullYear() === currentMonth.getFullYear();
-                const isToday =
-                  new Date().getDate() === day &&
-                  new Date().getMonth() === currentMonth.getMonth() &&
-                  new Date().getFullYear() === currentMonth.getFullYear();
+                
+                const isTodayDate =
+                  today.getDate() === day &&
+                  today.getMonth() === currentMonth.getMonth() &&
+                  today.getFullYear() === currentMonth.getFullYear();
 
                 return (
                   <motion.button
                     key={day}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleDateClick(day)}
+                    whileHover={{ scale: isPastDate ? 1 : 1.1 }}
+                    whileTap={{ scale: isPastDate ? 1 : 0.95 }}
+                    onClick={() => !isPastDate && handleDateClick(day)}
+                    disabled={isPastDate}
                     className={`p-2 rounded-lg text-center ${
-                      isSelected
+                      isSelected && !isPastDate
                         ? "bg-scailer-green text-white"
-                        : isToday
+                        : isTodayDate && !isPastDate
                         ? "border border-scailer-green text-scailer-green"
+                        : isPastDate
+                        ? "text-white/30 cursor-not-allowed"
                         : "hover:bg-scailer-dark"
                     }`}
                   >

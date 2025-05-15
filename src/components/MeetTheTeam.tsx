@@ -87,19 +87,31 @@ export default function MeetTheTeam() {
       name: "Josh",
       role: "Tech Builder",
       icon: <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-      bio: "Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done—reducing friction in day-to-day operations and making work simpler for the teams using them."
+      bio: "Josh has experience coding in finance, where he built tools to speed things up and cut out manual tasks. Now, he builds on that by developing systems that help companies run more smoothly and get more done—reducing friction in day-to-day operations and making work simpler for the teams using them.",
+      mobileBio: "Josh brings finance sector coding experience to build systems that help companies run smoothly, reducing friction in operations and simplifying work for teams."
     },
     {
       name: "George",
       role: "Growth Strategist",
       icon: <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/></svg>,
-      bio: "George has experience helping companies across a range of industries stay ahead of the curve by implementing AI systems. Drawing on his background in construction, he understands the challenges of scaling without the right systems in place. He now delivers solutions that bring structure, improve visibility, and support smarter, more sustainable growth."
+      bio: "George has experience helping companies across a range of industries stay ahead of the curve by implementing AI systems. Drawing on his background in construction, he understands the challenges of scaling without the right systems in place. He now delivers solutions that bring structure, improve visibility, and support smarter, more sustainable growth.",
+      mobileBio: "George helps companies across industries implement AI systems. With his construction background, he delivers solutions for structured, sustainable growth."
     }
   ];
 
+  const [expandedImage, setExpandedImage] = useState<number | null>(null);
+
+  const handleImageTap = (index: number) => {
+    if (expandedImage === index) {
+      setExpandedImage(null);
+    } else {
+      setExpandedImage(index);
+    }
+  };
+
   return (
     // Remove ref from section if no longer needed
-    <section /* ref={sectionRef} */ className="py-10 md:py-20 bg-[#1a1a1a] relative overflow-hidden min-h-screen">
+    <section /* ref={sectionRef} */ className="pt-0 pb-10 -mt-12 md:mt-0 md:py-20 bg-[#2a2a2a] md:bg-[#1a1a1a] relative overflow-hidden min-h-screen">
       {/* Wrapper for the 3D background - Pass visibility state */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none"> 
         <LanyardBackground isVisible={isSectionVisible} />
@@ -113,7 +125,7 @@ export default function MeetTheTeam() {
           viewport={{ once: true }} // <<< Restore animation
           transition={{ duration: 0.6 }} // <<< Restore animation
         >
-          <h2 ref={headingRef} className="text-2xl md:text-3xl lg:text-5xl font-bold text-white inline-block relative mobile-title-heading">
+          <h2 ref={headingRef} className="text-4xl md:text-5xl font-bold text-white inline-block relative">
             Meet the Team
           </h2>
         </motion.div>
@@ -230,13 +242,45 @@ export default function MeetTheTeam() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4 }}
                       >
+                        {/* Team member image with NEW background pulsating glow */}
+                        <div className="relative mb-4 w-48 h-48 rounded-full">
+                          {/* New Pulsating Background Glow - Mobile Only */}
+                          <motion.div
+                            className="absolute inset-4 rounded-full z-0" // Glow container starts smaller (inset from parent)
+                            animate={{
+                              scale: [1, 1.1, 1, 1.2, 1], // Scale up to approx image edge
+                              opacity: [0.3, 0.6, 0.3, 0.7, 0.3],
+                              boxShadow: [
+                                '0 0 25px 8px rgba(37, 211, 102, 0.3)',
+                                '0 0 35px 12px rgba(37, 211, 102, 0.5)',
+                                '0 0 25px 8px rgba(37, 211, 102, 0.3)',
+                                '0 0 40px 15px rgba(37, 211, 102, 0.6)',
+                                '0 0 25px 8px rgba(37, 211, 102, 0.3)',
+                              ]
+                            }}
+                            transition={{
+                              duration: 2.5, 
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
+                          />
+                          {/* The profile image - ensure it's above the glow */}
+                          <img 
+                            src={member.name === "Josh" ? "/assets/joshnew1.jpg" : "/assets/WhatsApp Image 2025-04-25 at 16.17.59_8c138974.jpg"} 
+                            alt={`${member.name} portrait`}
+                            className="relative z-10 w-full h-full object-cover rounded-full border-0" 
+                            // Keep a subtle static glow on the image itself if desired, or remove if new glow is enough
+                            style={{ boxShadow: '0 0 10px 3px rgba(37, 211, 102, 0.2)' }}
+                          />
+                        </div>
+                        
                         <h3 className="text-2xl font-bold text-white mb-3 text-center">{member.name}</h3>
                         <div className="flex items-center justify-center text-[#25D366] mb-4">
                           {member.icon}
                           <span className="font-medium text-sm">{member.role}</span>
                         </div>
                         <p className="text-gray-300 mb-6 text-center text-base leading-relaxed">
-                          {member.bio}
+                          {member.mobileBio}
                         </p>
                         <div className="flex justify-center mt-2">
                           <a href="#" className="mx-3 text-gray-400 hover:text-white transition-colors"><Globe className="w-5 h-5" /></a>

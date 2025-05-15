@@ -75,7 +75,7 @@ export default function HAL900BookingIconAnimation({ startAnimation, onBookMeeti
       <div
         className={`
           flex items-center justify-center cursor-pointer relative
-          transition-all duration-3000 ease-[cubic-bezier(0.43,0.13,0.23,0.96)]
+          transition-all duration-3000 ease-[\[cubic-bezier(0.43,0.13,0.23,0.96)\]]
           ${isVisible ? "translate-y-0" : "translate-y-16"}
         `}
         onMouseEnter={() => {

@@ -176,7 +176,7 @@ const mobileStyles = `
       stroke-width: 5 !important;
     }
     .framework-dot {
-      r: 6 !important;
+      r: 8 !important;
     }
     .framework-connection {
       r: 4.5 !important;

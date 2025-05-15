@@ -8,8 +8,30 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { toast, Toaster } from 'sonner'
 import { Loader2 } from 'lucide-react'
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
+
+// Custom styles for react-phone-number-input
+const phoneInputCustomStyles = `
+  .PhoneInputInput {
+    background-color: transparent !important;
+    border: none !important;
+    color: white !important;
+    height: 100%;
+    font-size: inherit;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .PhoneInputInput::placeholder {
+    color: #6b7280; /* gray-500 */
+  }
+  .PhoneInputCountrySelect {
+    /* You can add custom styles for the country select dropdown arrow or container if needed */
+  }
+  .PhoneInputCountryIcon--border {
+    box-shadow: none !important; /* Remove default border shadow if any */
+  }
+`;
 
 interface BookingFormProps {
   selectedDate: Date
@@ -35,6 +57,7 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose,
     additionalInfo: "",
   })
   const [loading, setLoading] = useState(false)
+  const [isPhoneValid, setIsPhoneValid] = useState(true); // New state for phone validity
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -82,6 +105,8 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose,
   return (
     <>
       <Toaster position="top-center" />
+      {/* Inject custom styles for phone input */}
+      <style>{phoneInputCustomStyles}</style>
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -127,23 +152,26 @@ export default function HAL900BookingForm({ selectedDate, selectedTime, onClose,
               <label htmlFor="phone" className="text-sm text-white/80">
                 Phone
               </label>
-              <div className="relative bg-[#2a2a2a] rounded-md">
+              <div className={cn(
+                "relative bg-[#2a2a2a] rounded-md text-white placeholder:text-gray-500",
+                "flex items-center h-10",
+                "focus-within:ring-1 focus-within:ring-scailer-green/50",
+                !isPhoneValid && formData.phone ? "ring-1 ring-red-500" : ""
+              )}>
                 <PhoneInput
                   international
                   defaultCountry="GB"
                   value={formData.phone}
-                  onChange={(value) => 
-                    setFormData(prev => ({ ...prev, phone: value || "" }))
-                  }
-                  className="text-white"
-                  style={{
-                    '--PhoneInputCountryFlag-height': '1.2em',
-                    '--PhoneInputCountryFlag-borderColor': 'transparent',
-                    '--PhoneInputCountrySelectArrow-color': 'white',
-                    '--PhoneInput-color--focus': '#25D366',
-                  } as React.CSSProperties}
+                  onChange={(value) => {
+                    setFormData(prev => ({ ...prev, phone: value || "" }));
+                    setIsPhoneValid(value ? isValidPhoneNumber(value) : true);
+                  }}
+                  className="custom-phone-input"
                 />
               </div>
+              {!isPhoneValid && formData.phone && (
+                <p className="text-xs text-red-500 mt-1">Please enter a valid phone number.</p>
+              )}
             </div>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm text-white/80">
